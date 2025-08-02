@@ -152,7 +152,7 @@ export function BuildForm() {
                 render={({ field }) => (
                   <FormItem className="md:col-span-1">
                     <FormLabel>Version</FormLabel>
-                    <FormControl><Input placeholder="e.g., 1.0" {...field} /></FormControl>
+                    <FormControl><Input placeholder="e.g., 1.0" {...field} disabled /></FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
