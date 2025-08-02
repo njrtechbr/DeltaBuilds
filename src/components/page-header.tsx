@@ -1,6 +1,6 @@
 export function PageHeader({ title, description }: { title: string; description?: string }) {
   return (
-    <div className="pb-8 border-b">
+    <div className="pb-6">
       <h1 className="text-4xl font-bold tracking-tighter font-headline text-primary sm:text-5xl md:text-6xl">
         {title}
       </h1>
