@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { BuildCard } from '@/components/build-card';
+import { BuildListItem } from '@/components/build-list-item';
 import { PageHeader } from '@/components/page-header';
 
 export default function Home() {
@@ -90,10 +90,16 @@ export default function Home() {
       </div>
 
       {filteredAndSortedBuilds.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredAndSortedBuilds.map(build => (
-            <BuildCard key={build.id} build={build} />
-          ))}
+        <div className="border rounded-lg">
+            <div className="space-y-0">
+                {filteredAndSortedBuilds.map((build, index) => (
+                    <BuildListItem 
+                        key={build.id} 
+                        build={build} 
+                        isLast={index === filteredAndSortedBuilds.length - 1} 
+                    />
+                ))}
+            </div>
         </div>
       ) : (
         <div className="text-center py-16 text-muted-foreground">
