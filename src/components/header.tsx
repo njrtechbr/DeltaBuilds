@@ -25,7 +25,7 @@ export function Header() {
             {t('submitBuild')}
           </Link>
         </nav>
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-4">
            <Button asChild className="hidden sm:inline-flex">
               <Link href="/submit">
                 <PlusCircle className="mr-2 h-4 w-4" />

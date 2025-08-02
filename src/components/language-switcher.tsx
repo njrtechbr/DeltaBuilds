@@ -2,14 +2,7 @@
 
 import { usePathname, useRouter } from "@/navigation";
 import { useLocale } from "next-intl";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Globe } from "lucide-react";
 
 export function LanguageSwitcher() {
   const router = useRouter();
@@ -17,43 +10,29 @@ export function LanguageSwitcher() {
   const locale = useLocale();
 
   const handleLocaleChange = (newLocale: string) => {
+    if (newLocale === locale) return;
     router.replace(pathname, { locale: newLocale });
   };
 
-  const localeNames: { [key: string]: string } = {
-    en: "English (US)",
-    es: "Español (ES)",
-    "pt-BR": "Português (BR)",
-  };
+  const locales: { code: string; name: string }[] = [
+    { code: "pt-BR", name: "PT" },
+    { code: "en", name: "EN" },
+    { code: "es", name: "ES" },
+  ];
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <Globe className="h-5 w-5" />
-          <span className="sr-only">Change language</span>
+    <div className="flex items-center gap-1 p-1 rounded-md border bg-secondary">
+      {locales.map(({ code, name }) => (
+        <Button
+          key={code}
+          variant={locale === code ? "default" : "ghost"}
+          size="sm"
+          className="px-2.5 py-1 h-auto text-xs"
+          onClick={() => handleLocaleChange(code)}
+        >
+          {name}
         </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem
-          disabled={locale === "pt-BR"}
-          onSelect={() => handleLocaleChange("pt-BR")}
-        >
-          Português (BR)
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          disabled={locale === "en"}
-          onSelect={() => handleLocaleChange("en")}
-        >
-          English (US)
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          disabled={locale === "es"}
-          onSelect={() => handleLocaleChange("es")}
-        >
-          Español (ES)
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+      ))}
+    </div>
   );
 }
