@@ -3,6 +3,7 @@ import { useTranslations } from 'next-intl';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
+import { LanguageSwitcher } from './language-switcher';
 
 export function Header() {
   const t = useTranslations('Header');
@@ -24,8 +25,8 @@ export function Header() {
             {t('submitBuild')}
           </Link>
         </nav>
-        <div className="ml-auto flex items-center gap-4">
-           <Button asChild>
+        <div className="ml-auto flex items-center gap-2">
+           <Button asChild className="hidden sm:inline-flex">
               <Link href="/submit">
                 <PlusCircle className="mr-2 h-4 w-4" />
                 {t('newBuild')}
@@ -39,6 +40,7 @@ export function Header() {
                     <Link href="/signup">{t('signUp')}</Link>
                 </Button>
             </div>
+            <LanguageSwitcher />
         </div>
       </div>
     </header>
