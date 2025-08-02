@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowUp, ArrowDown, MessageSquare, CheckCircle2, XCircle, Copy, GitCommitHorizontal, History } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
-export default function BuildDetailPage({ params }: { params: { id: string } }) {
+export default function BuildDetailPage({ params }: { params: { id: string, locale: string } }) {
   const build = builds.find(b => b.id === params.id);
 
   if (!build) {
@@ -47,7 +47,7 @@ export default function BuildDetailPage({ params }: { params: { id: string } }) 
                   <span>{build.author.name}</span>
                </Link>
                <span>•</span>
-               <span>{new Date(build.createdAt).toLocaleDateString()}</span>
+               <span>{new Date(build.createdAt).toLocaleDateString(params.locale)}</span>
             </div>
           </div>
           
@@ -134,7 +134,7 @@ export default function BuildDetailPage({ params }: { params: { id: string } }) 
                          <div className="flex-grow">
                             <div className="flex items-baseline gap-2">
                                 <span className="font-semibold text-sm">{comment.author.name}</span>
-                                <span className="text-xs text-muted-foreground">{new Date(comment.createdAt).toLocaleDateString()}</span>
+                                <span className="text-xs text-muted-foreground">{new Date(comment.createdAt).toLocaleDateString(params.locale)}</span>
                             </div>
                             <p className="text-sm text-muted-foreground">{comment.text}</p>
                          </div>

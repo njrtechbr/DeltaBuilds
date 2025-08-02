@@ -14,9 +14,11 @@ import {
 } from '@/components/ui/select';
 import { BuildListItem } from '@/components/build-list-item';
 import { PageHeader } from '@/components/page-header';
+import { useLocale } from 'next-intl';
 
 export default function Home() {
   const t = useTranslations('Home');
+  const locale = useLocale();
   const [searchTerm, setSearchTerm] = useState('');
   const [weaponFilter, setWeaponFilter] = useState('all');
   const [sortOrder, setSortOrder] = useState('popular');
@@ -96,7 +98,8 @@ export default function Home() {
                     <BuildListItem 
                         key={build.id} 
                         build={build} 
-                        isLast={index === filteredAndSortedBuilds.length - 1} 
+                        isLast={index === filteredAndSortedBuilds.length - 1}
+                        locale={locale}
                     />
                 ))}
             </div>

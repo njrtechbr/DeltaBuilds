@@ -6,7 +6,7 @@ import { ArrowUp, MessageSquare, CheckCircle2, XCircle, User, Calendar } from 'l
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 
-export function BuildListItem({ build, isLast }: { build: Build, isLast: boolean }) {
+export function BuildListItem({ build, isLast, locale }: { build: Build, isLast: boolean, locale: string }) {
   const voteScore = build.upvotes - build.downvotes;
 
   return (
@@ -43,7 +43,7 @@ export function BuildListItem({ build, isLast }: { build: Build, isLast: boolean
                 </div>
                  <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
-                    <span>{new Date(build.createdAt).toLocaleDateString()}</span>
+                    <span>{new Date(build.createdAt).toLocaleDateString(locale)}</span>
                 </div>
             </div>
 
