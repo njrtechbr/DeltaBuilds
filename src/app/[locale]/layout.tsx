@@ -1,16 +1,21 @@
 import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, unstable_setRequestLocale } from 'next-intl/server';
 import '../globals.css';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/header';
 import { Toaster } from '@/components/ui/toaster';
+import { locales } from '@/navigation';
 
 export const metadata: Metadata = {
   title: 'DeltaBuilds - Share and Discover Delta Force Builds',
   description:
     'The ultimate platform for Delta Force players to share, discover, and rate weapon builds.',
 };
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({locale}));
+}
 
 export default async function RootLayout({
   children,
@@ -19,6 +24,7 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: {locale: string};
 }>) {
+  unstable_setRequestLocale(locale);
   const messages = await getMessages();
 
   return (
@@ -40,7 +46,7 @@ export default async function RootLayout({
           'font-body bg-background text-foreground antialiased flex flex-col min-h-screen'
         )}
       >
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={messages}>
           <Header />
           <main className="flex-grow container mx-auto px-4 py-8">
             {children}

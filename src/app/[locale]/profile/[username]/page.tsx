@@ -5,8 +5,10 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent } from '@/components/ui/card';
 import { BuildCard } from '@/components/build-card';
 import { Star, Swords } from 'lucide-react';
+import {unstable_setRequestLocale} from 'next-intl/server';
 
-export default function ProfilePage({ params }: { params: { username: string } }) {
+export default function ProfilePage({ params }: { params: { username: string, locale: string } }) {
+  unstable_setRequestLocale(params.locale);
   const user = users.find(u => u.name.toLowerCase() === params.username.toLowerCase());
 
   if (!user) {

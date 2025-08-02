@@ -10,8 +10,10 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { PageHeader } from "@/components/page-header"
 import Link from "next/link"
+import {unstable_setRequestLocale} from 'next-intl/server';
 
-export default function LoginPage() {
+export default function LoginPage({params: {locale}}: {params: {locale: string}}) {
+  unstable_setRequestLocale(locale);
   return (
     <div className="max-w-md mx-auto">
       <PageHeader title="Log In" />

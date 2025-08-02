@@ -9,8 +9,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowUp, ArrowDown, MessageSquare, CheckCircle2, XCircle, Copy, GitCommitHorizontal, History } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
+import {unstable_setRequestLocale} from 'next-intl/server';
 
 export default function BuildDetailPage({ params }: { params: { id: string, locale: string } }) {
+  unstable_setRequestLocale(params.locale);
   const build = builds.find(b => b.id === params.id);
 
   if (!build) {
