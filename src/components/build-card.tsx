@@ -21,7 +21,10 @@ export function BuildCard({ build }: { build: Build }) {
               data-ai-hint={build.imageHint}
             />
           </div>
-          <CardTitle className="font-headline text-xl group-hover:text-primary transition-colors">{build.name}</CardTitle>
+          <div className="flex justify-between items-start">
+            <CardTitle className="font-headline text-xl group-hover:text-primary transition-colors">{build.name}</CardTitle>
+            <Badge variant="outline">v{build.version}</Badge>
+          </div>
           <CardDescription>
             For {build.baseWeapon} by{' '}
             <span className="text-primary/80 font-medium">{build.author.name}</span>

@@ -58,10 +58,13 @@ export function BuildListItem({ build, isLast }: { build: Build, isLast: boolean
                         <span className="font-semibold text-base">{build.comments.length}</span>
                     </div>
                  </div>
-                 <Badge variant={build.isValid ? 'default' : 'destructive'} className={cn('text-xs', build.isValid ? 'bg-green-600/20 text-green-400 border-green-600/30' : 'bg-red-600/20 text-red-400 border-red-600/30')}>
-                    {build.isValid ? <CheckCircle2 className="w-3 h-3 mr-1" /> : <XCircle className="w-3 h-3 mr-1" />}
-                    {build.isValid ? 'Valid' : 'Invalid'}
-                </Badge>
+                 <div className="flex flex-col items-end gap-1.5">
+                    <Badge variant={build.isValid ? 'default' : 'destructive'} className={cn('text-xs', build.isValid ? 'bg-green-600/20 text-green-400 border-green-600/30' : 'bg-red-600/20 text-red-400 border-red-600/30')}>
+                        {build.isValid ? <CheckCircle2 className="w-3 h-3 mr-1" /> : <XCircle className="w-3 h-3 mr-1" />}
+                        {build.isValid ? 'Valid' : 'Invalid'}
+                    </Badge>
+                     <Badge variant="outline" className="text-xs">v{build.version}</Badge>
+                 </div>
             </div>
         </div>
       </div>

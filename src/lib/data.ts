@@ -24,7 +24,9 @@ export const builds: Build[] = [
     isValid: true,
     createdAt: '2024-05-20T09:00:00Z',
     imageUrl: 'https://placehold.co/600x400',
-    imageHint: 'assault rifle'
+    imageHint: 'assault rifle',
+    version: '2.1',
+    patchNotes: 'Updated for the latest season. Swapped the stock for better recoil control.'
   },
   {
     id: 'b2',
@@ -40,7 +42,8 @@ export const builds: Build[] = [
     isValid: true,
     createdAt: '2024-05-19T14:20:00Z',
     imageUrl: 'https://placehold.co/600x400',
-    imageHint: 'smg gun'
+    imageHint: 'smg gun',
+    version: '1.0'
   },
   {
     id: 'b3',
@@ -56,7 +59,8 @@ export const builds: Build[] = [
     isValid: false,
     createdAt: '2024-05-18T21:00:00Z',
     imageUrl: 'https://placehold.co/600x400',
-    imageHint: 'sniper rifle'
+    imageHint: 'sniper rifle',
+    version: '1.5-invalid'
   },
   {
     id: 'b4',
@@ -72,6 +76,7 @@ export const builds: Build[] = [
     isValid: true,
     createdAt: '2024-05-21T11:00:00Z',
     imageUrl: 'https://placehold.co/600x400',
-    imageHint: 'ak47 rifle'
+    imageHint: 'ak47 rifle',
+    version: '1.0'
   },
 ];

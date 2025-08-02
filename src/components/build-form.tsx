@@ -18,7 +18,9 @@ const buildFormSchema = z.object({
   name: z.string().min(3, "Build name must be at least 3 characters."),
   shareCode: z.string().min(6, "Share code seems too short.").regex(/^[A-Z0-9-]+$/, "Share code should only contain uppercase letters, numbers, and hyphens."),
   baseWeapon: z.string().min(2, "Base weapon is required."),
+  version: z.string().min(1, "Version is required."),
   description: z.string().min(20, "Description must be at least 20 characters.").max(1000, "Description is too long."),
+  patchNotes: z.string().max(1000, "Patch notes are too long.").optional(),
   tags: z.array(z.string()).min(1, "At least one playstyle tag is required."),
 });
 
@@ -36,7 +38,9 @@ export function BuildForm() {
       name: '',
       shareCode: '',
       baseWeapon: '',
+      version: '1.0',
       description: '',
+      patchNotes: '',
       tags: [],
     },
   });
@@ -119,25 +123,36 @@ export function BuildForm() {
                 </FormItem>
               )}
             />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+               <FormField
                 control={control}
                 name="baseWeapon"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="md:col-span-1">
                     <FormLabel>Base Weapon</FormLabel>
                     <FormControl><Input placeholder="e.g., M4A1" {...field} /></FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <FormField
+               <FormField
                 control={control}
                 name="shareCode"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="md:col-span-1">
                     <FormLabel>Share Code</FormLabel>
                     <FormControl><Input placeholder="A1B2C3-X4Y5Z6" {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+               <FormField
+                control={control}
+                name="version"
+                render={({ field }) => (
+                  <FormItem className="md:col-span-1">
+                    <FormLabel>Version</FormLabel>
+                    <FormControl><Input placeholder="e.g., 1.0" {...field} /></FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -145,11 +160,11 @@ export function BuildForm() {
             </div>
           </CardContent>
         </Card>
-
+        
         <Card>
-          <CardHeader><CardTitle className="font-headline">Playstyle</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="font-headline">Description & Playstyle</CardTitle></CardHeader>
           <CardContent className="space-y-4">
-            <FormField
+             <FormField
               control={control}
               name="description"
               render={({ field }) => (
@@ -167,11 +182,36 @@ export function BuildForm() {
                 </FormItem>
               )}
             />
-            
-            <Button type="button" variant="outline" onClick={handleSuggestTags} disabled={isSuggesting || descriptionValue.length < 20}>
-              {isSuggesting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wand2 className="mr-2 h-4 w-4" />}
-              Suggest Tags with AI
-            </Button>
+            <FormField
+              control={control}
+              name="patchNotes"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Patch Notes (Optional)</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="e.g., Updated for Season 3. Swapped optic for better ADS speed."
+                      className="min-h-[80px]"
+                      {...field}
+                    />
+                  </FormControl>
+                   <FormDescription>Describe what changed in this version.</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader><CardTitle className="font-headline">Playstyle Tags</CardTitle></CardHeader>
+          <CardContent className="space-y-4">
+             <div>
+                <Button type="button" variant="outline" onClick={handleSuggestTags} disabled={isSuggesting || descriptionValue.length < 20}>
+                  {isSuggesting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wand2 className="mr-2 h-4 w-4" />}
+                  Suggest Tags with AI
+                </Button>
+             </div>
             
             {suggestedTags.length > 0 && (
                 <div className="space-y-2 p-3 bg-secondary/50 rounded-md">

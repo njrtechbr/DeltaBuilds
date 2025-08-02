@@ -27,4 +27,6 @@ export type Build = {
   createdAt: string;
   imageUrl: string;
   imageHint: string;
+  version: string;
+  patchNotes?: string;
 };

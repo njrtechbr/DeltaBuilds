@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowUp, ArrowDown, MessageSquare, CheckCircle2, XCircle, Copy, User } from 'lucide-react';
+import { ArrowUp, ArrowDown, MessageSquare, CheckCircle2, XCircle, Copy, GitCommitHorizontal, History } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
 export default function BuildDetailPage({ params }: { params: { id: string } }) {
@@ -34,7 +34,10 @@ export default function BuildDetailPage({ params }: { params: { id: string } }) 
           </div>
 
           <div className="space-y-4">
-            <h1 className="text-4xl font-bold font-headline text-primary">{build.name}</h1>
+            <div className='flex justify-between items-start'>
+                <h1 className="text-4xl font-bold font-headline text-primary">{build.name}</h1>
+                <Badge variant="outline" className="text-base font-bold border-2">v{build.version}</Badge>
+            </div>
             <div className="flex items-center gap-4 text-muted-foreground">
                <Link href={`/profile/${build.author.name}`} className="flex items-center gap-2 hover:text-primary transition-colors">
                   <Avatar className="w-8 h-8">
@@ -50,7 +53,7 @@ export default function BuildDetailPage({ params }: { params: { id: string } }) 
           
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg font-headline">Share Code</CardTitle>
+              <CardTitle className="text-lg font-headline flex items-center gap-2"><Copy className="w-5 h-5" /> Share Code</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center gap-2 p-3 bg-secondary rounded-md">
@@ -66,6 +69,20 @@ export default function BuildDetailPage({ params }: { params: { id: string } }) 
             <h2 className="text-2xl font-semibold font-headline">Description</h2>
             <p className="text-muted-foreground whitespace-pre-wrap">{build.description}</p>
           </div>
+          
+          {build.patchNotes && (
+             <Card className="bg-secondary/50">
+                <CardHeader>
+                  <CardTitle className="text-lg font-headline flex items-center gap-2">
+                    <History className="w-5 h-5 text-primary"/>
+                    Patch Notes
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground whitespace-pre-wrap">{build.patchNotes}</p>
+                </CardContent>
+            </Card>
+          )}
 
           <div className="space-y-2">
             <h2 className="text-2xl font-semibold font-headline">Playstyle Tags</h2>
