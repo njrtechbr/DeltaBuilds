@@ -1,0 +1,22 @@
+{
+  "Header": {
+    "discover": "Discover",
+    "submitBuild": "Submit Build",
+    "newBuild": "New Build",
+    "logIn": "Log In",
+    "signUp": "Sign Up"
+  },
+  "Home": {
+    "title": "Discover Builds",
+    "description": "Find the perfect weapon build for your playstyle.",
+    "searchPlaceholder": "Search by name, author, or tag...",
+    "filterByWeaponPlaceholder": "Filter by weapon",
+    "allWeapons": "All Weapons",
+    "sortByPlaceholder": "Sort by",
+    "popular": "Popular",
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "noBuildsFound": "No builds found",
+    "adjustFilters": "Try adjusting your search or filters."
+  }
+}

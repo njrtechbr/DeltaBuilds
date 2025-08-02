@@ -1,0 +1,22 @@
+{
+  "Header": {
+    "discover": "Descubrir",
+    "submitBuild": "Enviar Build",
+    "newBuild": "Nueva Build",
+    "logIn": "Iniciar Sesión",
+    "signUp": "Registrarse"
+  },
+  "Home": {
+    "title": "Descubrir Builds",
+    "description": "Encuentra la build de arma perfecta para tu estilo de juego.",
+    "searchPlaceholder": "Buscar por nombre, autor o etiqueta...",
+    "filterByWeaponPlaceholder": "Filtrar por arma",
+    "allWeapons": "Todas las Armas",
+    "sortByPlaceholder": "Ordenar por",
+    "popular": "Popular",
+    "newest": "Más Recientes",
+    "oldest": "Más Antiguos",
+    "noBuildsFound": "No se encontraron builds",
+    "adjustFilters": "Intenta ajustar tu búsqueda o filtros."
+  }
+}
