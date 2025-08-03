@@ -63,7 +63,9 @@
     "comments": "Comments",
     "addCommentPlaceholder": "Add a comment... (login required)",
     "submitComment": "Submit Comment",
-    "noComments": "No comments yet. Be the first to share your thoughts!"
+    "noComments": "No comments yet. Be the first to share your thoughts!",
+    "video": "Video Showcase",
+    "gallery": "Gallery"
   },
   "Profile": {
     "reputation": "Reputation",
@@ -91,7 +93,7 @@
     "buildNameLabel": "Build Name",
     "buildNamePlaceholder": "e.g., CQB Dominator",
     "baseWeaponLabel": "Base Weapon",
-    "baseWeaponPlaceholder": "e.g., M4A1",
+    "baseWeaponPlaceholder": "Select a weapon",
     "shareCodeLabel": "Share Code",
     "shareCodePlaceholder": "Fuzil de assalto K416-Conquista-...",
     "shareCodeHint": "The AI will attempt to extract details from the code.",
@@ -109,6 +111,12 @@
     "playstyleTagsLabel": "Playstyle Tags",
     "tagsPlaceholder": "Add tags and press Enter...",
     "submitButton": "Submit Build",
+    "mediaTitle": "Media",
+    "youtubeUrlLabel": "YouTube Video URL (Optional)",
+    "youtubeUrlPlaceholder": "https://www.youtube.com/watch?v=...",
+    "galleryImagesLabel": "Gallery Images (Optional)",
+    "galleryImagesPlaceholder": "Drag and drop or click to upload",
+    "galleryImagesHint": "PNG, JPG, GIF up to 10MB",
     "toast": {
       "descriptionTooShortTitle": "Description too short",
       "descriptionTooShortDescription": "Please provide a more detailed description to get tag suggestions.",

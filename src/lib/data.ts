@@ -6,6 +6,13 @@ export const users: User[] = [
   { id: 'u3', name: 'Rogue', avatarUrl: 'https://placehold.co/100x100', reputation: 420 },
 ];
 
+export const allBaseWeapons = [
+  'M4A1', 'Vector', 'AX-50', 'AK-47', 'G3',
+  'AK-12', 'K416', 'K437', 'SMG-45', 'MP5',
+  'QCQ-171', 'M7', 'PKM', 'AUG', 'SR-25', 'SG552',
+  'QBZ95-1', 'AKM', 'PTR-32'
+].sort();
+
 export const builds: Build[] = [
   {
     id: 'b1',
@@ -26,7 +33,13 @@ export const builds: Build[] = [
     imageUrl: 'https://placehold.co/600x400',
     imageHint: 'assault rifle',
     version: '2.1',
-    patchNotes: 'Updated for the latest season. Swapped the stock for better recoil control.'
+    patchNotes: 'Updated for the latest season. Swapped the stock for better recoil control.',
+    youtubeUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    galleryImageUrls: [
+      'https://placehold.co/600x400',
+      'https://placehold.co/600x400',
+      'https://placehold.co/600x400',
+    ]
   },
   {
     id: 'b2',
@@ -81,8 +94,8 @@ export const builds: Build[] = [
   },
   {
     id: 'b5',
-    name: 'Conquista',
-    shareCode: 'Fuzil de combate G3-Conquista-6H3LATG081MQDPAGJAK1I',
+    name: 'Conquistador G3',
+    shareCode: "Fuzil de combate G3-Conquista-6H3LATG081MQDPAGJAK1I",
     baseWeapon: 'G3',
     author: users[2],
     tags: ['Fuzil de combate', 'Tático', 'Médio Alcance'],

@@ -18,7 +18,6 @@ type SuggestionState = {
 }
 
 type ParsedCodeState = {
-    name?: string;
     baseWeapon?: string;
     tags?: string[];
     error?: string;
@@ -58,7 +57,6 @@ export async function parseCode(input: { shareCode: string }): Promise<ParsedCod
     try {
         const result = await parseShareCode({ shareCode: validatedFields.data.shareCode });
         return {
-            name: result.buildName,
             baseWeapon: result.baseWeapon,
             tags: result.tags,
         };

@@ -63,7 +63,9 @@
     "comments": "Comentarios",
     "addCommentPlaceholder": "Añadir un comentario... (se requiere iniciar sesión)",
     "submitComment": "Enviar Comentario",
-    "noComments": "Aún no hay comentarios. ¡Sé el primero en compartir tus pensamientos!"
+    "noComments": "Aún no hay comentarios. ¡Sé el primero en compartir tus pensamientos!",
+    "video": "Video de Demostración",
+    "gallery": "Galería"
   },
   "Profile": {
     "reputation": "Reputación",
@@ -91,7 +93,7 @@
     "buildNameLabel": "Nombre de la Build",
     "buildNamePlaceholder": "ej., Dominador CQB",
     "baseWeaponLabel": "Arma Base",
-    "baseWeaponPlaceholder": "ej., M4A1",
+    "baseWeaponPlaceholder": "Selecciona un arma",
     "shareCodeLabel": "Código para Compartir",
     "shareCodePlaceholder": "Fuzil de assalto K416-Conquista-...",
     "shareCodeHint": "La IA intentará extraer detalles del código.",
@@ -109,6 +111,12 @@
     "playstyleTagsLabel": "Etiquetas de Estilo de Juego",
     "tagsPlaceholder": "Añade etiquetas y presiona Enter...",
     "submitButton": "Enviar Build",
+    "mediaTitle": "Multimedia",
+    "youtubeUrlLabel": "URL del Video de YouTube (Opcional)",
+    "youtubeUrlPlaceholder": "https://www.youtube.com/watch?v=...",
+    "galleryImagesLabel": "Imágenes de la Galería (Opcional)",
+    "galleryImagesPlaceholder": "Arrastra y suelta o haz clic para subir",
+    "galleryImagesHint": "PNG, JPG, GIF hasta 10MB",
     "toast": {
       "descriptionTooShortTitle": "Descripción demasiado corta",
       "descriptionTooShortDescription": "Proporciona una descripción más detallada para obtener sugerencias de etiquetas.",

@@ -7,9 +7,16 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowUp, ArrowDown, MessageSquare, CheckCircle2, XCircle, Copy, GitCommitHorizontal, History } from 'lucide-react';
+import { ArrowUp, ArrowDown, MessageSquare, CheckCircle2, XCircle, Copy, History, GalleryVertical, Youtube } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import {getTranslations, unstable_setRequestLocale} from 'next-intl/server';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
 
 export default async function BuildDetailPage({ params }: { params: { id: string, locale: string } }) {
   unstable_setRequestLocale(params.locale);
@@ -67,6 +74,29 @@ export default async function BuildDetailPage({ params }: { params: { id: string
               </div>
             </CardContent>
           </Card>
+          
+          {build.youtubeUrl && (
+            <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg font-headline flex items-center gap-2">
+                    <Youtube className="w-5 h-5 text-red-500"/>
+                    {t('video')}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="aspect-video rounded-lg overflow-hidden border">
+                        <iframe
+                            className="w-full h-full"
+                            src={build.youtubeUrl}
+                            title="YouTube video player"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                        ></iframe>
+                    </div>
+                </CardContent>
+            </Card>
+          )}
 
           <div className="space-y-2">
             <h2 className="text-2xl font-semibold font-headline">{t('description')}</h2>
@@ -95,6 +125,33 @@ export default async function BuildDetailPage({ params }: { params: { id: string
               ))}
             </div>
           </div>
+
+          {build.galleryImageUrls && build.galleryImageUrls.length > 0 && (
+             <div className="space-y-4">
+                <h2 className="text-2xl font-semibold font-headline flex items-center gap-2">
+                    <GalleryVertical className="w-6 h-6" />
+                    {t('gallery')}
+                </h2>
+                <Carousel className="w-full">
+                    <CarouselContent>
+                        {build.galleryImageUrls.map((url, index) => (
+                        <CarouselItem key={index} className="md:basis-1/2">
+                            <div className="p-1">
+                                <Card>
+                                    <CardContent className="flex aspect-video items-center justify-center p-0 rounded-lg overflow-hidden">
+                                        <Image src={url} alt={`${build.name} gallery image ${index + 1}`} width={600} height={400} className="object-cover" />
+                                    </CardContent>
+                                </Card>
+                            </div>
+                        </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                    <CarouselPrevious />
+                    <CarouselNext />
+                </Carousel>
+             </div>
+          )}
+
         </div>
 
         <aside className="md:col-span-2 space-y-6">

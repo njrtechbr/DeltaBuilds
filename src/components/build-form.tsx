@@ -12,9 +12,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { getTagSuggestions, parseCode } from '@/app/actions';
-import { Wand2, X, Loader2, Sparkles, BrainCircuit } from 'lucide-react';
+import { Wand2, X, Loader2, BrainCircuit, Upload, Youtube } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useDebounce } from 'use-debounce';
+import { allBaseWeapons } from '@/lib/data';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
 const buildFormSchema = z.object({
   name: z.string().min(3, "Build name must be at least 3 characters."),
@@ -23,6 +25,7 @@ const buildFormSchema = z.object({
   version: z.string().min(1, "Version is required."),
   description: z.string().min(20, "Description must be at least 20 characters.").max(1000, "Description is too long."),
   patchNotes: z.string().max(1000, "Patch notes are too long.").optional(),
+  youtubeUrl: z.string().url("Please enter a valid YouTube URL.").optional().or(z.literal('')),
   tags: z.array(z.string()).min(1, "At least one playstyle tag is required."),
 });
 
@@ -45,11 +48,12 @@ export function BuildForm() {
       version: '1.0',
       description: '',
       patchNotes: '',
+      youtubeUrl: '',
       tags: [],
     },
   });
 
-  const { control, watch, setValue, getValues, trigger } = form;
+  const { control, watch, setValue, getValues } = form;
   const currentTags = watch('tags');
   const descriptionValue = watch('description');
   const shareCodeValue = watch('shareCode');
@@ -62,10 +66,8 @@ export function BuildForm() {
       const result = await parseCode({ shareCode: code });
       if (result.error) {
         // Don't toast here, it's too aggressive
-      } else if(result.name && result.baseWeapon && result.tags) {
-        setValue('name', result.name, { shouldValidate: true });
+      } else if(result.baseWeapon && result.tags) {
         setValue('baseWeapon', result.baseWeapon, { shouldValidate: true });
-        // combine existing tags with new tags, avoiding duplicates
         const existingTags = getValues('tags');
         const newTags = Array.from(new Set([...existingTags, ...result.tags]));
         setValue('tags', newTags, { shouldValidate: true });
@@ -146,7 +148,7 @@ export function BuildForm() {
         <Card>
           <CardHeader><CardTitle className="font-headline">{t('buildDetailsTitle')}</CardTitle></CardHeader>
           <CardContent className="space-y-4">
-            <FormField
+             <FormField
               control={control}
               name="shareCode"
               render={({ field }) => (
@@ -165,58 +167,99 @@ export function BuildForm() {
                 </FormItem>
               )}
             />
+            
+            <FormField
+              control={control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('buildNameLabel')}</FormLabel>
+                  <FormControl>
+                    <Input placeholder={t('buildNamePlaceholder')} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
-                control={control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('buildNameLabel')}</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                         <Input placeholder={t('buildNamePlaceholder')} {...field} />
-                         <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
-                            {isParsing && <Loader2 className="h-4 w-4 animate-spin" />}
-                         </div>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                  control={control}
+                  name="baseWeapon"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t('baseWeaponLabel')}</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value}>
+                        <FormControl>
+                           <div className="relative">
+                            <SelectTrigger>
+                                <SelectValue placeholder={t('baseWeaponPlaceholder')} />
+                            </SelectTrigger>
+                            {isParsing && (
+                                <div className="absolute right-10 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                </div>
+                            )}
+                           </div>
+                        </FormControl>
+                        <SelectContent>
+                          {allBaseWeapons.map(weapon => (
+                            <SelectItem key={weapon} value={weapon}>{weapon}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               <FormField
                 control={control}
-                name="baseWeapon"
+                name="version"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t('baseWeaponLabel')}</FormLabel>
-                    <FormControl>
-                        <div className="relative">
-                            <Input placeholder={t('baseWeaponPlaceholder')} {...field} />
-                            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
-                                {isParsing && <Loader2 className="h-4 w-4 animate-spin" />}
-                            </div>
-                        </div>
-                    </FormControl>
+                    <FormLabel>{t('versionLabel')}</FormLabel>
+                    <FormControl><Input placeholder="e.g., 1.0" {...field} disabled /></FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-             <FormField
-              control={control}
-              name="version"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('versionLabel')}</FormLabel>
-                  <FormControl><Input placeholder="e.g., 1.0" {...field} disabled /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </CardContent>
         </Card>
         
+        <Card>
+          <CardHeader><CardTitle className="font-headline">{t('mediaTitle')}</CardTitle></CardHeader>
+           <CardContent className="space-y-4">
+                <FormField
+                    control={control}
+                    name="youtubeUrl"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel className='flex items-center gap-2'><Youtube className='w-5 h-5'/> {t('youtubeUrlLabel')}</FormLabel>
+                        <FormControl>
+                            <Input placeholder={t('youtubeUrlPlaceholder')} {...field} />
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                 <div>
+                    <FormLabel className='flex items-center gap-2'><Upload className='w-5 h-5'/> {t('galleryImagesLabel')}</FormLabel>
+                    <FormControl>
+                        <div className="mt-2 flex justify-center rounded-lg border border-dashed border-input px-6 py-10">
+                            <div className="text-center">
+                                <Upload className="mx-auto h-12 w-12 text-muted-foreground" />
+                                <div className="mt-4 flex text-sm leading-6 text-muted-foreground">
+                                <p className="pl-1">{t('galleryImagesPlaceholder')}</p>
+                                </div>
+                                <p className="text-xs leading-5 text-muted-foreground">{t('galleryImagesHint')}</p>
+                            </div>
+                        </div>
+                    </FormControl>
+                 </div>
+           </CardContent>
+        </Card>
+
         <Card>
           <CardHeader><CardTitle className="font-headline">{t('descriptionAndPlaystyleTitle')}</CardTitle></CardHeader>
           <CardContent className="space-y-4">

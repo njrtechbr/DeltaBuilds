@@ -13,7 +13,7 @@ export type Comment = {
 };
 
 export type Build = {
-  id: string;
+  id:string;
   name: string;
   shareCode: string;
   baseWeapon: string;
@@ -29,4 +29,6 @@ export type Build = {
   imageHint: string;
   version: string;
   patchNotes?: string;
+  youtubeUrl?: string;
+  galleryImageUrls?: string[];
 };
