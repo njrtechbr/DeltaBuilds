@@ -8,7 +8,7 @@ export default async function SubmitBuildPage({params: {locale}}: {params: {loca
   const t = await getTranslations('Submit');
 
   // TODO: Replace with real authentication check
-  const isAuthenticated = false;
+  const isAuthenticated = true;
 
   if (!isAuthenticated) {
     redirect('/login');

@@ -17,7 +17,7 @@ import {
 export function Header() {
   const t = useTranslations('Header');
   // TODO: Replace with real authentication state
-  const isAuthenticated = false; 
+  const isAuthenticated = true; 
   const username = "Ghost";
 
   return (
@@ -73,13 +73,13 @@ export function Header() {
                   <DropdownMenuItem asChild>
                      <Link href={`/profile/${username}`}>
                       <User className="mr-2 h-4 w-4" />
-                      <span>Perfil</span>
+                      <span>{t('profile')}</span>
                      </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
                     <LogOut className="mr-2 h-4 w-4" />
-                    <span>Sair</span>
+                    <span>{t('signOut')}</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
