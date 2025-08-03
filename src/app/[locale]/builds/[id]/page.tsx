@@ -92,8 +92,8 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
   const copyShareCode = (code: string) => {
     navigator.clipboard.writeText(code);
     toast({
-        title: "Copied!",
-        description: "Share code copied to clipboard.",
+        title: t('copiedToast'),
+        description: t('copiedToastDescription'),
     })
   }
 
@@ -101,16 +101,6 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
     <div className="max-w-4xl mx-auto">
       <div className="grid md:grid-cols-5 gap-8">
         <div className="md:col-span-3 space-y-6">
-          <div className="relative aspect-video w-full rounded-lg overflow-hidden border">
-             <Image
-              src={build.imageUrl}
-              alt={build.name}
-              fill
-              className="object-cover"
-              data-ai-hint={build.imageHint}
-            />
-          </div>
-
           <div className="space-y-4">
             <div className='flex justify-between items-start'>
                 <h1 className="text-4xl font-bold font-headline text-primary">{build.name}</h1>
