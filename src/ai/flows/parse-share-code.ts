@@ -17,9 +17,9 @@ const ParseShareCodeInputSchema = z.object({
 export type ParseShareCodeInput = z.infer<typeof ParseShareCodeInputSchema>;
 
 const ParseShareCodeOutputSchema = z.object({
-  buildName: z.string().describe("The name of the build, extracted from the code. E.g., 'Conquista'"),
-  baseWeapon: z.string().describe("The base weapon name, extracted from the code. E.g., 'G3'"),
-  tags: z.array(z.string()).describe("An array of tags, including the weapon type. E.g., ['Fuzil de combate', 'Conquista']"),
+  buildName: z.string().describe("The name of the build, which is a combination of weapon type and weapon name. E.g., 'Fuzil de combate G3' or 'QBZ95-1 Assault Rifle'"),
+  baseWeapon: z.string().describe("The base weapon name, extracted from the code. E.g., 'G3' or 'QBZ95-1'"),
+  tags: z.array(z.string()).describe("An array of tags, including just the weapon type. E.g., ['Fuzil de combate'] or ['Assault Rifle']"),
 });
 export type ParseShareCodeOutput = z.infer<typeof ParseShareCodeOutputSchema>;
 
@@ -31,17 +31,28 @@ const prompt = ai.definePrompt({
   name: 'parseShareCodePrompt',
   input: {schema: ParseShareCodeInputSchema},
   output: {schema: ParseShareCodeOutputSchema},
-  prompt: `You are an expert in Delta Force weapon builds. Your task is to parse a given share code and extract structured information from it.
+  prompt: `You are an expert in Delta Force weapon builds. Your task is to parse a given share code and extract structured information from it. The game modes "Conquista" and "Warfare" must be ignored.
 
-The share code format is: "[Weapon Type] [Weapon Name]-[Build Name]-[Alphanumeric Code]"
+The build name should be a combination of the weapon type and the weapon name.
+The base weapon is just the weapon name.
+The tags should contain only the weapon type.
 
-Examples:
+There are two main formats for the share codes.
+
+**Format 1 (Portuguese):** "[Weapon Type] [Weapon Name]-[Game Mode]-[Alphanumeric Code]"
 - Input: "Fuzil de combate G3-Conquista-6H3LATG081MQDPAGJAK1I"
-  - Output: { buildName: "Conquista", baseWeapon: "G3", tags: ["Fuzil de combate", "Conquista"] }
+  - Output: { buildName: "Fuzil de combate G3", baseWeapon: "G3", tags: ["Fuzil de combate"] }
 - Input: "Fuzil de assalto K416-Conquista-6H07U6S0FU6KO0LH9IPIA"
-  - Output: { buildName: "Conquista", baseWeapon: "K416", tags: ["Fuzil de assalto", "Conquista"] }
+  - Output: { buildName: "Fuzil de assalto K416", baseWeapon: "K416", tags: ["Fuzil de assalto"] }
 - Input: "Submetralhadora SMG-45-Conquista-6H07UAC0FU6KO0LH9IPIA"
-  - Output: { buildName: "Conquista", baseWeapon: "SMG-45", tags: ["Submetralhadora", "Conquista"] }
+  - Output: { buildName: "Submetralhadora SMG-45", baseWeapon: "SMG-45", tags: ["Submetralhadora"] }
+
+**Format 2 (English):** "[Weapon Name] [Weapon Type]-[Game Mode]-[Alphanumeric Code]"
+- Input: "QBZ95-1 Assault Rifle-Warfare-6GUA5D0063I9AG60CNV35"
+  - Output: { buildName: "QBZ95-1 Assault Rifle", baseWeapon: "QBZ95-1", tags: ["Assault Rifle"] }
+- Input: "SMG-45 Submachine Gun-Warfare-6GU9BT8063I9AG60CNV35"
+  - Output: { buildName: "SMG-45 Submachine Gun", baseWeapon: "SMG-45", tags: ["Submachine Gun"] }
+
 
 Now, parse the following share code:
 Share Code: {{{shareCode}}}
