@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from '@/navigation';
 import Image from 'next/image';
 import type { Build } from '@/lib/types';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';

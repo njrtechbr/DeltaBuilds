@@ -105,7 +105,7 @@ export default function Home() {
             </div>
         </div>
       ) : (
-        <div className="text-center py-16 text-muted-foreground">
+        <div className="text-center py-16 text-muted-foreground bg-card rounded-lg">
           <h3 className="text-xl font-semibold">{t('noBuildsFound')}</h3>
           <p>{t('adjustFilters')}</p>
         </div>
