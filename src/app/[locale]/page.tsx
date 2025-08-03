@@ -39,6 +39,9 @@ export default function Home() {
 
   const filteredAndSortedBuilds = allBuilds
     .filter((build: Build) => {
+      const latestVersion = build.versions.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+      if (latestVersion.status !== 'active') return false;
+
       const searchTermLower = searchTerm.toLowerCase();
       const matchesSearch =
         build.name.toLowerCase().includes(searchTermLower) ||
@@ -48,7 +51,7 @@ export default function Home() {
       const matchesWeapon =
         weaponFilter === 'all' || build.baseWeapon === weaponFilter;
 
-      const latestVersion = build.versions.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+      
       const matchesCodeType =
         codeTypeFilter.length === 0 ||
         codeTypeFilter.some(type => {

@@ -71,6 +71,7 @@
     "downvote": "Votar en contra",
     "valid": "Válido",
     "invalid": "Inválido",
+    "pending": "Pendiente",
     "comments": "Comentarios",
     "addCommentPlaceholder": "Añadir un comentario... (se requiere iniciar sesión)",
     "submitComment": "Enviar Comentario",
@@ -202,6 +203,7 @@
     "createdAt": "Fecha de Creación",
     "actions": "Acciones",
     "approve": "Aprobar",
+    "disable": "Desactivar",
     "edit": "Editar",
     "delete": "Eliminar",
     "reporter": "Reportador",
@@ -209,6 +211,9 @@
     "platform": "Plataforma",
     "reportedAt": "Fecha del Reporte",
     "markValid": "Marcar como Válido",
-    "markInvalid": "Marcar como Inválido"
+    "markInvalid": "Marcar como Inválido",
+    "statusActive": "Activa",
+    "statusPending": "Pendiente",
+    "statusDisabled": "Desactivada"
   }
 }

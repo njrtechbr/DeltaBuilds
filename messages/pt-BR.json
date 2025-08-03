@@ -71,6 +71,7 @@
     "downvote": "Votar contra",
     "valid": "Válida",
     "invalid": "Inválida",
+    "pending": "Pendente",
     "comments": "Comentários",
     "addCommentPlaceholder": "Adicionar um comentário... (login obrigatório)",
     "submitComment": "Enviar Comentário",
@@ -202,6 +203,7 @@
     "createdAt": "Data de Criação",
     "actions": "Ações",
     "approve": "Aprovar",
+    "disable": "Desativar",
     "edit": "Editar",
     "delete": "Excluir",
     "reporter": "Denunciante",
@@ -209,6 +211,9 @@
     "platform": "Plataforma",
     "reportedAt": "Data da Denúncia",
     "markValid": "Marcar como Válido",
-    "markInvalid": "Marcar como Inválido"
+    "markInvalid": "Marcar como Inválido",
+    "statusActive": "Ativa",
+    "statusPending": "Pendente",
+    "statusDisabled": "Desativada"
   }
 }

@@ -36,8 +36,8 @@ export const builds: Build[] = [
     ],
     favoritedBy: ['u2', 'u3'],
     versions: [
-       { version: '2.1', steamCode: 'A7B3C9-X1Y2Z3-STEAM', patchNotes: 'Updated for the latest season. Swapped the stock for better recoil control.', createdAt: '2024-05-20T09:00:00Z', isValid: true },
-       { version: '2.0', steamCode: 'A7B3C9-X1Y2Z3-OLDSTEAM', garenaCode: 'A7B3C9-X1Y2Z3-OLDGARENA', patchNotes: 'Initial release for the season.', createdAt: '2024-05-15T11:00:00Z', isValid: true },
+       { version: '2.1', steamCode: 'A7B3C9-X1Y2Z3-STEAM', patchNotes: 'Updated for the latest season. Swapped the stock for better recoil control.', createdAt: '2024-05-20T09:00:00Z', status: 'active' },
+       { version: '2.0', steamCode: 'A7B3C9-X1Y2Z3-OLDSTEAM', garenaCode: 'A7B3C9-X1Y2Z3-OLDGARENA', patchNotes: 'Initial release for the season.', createdAt: '2024-05-15T11:00:00Z', status: 'active' },
     ]
   },
   {
@@ -53,7 +53,7 @@ export const builds: Build[] = [
     createdAt: '2024-05-19T14:20:00Z',
     favoritedBy: ['u1'],
     versions: [
-      { version: '1.0', mobileCode: 'D4E8F1-G7H6I5-MOBILE', patchNotes: 'First version of this stealth build.', createdAt: '2024-05-19T14:20:00Z', isValid: true }
+      { version: '1.0', mobileCode: 'D4E8F1-G7H6I5-MOBILE', patchNotes: 'First version of this stealth build.', createdAt: '2024-05-19T14:20:00Z', status: 'pending' }
     ]
   },
   {
@@ -69,7 +69,7 @@ export const builds: Build[] = [
     createdAt: '2024-05-18T21:00:00Z',
     favoritedBy: [],
     versions: [
-        { version: '1.5-invalid', steamCode: 'J2K5L9-M3N1O8-STEAM', patchNotes: 'Nerfed in the last patch.', createdAt: '2024-05-18T21:00:00Z', isValid: false }
+        { version: '1.5-invalid', steamCode: 'J2K5L9-M3N1O8-STEAM', patchNotes: 'Nerfed in the last patch.', createdAt: '2024-05-18T21:00:00Z', status: 'disabled' }
     ]
   },
   {
@@ -85,7 +85,7 @@ export const builds: Build[] = [
     createdAt: '2024-05-21T11:00:00Z',
     favoritedBy: ['u1', 'u2'],
     versions: [
-         { version: '1.0', steamCode: 'P7Q4R2-S6T5U9-STEAM', patchNotes: 'Initial release.', createdAt: '2024-05-21T11:00:00Z', isValid: true }
+         { version: '1.0', steamCode: 'P7Q4R2-S6T5U9-STEAM', patchNotes: 'Initial release.', createdAt: '2024-05-21T11:00:00Z', status: 'active' }
     ]
   },
   {
@@ -101,7 +101,7 @@ export const builds: Build[] = [
     createdAt: '2024-05-23T10:00:00Z',
     favoritedBy: [],
     versions: [
-        { version: '1.0', garenaCode: 'Fuzil de combate G3-Conquista-6H3LATG081MQDPAGJAK1I', patchNotes: 'Versão inicial focada no modo Conquista.', createdAt: '2024-05-23T10:00:00Z', isValid: true }
+        { version: '1.0', garenaCode: 'Fuzil de combate G3-Conquista-6H3LATG081MQDPAGJAK1I', patchNotes: 'Versão inicial focada no modo Conquista.', createdAt: '2024-05-23T10:00:00Z', status: 'active' }
     ]
   }
 ];

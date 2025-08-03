@@ -13,7 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { builds as initialBuilds } from "@/lib/data";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Check, Edit, Trash, X } from "lucide-react";
+import { Check, Edit, Trash, X, Ban } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -21,7 +21,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { useState } from "react";
-import type { Build } from "@/lib/types";
+import type { Build, BuildStatus } from "@/lib/types";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,7 +31,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { cn } from "@/lib/utils";
 import { Link } from "@/navigation";
@@ -43,12 +42,12 @@ export default function AdminBuildsPage() {
   const { toast } = useToast();
   const [builds, setBuilds] = useState<Build[]>(initialBuilds);
   
-  const toggleApproval = (buildId: string) => {
+  const setBuildStatus = (buildId: string, status: BuildStatus) => {
     setBuilds(currentBuilds => 
       currentBuilds.map(build => {
         if (build.id === buildId) {
           const latestVersion = build.versions[0];
-          const updatedVersion = { ...latestVersion, isValid: !latestVersion.isValid };
+          const updatedVersion = { ...latestVersion, status };
           const updatedVersions = [updatedVersion, ...build.versions.slice(1)];
           return { ...build, versions: updatedVersions };
         }
@@ -63,6 +62,17 @@ export default function AdminBuildsPage() {
         title: "Build Deleted",
         description: "The build has been successfully deleted.",
     });
+  }
+
+  const getStatusBadge = (status: BuildStatus) => {
+    switch(status) {
+      case 'active':
+        return <Badge variant="default" className="bg-green-600/20 text-green-400 border-green-600/30">{t('statusActive')}</Badge>
+      case 'pending':
+        return <Badge variant="secondary" className="bg-yellow-600/20 text-yellow-400 border-yellow-600/30">{t('statusPending')}</Badge>
+      case 'disabled':
+        return <Badge variant="destructive" className="bg-red-600/20 text-red-400 border-red-600/30">{t('statusDisabled')}</Badge>
+    }
   }
 
 
@@ -88,9 +98,7 @@ export default function AdminBuildsPage() {
                         <TableCell className="font-medium">{build.name}</TableCell>
                         <TableCell>{build.author.name}</TableCell>
                         <TableCell>
-                            <Badge variant={latestVersion.isValid ? 'default' : 'destructive'} className={cn(latestVersion.isValid ? 'bg-green-600/20 text-green-400 border-green-600/30' : 'bg-red-600/20 text-red-400 border-red-600/30')}>
-                                {latestVersion.isValid ? "Valid" : "Invalid"}
-                            </Badge>
+                           {getStatusBadge(latestVersion.status)}
                         </TableCell>
                         <TableCell>{new Date(build.createdAt).toLocaleDateString()}</TableCell>
                         <TableCell className="text-right">
@@ -98,21 +106,29 @@ export default function AdminBuildsPage() {
                             <div className="flex items-center justify-end gap-2">
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <Button variant="ghost" size="icon" onClick={() => toggleApproval(build.id)}>
-                                            {latestVersion.isValid ? <X className="w-4 h-4 text-red-500" /> : <Check className="w-4 h-4 text-green-500" />}
+                                        <Button variant="ghost" size="icon" onClick={() => setBuildStatus(build.id, 'active')} disabled={latestVersion.status === 'active'}>
+                                            <Check className="w-4 h-4 text-green-500" />
                                         </Button>
                                     </TooltipTrigger>
-                                    <TooltipContent>{latestVersion.isValid ? t('markInvalid') : t('approve')}</TooltipContent>
+                                    <TooltipContent>{t('approve')}</TooltipContent>
+                                </Tooltip>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button variant="ghost" size="icon" onClick={() => setBuildStatus(build.id, 'disabled')} disabled={latestVersion.status === 'disabled'}>
+                                            <Ban className="w-4 h-4 text-orange-500" />
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>{t('disable')}</TooltipContent>
                                 </Tooltip>
                                 
-                                <Link href={{ pathname: '/submit', query: { buildId: build.id } }} className={cn(buttonVariants({variant: 'ghost', size: 'icon'}))}>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Link href={{ pathname: '/submit', query: { buildId: build.id } }} className={cn(buttonVariants({variant: 'ghost', size: 'icon'}))}>
                                             <Edit className="w-4 h-4" />
-                                        </TooltipTrigger>
-                                        <TooltipContent>{t('edit')}</TooltipContent>
-                                    </Tooltip>
-                                </Link>
+                                        </Link>
+                                    </TooltipTrigger>
+                                    <TooltipContent>{t('edit')}</TooltipContent>
+                                </Tooltip>
                                
                                  <AlertDialog>
                                     <Tooltip>

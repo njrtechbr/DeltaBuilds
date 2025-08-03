@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { Build } from '@/lib/types';
 import { Badge } from '@/components/ui/badge';
-import { ArrowUp, MessageSquare, CheckCircle2, XCircle, User, Calendar, Smartphone, Laptop, Gamepad2 } from 'lucide-react';
+import { ArrowUp, MessageSquare, CheckCircle2, XCircle, User, Calendar, Smartphone, Laptop, Gamepad2, Ban } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { useTranslations } from 'next-intl';
@@ -11,6 +11,23 @@ export function BuildListItem({ build, isLast, locale }: { build: Build, isLast:
   const t = useTranslations('BuildListItem');
   const voteScore = build.upvotes - build.downvotes;
   const latestVersion = build.versions.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+
+  const getStatusBadge = () => {
+    switch(latestVersion.status) {
+      case 'active':
+        return <Badge variant={'default'} className={cn('text-xs', 'bg-green-600/20 text-green-400 border-green-600/30')}>
+            <CheckCircle2 className="w-3 h-3 mr-1" />
+            {t('valid')}
+        </Badge>
+      case 'disabled':
+        return <Badge variant={'destructive'} className={cn('text-xs', 'bg-red-600/20 text-red-400 border-red-600/30')}>
+            <Ban className="w-3 h-3 mr-1" />
+            {t('invalid')}
+        </Badge>
+      default:
+        return null;
+    }
+  }
 
   return (
     <Link href={`/builds/${build.id}`} className={cn(
@@ -78,10 +95,7 @@ export function BuildListItem({ build, isLast, locale }: { build: Build, isLast:
                     </div>
                  </div>
                  <div className="flex flex-col items-end gap-1.5">
-                    <Badge variant={latestVersion.isValid ? 'default' : 'destructive'} className={cn('text-xs', latestVersion.isValid ? 'bg-green-600/20 text-green-400 border-green-600/30' : 'bg-red-600/20 text-red-400 border-red-600/30')}>
-                        {latestVersion.isValid ? <CheckCircle2 className="w-3 h-3 mr-1" /> : <XCircle className="w-3 h-3 mr-1" />}
-                        {latestVersion.isValid ? t('valid') : t('invalid')}
-                    </Badge>
+                    {getStatusBadge()}
                      <Badge variant="outline" className="text-xs">v{latestVersion.version}</Badge>
                  </div>
             </div>

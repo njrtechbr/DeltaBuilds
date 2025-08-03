@@ -13,6 +13,8 @@ export type Comment = {
   createdAt: string;
 };
 
+export type BuildStatus = 'active' | 'pending' | 'disabled';
+
 export type BuildVersion = {
   version: string;
   steamCode?: string;
@@ -20,7 +22,7 @@ export type BuildVersion = {
   mobileCode?: string;
   patchNotes?: string;
   createdAt: string;
-  isValid: boolean;
+  status: BuildStatus;
 };
 
 export type Build = {

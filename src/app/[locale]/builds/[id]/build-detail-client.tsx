@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowUp, ArrowDown, MessageSquare, CheckCircle2, XCircle, Copy, History, GalleryVertical, Youtube, Languages, Loader2, Star, Share2, AlertTriangle, Laptop, Gamepad2, Smartphone } from 'lucide-react';
+import { ArrowUp, ArrowDown, MessageSquare, CheckCircle2, XCircle, Copy, History, GalleryVertical, Youtube, Languages, Loader2, Star, Share2, AlertTriangle, Laptop, Gamepad2, Smartphone, Ban } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { useTranslations, useLocale } from 'next-intl';
 import {
@@ -153,6 +153,28 @@ export function BuildDetailClient({ build: initialBuild, currentUser, locale }: 
         case 'Steam': return <Laptop className="w-4 h-4 mr-2" />;
         case 'Garena': return <Gamepad2 className="w-4 h-4 mr-2" />;
         case 'Mobile': return <Smartphone className="w-4 h-4 mr-2" />;
+    }
+  }
+
+  const getStatusBadge = () => {
+    switch (latestVersion.status) {
+        case 'active':
+            return <Badge variant={'default'} className={'text-lg px-4 py-2 bg-green-600/20 text-green-400 border-green-600/30'}>
+                <CheckCircle2 className="w-4 h-4 mr-2" />
+                {t('valid')}
+            </Badge>;
+        case 'disabled':
+            return <Badge variant={'destructive'} className={'text-lg px-4 py-2 bg-red-600/20 text-red-400 border-red-600/30'}>
+                <Ban className="w-4 h-4 mr-2" />
+                {t('invalid')}
+            </Badge>;
+        case 'pending':
+            return <Badge variant={'secondary'} className={'text-lg px-4 py-2 bg-yellow-600/20 text-yellow-400 border-yellow-600/30'}>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                {t('pending')}
+            </Badge>;
+        default:
+            return null;
     }
   }
 
@@ -315,10 +337,7 @@ export function BuildDetailClient({ build: initialBuild, currentUser, locale }: 
                         <ArrowDown className="w-5 h-5 text-red-500"/>
                     </Button>
                 </div>
-                 <Badge variant={latestVersion.isValid ? 'default' : 'destructive'} className={`text-lg px-4 py-2 ${latestVersion.isValid ? 'bg-green-600/20 text-green-400 border-green-600/30' : 'bg-red-600/20 text-red-400 border-red-600/30'}`}>
-                    {latestVersion.isValid ? <CheckCircle2 className="w-4 h-4 mr-2" /> : <XCircle className="w-4 h-4 mr-2" />}
-                    {latestVersion.isValid ? t('valid') : t('invalid')}
-                </Badge>
+                {getStatusBadge()}
             </Card>
 
             <Card>

@@ -2,13 +2,30 @@ import { Link } from '@/navigation';
 import type { Build } from '@/lib/types';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowUp, MessageSquare, CheckCircle2, XCircle } from 'lucide-react';
+import { ArrowUp, MessageSquare, CheckCircle2, XCircle, Ban } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 export function BuildCard({ build }: { build: Build }) {
   const t = useTranslations('BuildCard');
   const voteScore = build.upvotes - build.downvotes;
   const latestVersion = build.versions.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+
+  const getStatusBadge = () => {
+    switch(latestVersion.status) {
+        case 'active':
+            return <Badge variant={'default'} className={'bg-green-600/20 text-green-400 border-green-600/30'}>
+                <CheckCircle2 className="w-3 h-3 mr-1" />
+                {t('valid')}
+            </Badge>;
+        case 'disabled':
+             return <Badge variant={'destructive'} className={'bg-red-600/20 text-red-400 border-red-600/30'}>
+                <Ban className="w-3 h-3 mr-1" />
+                {t('invalid')}
+            </Badge>;
+        default:
+            return null;
+    }
+  }
 
   return (
     <Link href={`/builds/${build.id}`} className="group block">
@@ -44,10 +61,7 @@ export function BuildCard({ build }: { build: Build }) {
               <span>{build.comments.length}</span>
             </div>
           </div>
-          <Badge variant={latestVersion.isValid ? 'default' : 'destructive'} className={latestVersion.isValid ? 'bg-green-600/20 text-green-400 border-green-600/30' : 'bg-red-600/20 text-red-400 border-red-600/30'}>
-            {latestVersion.isValid ? <CheckCircle2 className="w-3 h-3 mr-1" /> : <XCircle className="w-3 h-3 mr-1" />}
-            {latestVersion.isValid ? t('valid') : t('invalid')}
-          </Badge>
+          {getStatusBadge()}
         </CardFooter>
       </Card>
     </Link>
