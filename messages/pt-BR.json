@@ -89,13 +89,13 @@
     "reportCode": "Reportar código que não funciona",
     "reportDialog": {
       "title": "Reportar Código?",
-      "description": "Você tem certeza que deseja reportar o código \\"{code}\\"? Isso irá sinalizá-lo para revisão pelos moderadores. O abuso deste recurso pode resultar em penalidades.",
+      "description": "Você tem certeza que deseja reportar o código \"{code}\"? Isso irá sinalizá-lo para revisão pelos moderadores. O abuso deste recurso pode resultar em penalidades.",
       "cancel": "Cancelar",
       "confirm": "Sim, Reportar"
     },
     "reportToast": {
         "title": "Código Reportado",
-        "description": "O código \\"{code}\\" foi reportado. Obrigado pelo seu feedback."
+        "description": "O código \"{code}\" foi reportado. Obrigado pelo seu feedback."
     },
     "noImportCode": "Nenhum código de importação disponível para esta versão."
   },
