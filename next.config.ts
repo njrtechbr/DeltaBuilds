@@ -10,6 +10,7 @@ const withIntl = withNextIntl(
 
 const nextConfig: NextConfig = {
   /* config options here */
+  turbopack: true,
   typescript: {
     ignoreBuildErrors: true,
   },
