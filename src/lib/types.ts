@@ -31,8 +31,6 @@ export type Build = {
   downvotes: number;
   comments: Comment[];
   createdAt: string;
-  imageUrl: string;
-  imageHint: string;
   youtubeUrl?: string;
   galleryImageUrls?: string[];
   versions: BuildVersion[];

@@ -28,8 +28,6 @@ export const builds: Build[] = [
       { id: 'c2', text: 'A bit too much recoil for my taste, but effective up close.', author: users[2], createdAt: '2024-05-20T12:45:00Z' },
     ],
     createdAt: '2024-05-18T09:00:00Z',
-    imageUrl: 'https://placehold.co/600x400',
-    imageHint: 'assault rifle',
     youtubeUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
     galleryImageUrls: [
       'https://placehold.co/600x400',
@@ -53,8 +51,6 @@ export const builds: Build[] = [
     downvotes: 5,
     comments: [],
     createdAt: '2024-05-19T14:20:00Z',
-    imageUrl: 'https://placehold.co/600x400',
-    imageHint: 'smg gun',
     favoritedBy: ['u1'],
     versions: [
       { version: '1.0', shareCode: 'D4E8F1-G7H6I5', patchNotes: 'First version of this stealth build.', createdAt: '2024-05-19T14:20:00Z', isValid: true }
@@ -71,8 +67,6 @@ export const builds: Build[] = [
     downvotes: 2,
     comments: [],
     createdAt: '2024-05-18T21:00:00Z',
-    imageUrl: 'https://placehold.co/600x400',
-    imageHint: 'sniper rifle',
     favoritedBy: [],
     versions: [
         { version: '1.5-invalid', shareCode: 'J2K5L9-M3N1O8', patchNotes: 'Nerfed in the last patch.', createdAt: '2024-05-18T21:00:00Z', isValid: false }
@@ -89,8 +83,6 @@ export const builds: Build[] = [
     downvotes: 15,
     comments: [],
     createdAt: '2024-05-21T11:00:00Z',
-    imageUrl: 'https://placehold.co/600x400',
-    imageHint: 'ak47 rifle',
     favoritedBy: ['u1', 'u2'],
     versions: [
          { version: '1.0', shareCode: 'P7Q4R2-S6T5U9', patchNotes: 'Initial release.', createdAt: '2024-05-21T11:00:00Z', isValid: true }
@@ -107,8 +99,6 @@ export const builds: Build[] = [
     downvotes: 5,
     comments: [],
     createdAt: '2024-05-23T10:00:00Z',
-    imageUrl: 'https://placehold.co/600x400',
-    imageHint: 'battle rifle tactical',
     favoritedBy: [],
     versions: [
         { version: '1.0', shareCode: 'Fuzil de combate G3-Conquista-6H3LATG081MQDPAGJAK1I', patchNotes: 'Versão inicial focada no modo Conquista.', createdAt: '2024-05-23T10:00:00Z', isValid: true }

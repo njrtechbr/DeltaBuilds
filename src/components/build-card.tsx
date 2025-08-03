@@ -1,5 +1,4 @@
 import { Link } from '@/navigation';
-import Image from 'next/image';
 import type { Build } from '@/lib/types';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -15,15 +14,6 @@ export function BuildCard({ build }: { build: Build }) {
     <Link href={`/builds/${build.id}`} className="group block">
       <Card className="h-full flex flex-col transition-all duration-300 ease-in-out group-hover:border-primary group-hover:shadow-lg group-hover:shadow-primary/10">
         <CardHeader>
-          <div className="relative aspect-video mb-4 rounded-md overflow-hidden">
-            <Image
-              src={build.imageUrl}
-              alt={build.name}
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-              data-ai-hint={build.imageHint}
-            />
-          </div>
           <div className="flex justify-between items-start">
             <CardTitle className="font-headline text-xl group-hover:text-primary transition-colors">{build.name}</CardTitle>
             <Badge variant="outline">v{latestVersion.version}</Badge>
