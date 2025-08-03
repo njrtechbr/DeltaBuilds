@@ -4,7 +4,9 @@
     "submitBuild": "Submit Build",
     "newBuild": "New Build",
     "logIn": "Log In",
-    "signUp": "Sign Up"
+    "signUp": "Sign Up",
+    "profile": "Profile",
+    "signOut": "Sign Out"
   },
   "Home": {
     "title": "Discover Builds",
@@ -65,7 +67,9 @@
     "submitComment": "Submit Comment",
     "noComments": "No comments yet. Be the first to share your thoughts!",
     "video": "Video Showcase",
-    "gallery": "Gallery"
+    "gallery": "Gallery",
+    "translateWithAI": "Translate with AI",
+    "translationError": "Could not translate the description. Please try again later."
   },
   "Profile": {
     "reputation": "Reputation",

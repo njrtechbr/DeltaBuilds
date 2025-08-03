@@ -4,7 +4,9 @@
     "submitBuild": "Enviar Build",
     "newBuild": "Nueva Build",
     "logIn": "Iniciar Sesión",
-    "signUp": "Registrarse"
+    "signUp": "Registrarse",
+    "profile": "Perfil",
+    "signOut": "Cerrar Sesión"
   },
   "Home": {
     "title": "Descubrir Builds",
@@ -65,7 +67,9 @@
     "submitComment": "Enviar Comentario",
     "noComments": "Aún no hay comentarios. ¡Sé el primero en compartir tus pensamientos!",
     "video": "Video de Demostración",
-    "gallery": "Galería"
+    "gallery": "Galería",
+    "translateWithAI": "Traducir con IA",
+    "translationError": "No se pudo traducir la descripción. Por favor, inténtelo de nuevo más tarde."
   },
   "Profile": {
     "reputation": "Reputación",

@@ -1,4 +1,7 @@
-import { notFound } from 'next/navigation';
+'use client';
+
+import { useState } from 'react';
+import { notFound, usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { builds } from '@/lib/data';
@@ -7,9 +10,9 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowUp, ArrowDown, MessageSquare, CheckCircle2, XCircle, Copy, History, GalleryVertical, Youtube } from 'lucide-react';
+import { ArrowUp, ArrowDown, MessageSquare, CheckCircle2, XCircle, Copy, History, GalleryVertical, Youtube, Languages, Loader2 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
-import {getTranslations, unstable_setRequestLocale} from 'next-intl/server';
+import { useTranslations, useLocale } from 'next-intl';
 import {
   Carousel,
   CarouselContent,
@@ -17,15 +20,48 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
+import { getTranslation } from '@/app/actions';
+import { useToast } from '@/hooks/use-toast';
 
-export default async function BuildDetailPage({ params }: { params: { id: string, locale: string } }) {
-  unstable_setRequestLocale(params.locale);
-  const t = await getTranslations('BuildDetail');
+export default function BuildDetailPage({ params }: { params: { id: string, locale: string } }) {
+  const t = useTranslations('BuildDetail');
+  const bT = useTranslations('BuildForm');
+  const locale = useLocale();
+  const { toast } = useToast();
+
+  const [translatedDescription, setTranslatedDescription] = useState<string | null>(null);
+  const [isTranslating, setIsTranslating] = useState(false);
+
   const build = builds.find(b => b.id === params.id);
 
   if (!build) {
     notFound();
   }
+
+  const handleTranslate = async () => {
+    setIsTranslating(true);
+    setTranslatedDescription(null);
+    try {
+      const result = await getTranslation({ text: build.description, targetLocale: locale });
+      if (result.error) {
+        toast({
+          variant: 'destructive',
+          title: bT('toast.errorTitle'),
+          description: result.error,
+        });
+      } else {
+        setTranslatedDescription(result.translatedText || null);
+      }
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: bT('toast.errorTitle'),
+        description: t('translationError'),
+      });
+    } finally {
+      setIsTranslating(false);
+    }
+  };
 
   const voteScore = build.upvotes - build.downvotes;
 
@@ -57,7 +93,7 @@ export default async function BuildDetailPage({ params }: { params: { id: string
                   <span>{build.author.name}</span>
                </Link>
                <span>•</span>
-               <span>{new Date(build.createdAt).toLocaleDateString(params.locale)}</span>
+               <span>{new Date(build.createdAt).toLocaleDateString(locale)}</span>
             </div>
           </div>
           
@@ -99,8 +135,24 @@ export default async function BuildDetailPage({ params }: { params: { id: string
           )}
 
           <div className="space-y-2">
-            <h2 className="text-2xl font-semibold font-headline">{t('description')}</h2>
+            <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-semibold font-headline">{t('description')}</h2>
+                <Button variant="outline" size="sm" onClick={handleTranslate} disabled={isTranslating}>
+                    {isTranslating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Languages className="mr-2 h-4 w-4" />}
+                    {t('translateWithAI')}
+                </Button>
+            </div>
             <p className="text-muted-foreground whitespace-pre-wrap">{build.description}</p>
+            {isTranslating && (
+                <div className="p-4 bg-secondary/50 rounded-md">
+                    <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                </div>
+            )}
+            {translatedDescription && (
+              <div className="p-4 border-l-4 border-accent bg-secondary/50 rounded-md">
+                <p className="text-muted-foreground whitespace-pre-wrap">{translatedDescription}</p>
+              </div>
+            )}
           </div>
           
           {build.patchNotes && (
@@ -194,7 +246,7 @@ export default async function BuildDetailPage({ params }: { params: { id: string
                          <div className="flex-grow">
                             <div className="flex items-baseline gap-2">
                                 <span className="font-semibold text-sm">{comment.author.name}</span>
-                                <span className="text-xs text-muted-foreground">{new Date(comment.createdAt).toLocaleDateString(params.locale)}</span>
+                                <span className="text-xs text-muted-foreground">{new Date(comment.createdAt).toLocaleDateString(locale)}</span>
                             </div>
                             <p className="text-sm text-muted-foreground">{comment.text}</p>
                          </div>

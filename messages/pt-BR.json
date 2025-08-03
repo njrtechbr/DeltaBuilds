@@ -4,7 +4,9 @@
     "submitBuild": "Enviar Build",
     "newBuild": "Nova Build",
     "logIn": "Entrar",
-    "signUp": "Cadastrar"
+    "signUp": "Cadastrar",
+    "profile": "Perfil",
+    "signOut": "Sair"
   },
   "Home": {
     "title": "Descubra Builds",
@@ -65,7 +67,9 @@
     "submitComment": "Enviar Comentário",
     "noComments": "Nenhum comentário ainda. Seja o primeiro a compartilhar suas opiniões!",
     "video": "Vídeo de Apresentação",
-    "gallery": "Galeria"
+    "gallery": "Galeria",
+    "translateWithAI": "Traduzir com IA",
+    "translationError": "Não foi possível traduzir a descrição. Por favor, tente novamente mais tarde."
   },
   "Profile": {
     "reputation": "Reputação",

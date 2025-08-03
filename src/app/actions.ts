@@ -2,6 +2,7 @@
 
 import { suggestPlaystyleTags } from '@/ai/flows/suggest-playstyle-tags';
 import { parseShareCode } from '@/ai/flows/parse-share-code';
+import { translateText } from '@/ai/flows/translate-text';
 import { z } from 'zod';
 
 const suggestionSchema = z.object({
@@ -12,6 +13,11 @@ const parseCodeSchema = z.object({
     shareCode: z.string().min(10, { message: 'Share code is too short.' }),
 });
 
+const translationSchema = z.object({
+    text: z.string().min(1, { message: 'Text to translate cannot be empty.' }),
+    targetLocale: z.string().min(2, { message: 'Target locale is required.' }),
+});
+
 type SuggestionState = {
   tags?: string[];
   error?: string;
@@ -20,6 +26,11 @@ type SuggestionState = {
 type ParsedCodeState = {
     baseWeapon?: string;
     tags?: string[];
+    error?: string;
+}
+
+type TranslationState = {
+    translatedText?: string;
     error?: string;
 }
 
@@ -64,6 +75,29 @@ export async function parseCode(input: { shareCode: string }): Promise<ParsedCod
         console.error('AI Parse Error:', error);
         return {
             error: 'Failed to parse share code. Please check the code and try again.',
+        };
+    }
+}
+
+
+export async function getTranslation(input: { text: string, targetLocale: string }): Promise<TranslationState> {
+    const validatedFields = translationSchema.safeParse(input);
+
+    if (!validatedFields.success) {
+        return {
+            error: validatedFields.error.flatten().fieldErrors.text?.join(', ') || validatedFields.error.flatten().fieldErrors.targetLocale?.join(', '),
+        };
+    }
+
+    try {
+        const result = await translateText({ text: validatedFields.data.text, targetLocale: validatedFields.data.targetLocale });
+        return {
+            translatedText: result.translatedText,
+        };
+    } catch (error) {
+        console.error('AI Translation Error:', error);
+        return {
+            error: 'Failed to translate text. Please try again.',
         };
     }
 }
