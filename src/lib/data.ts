@@ -81,19 +81,19 @@ export const builds: Build[] = [
   },
   {
     id: 'b5',
-    name: 'Conquistador G3',
+    name: 'Conquista',
     shareCode: 'Fuzil de combate G3-Conquista-6H3LATG081MQDPAGJAK1I',
     baseWeapon: 'G3',
     author: users[2],
-    tags: ['Long Range', 'High Damage', 'Tactical'],
-    description: 'A powerful G3 build designed for long-range engagements. High damage output makes it a threat in open areas, but it requires careful positioning due to its lower fire rate and higher recoil.',
-    upvotes: 75,
-    downvotes: 8,
+    tags: ['Fuzil de combate', 'Tático', 'Médio Alcance'],
+    description: 'Uma build para o fuzil de combate G3, focada em controle e precisão. Ideal para engajamentos táticos em média distância, dominando o campo de batalha com disparos potentes e calculados.',
+    upvotes: 80,
+    downvotes: 5,
     comments: [],
     isValid: true,
-    createdAt: '2024-05-22T18:00:00Z',
+    createdAt: '2024-05-23T10:00:00Z',
     imageUrl: 'https://placehold.co/600x400',
-    imageHint: 'battle rifle',
+    imageHint: 'battle rifle tactical',
     version: '1.0'
   }
 ];
