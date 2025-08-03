@@ -82,7 +82,7 @@ export const builds: Build[] = [
   {
     id: 'b5',
     name: 'Conquistador G3',
-    shareCode: '6H3LATG081MQDPAGJAK1I',
+    shareCode: 'Fuzil de combate G3-Conquista-6H3LATG081MQDPAGJAK1I',
     baseWeapon: 'G3',
     author: users[2],
     tags: ['Long Range', 'High Damage', 'Tactical'],
