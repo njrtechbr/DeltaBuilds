@@ -41,9 +41,9 @@ function AdminSidebar() {
                  <SidebarMenu>
                     {menuItems.map((item) => (
                         <SidebarMenuItem key={item.href}>
-                            <SidebarMenuButton href={item.href} isActive={pathname.startsWith(item.href)}>
+                            <SidebarMenuButton href={item.href} isActive={pathname.startsWith(item.href)} tooltip={item.label}>
                                 <item.icon />
-                                {item.label}
+                                <span>{item.label}</span>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     ))}
@@ -97,10 +97,10 @@ export default function AdminLayout({
                             <DropdownMenuLabel>{currentUser.name}</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                              <DropdownMenuItem asChild>
-                                <Link href={`/profile/${currentUser.name}`}><UserIcon className="mr-2" /> Profile</Link>
+                                <Link href={`/profile/${currentUser.name}`}><UserIcon className="mr-2 h-4 w-4" /> Profile</Link>
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem><LogOut className="mr-2"/> Sign Out</DropdownMenuItem>
+                            <DropdownMenuItem><LogOut className="mr-2 h-4 w-4"/> Sign Out</DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </header>

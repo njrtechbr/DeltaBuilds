@@ -42,7 +42,7 @@ export function Logo() {
           />
         </svg>
       </div>
-      <span className="text-xl font-headline font-bold text-white group-hover:text-primary transition-colors">
+      <span className="text-xl font-headline font-bold text-foreground group-hover:text-primary transition-colors">
         DeltaBuilds
       </span>
     </Link>

@@ -63,11 +63,11 @@ export default function AdminReportsPage() {
                           <div className="flex items-center justify-end gap-2">
                               <Tooltip>
                                   <TooltipTrigger asChild><Button variant="outline" size="sm"><Check className="w-4 h-4 mr-2 text-green-500" />{t('markValid')}</Button></TooltipTrigger>
-                                  <TooltipContent>Mark this code as functional.</TooltipContent>
+                                  <TooltipContent><p>Mark this code as functional.</p></TooltipContent>
                               </Tooltip>
                               <Tooltip>
                                   <TooltipTrigger asChild><Button variant="outline" size="sm"><X className="w-4 h-4 mr-2 text-red-500" />{t('markInvalid')}</Button></TooltipTrigger>
-                                  <TooltipContent>Mark this code as non-functional.</TooltipContent>
+                                  <TooltipContent><p>Mark this code as non-functional.</p></TooltipContent>
                               </Tooltip>
                           </div>
                         </TooltipProvider>

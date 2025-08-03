@@ -124,7 +124,7 @@ export default function AdminBuildsPage() {
                                               <Check className="w-4 h-4 text-green-500" />
                                           </Button>
                                       </TooltipTrigger>
-                                      <TooltipContent>{t('approve')}</TooltipContent>
+                                      <TooltipContent><p>{t('approve')}</p></TooltipContent>
                                   </Tooltip>
                                   <Tooltip>
                                       <TooltipTrigger asChild>
@@ -132,17 +132,17 @@ export default function AdminBuildsPage() {
                                               <Ban className="w-4 h-4 text-orange-500" />
                                           </Button>
                                       </TooltipTrigger>
-                                      <TooltipContent>{t('disable')}</TooltipContent>
+                                      <TooltipContent><p>{t('disable')}</p></TooltipContent>
                                   </Tooltip>
                                   
-                                  <Link href={{ pathname: '/submit', query: { buildId: build.id } }} className={cn(buttonVariants({variant: 'ghost', size: 'icon'}))}>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <Edit className="w-4 h-4" />
-                                        </TooltipTrigger>
-                                        <TooltipContent>{t('edit')}</TooltipContent>
-                                    </Tooltip>
-                                  </Link>
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <Link href={{ pathname: '/submit', query: { buildId: build.id } }} className={cn(buttonVariants({variant: 'ghost', size: 'icon'}))}>
+                                        <Edit className="w-4 h-4" />
+                                      </Link>
+                                    </TooltipTrigger>
+                                    <TooltipContent><p>{t('edit')}</p></TooltipContent>
+                                  </Tooltip>
                                 
                                   <AlertDialog>
                                       <Tooltip>
@@ -151,7 +151,7 @@ export default function AdminBuildsPage() {
                                                   <Button variant="ghost" size="icon"><Trash className="w-4 h-4 text-destructive" /></Button>
                                               </AlertDialogTrigger>
                                           </TooltipTrigger>
-                                          <TooltipContent>{t('delete')}</TooltipContent>
+                                          <TooltipContent><p>{t('delete')}</p></TooltipContent>
                                       </Tooltip>
                                       <AlertDialogContent>
                                           <AlertDialogHeader>
