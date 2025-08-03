@@ -59,8 +59,8 @@
     "updateDescription": "Submit a new version for your build. Describe what changed."
   },
   "BuildDetail": {
-    "shareCode": "Share Code",
-    "copyShareCode": "Copy share code",
+    "importCode": "Import Code",
+    "copyImportCode": "Copy import code",
     "description": "Description",
     "patchNotes": "Patch Notes",
     "playstyleTags": "Playstyle Tags",
@@ -82,7 +82,7 @@
     "addToFavorites": "Add to Favorites",
     "removeFromFavorites": "Remove from Favorites",
     "copiedToast": "Copied!",
-    "copiedToastDescription": "Share code copied to clipboard."
+    "copiedToastDescription": "Import code copied to clipboard."
   },
   "Profile": {
     "reputation": "Reputation",
@@ -130,9 +130,13 @@
     "buildNamePlaceholder": "e.g., CQB Dominator",
     "baseWeaponLabel": "Base Weapon",
     "baseWeaponPlaceholder": "Select a weapon",
-    "shareCodeLabel": "Share Code",
-    "shareCodePlaceholder": "Fuzil de assalto K416-Conquista-...",
-    "shareCodeHint": "The AI will attempt to extract details from the code.",
+    "importCodesTitle": "Import Codes",
+    "importCodeHint": "The AI will attempt to extract details from the first code you enter.",
+    "steamCodeLabel": "Steam Code",
+    "garenaCodeLabel": "Garena Code",
+    "mobileCodeLabel": "Mobile Code",
+    "importCodePlaceholder": "Enter code here...",
+    "atLeastOneCode": "At least one import code is required.",
     "versionLabel": "Version",
     "descriptionAndPlaystyleTitle": "Description & Playstyle",
     "descriptionLabel": "Description",

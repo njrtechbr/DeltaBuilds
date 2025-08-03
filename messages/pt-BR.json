@@ -59,8 +59,8 @@
     "updateDescription": "Envie uma nova versão para sua build. Descreva o que mudou."
   },
   "BuildDetail": {
-    "shareCode": "Código de Compartilhamento",
-    "copyShareCode": "Copiar código de compartilhamento",
+    "importCode": "Código de Importação",
+    "copyImportCode": "Copiar código de importação",
     "description": "Descrição",
     "patchNotes": "Notas do Patch",
     "playstyleTags": "Tags de Estilo de Jogo",
@@ -82,7 +82,7 @@
     "addToFavorites": "Adicionar aos Favoritos",
     "removeFromFavorites": "Remover dos Favoritos",
     "copiedToast": "Copiado!",
-    "copiedToastDescription": "Código de compartilhamento copiado para a área de transferência."
+    "copiedToastDescription": "Código de importação copiado para a área de transferência."
   },
   "Profile": {
     "reputation": "Reputação",
@@ -130,9 +130,13 @@
     "buildNamePlaceholder": "ex: Dominadora CQB",
     "baseWeaponLabel": "Arma Base",
     "baseWeaponPlaceholder": "Selecione uma arma",
-    "shareCodeLabel": "Código de Compartilhamento",
-    "shareCodePlaceholder": "Fuzil de assalto K416-Conquista-...",
-    "shareCodeHint": "A IA tentará extrair detalhes do código.",
+    "importCodesTitle": "Códigos de Importação",
+    "importCodeHint": "A IA tentará extrair detalhes do primeiro código que você inserir.",
+    "steamCodeLabel": "Código Steam",
+    "garenaCodeLabel": "Código Garena",
+    "mobileCodeLabel": "Código Mobile",
+    "importCodePlaceholder": "Insira o código aqui...",
+    "atLeastOneCode": "É necessário pelo menos um código de importação.",
     "versionLabel": "Versão",
     "descriptionAndPlaystyleTitle": "Descrição e Estilo de Jogo",
     "descriptionLabel": "Descrição",

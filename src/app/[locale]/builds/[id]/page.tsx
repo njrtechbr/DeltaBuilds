@@ -89,13 +89,27 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
   const latestVersion = build.versions.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
   const voteScore = build.upvotes - build.downvotes;
   
-  const copyShareCode = (code: string) => {
+  const copyImportCode = (code: string) => {
     navigator.clipboard.writeText(code);
     toast({
         title: t('copiedToast'),
         description: t('copiedToastDescription'),
     })
   }
+  
+  const renderImportCode = (code: string | undefined, platform: string) => {
+    if (!code) return <span className="text-muted-foreground/50">N/A</span>;
+    return (
+        <div className='flex items-center gap-2'>
+            <span className="font-mono text-xs md:text-sm bg-muted px-2 py-1 rounded-md">{code}</span>
+            <Button variant="ghost" size="icon" aria-label={t('copyImportCode')} onClick={() => copyImportCode(code)}>
+                <Copy className="w-4 h-4" />
+            </Button>
+        </div>
+    )
+  }
+
+  const latestCode = latestVersion.steamCode || latestVersion.garenaCode || latestVersion.mobileCode;
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -161,32 +175,34 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                        <TableHead>{t('version')}</TableHead>
-                        <TableHead>{t('releaseDate')}</TableHead>
-                        <TableHead>{t('patchNotes')}</TableHead>
-                        <TableHead className="text-right">{t('shareCode')}</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {build.versions.map((v) => (
-                        <TableRow key={v.version}>
-                            <TableCell>
-                                <Badge variant="outline" className="text-base font-bold border-2">{v.version}</Badge>
-                            </TableCell>
-                            <TableCell>{new Date(v.createdAt).toLocaleDateString(locale)}</TableCell>
-                            <TableCell className="text-muted-foreground">{v.patchNotes}</TableCell>
-                            <TableCell className="text-right">
-                                <Button variant="ghost" size="icon" aria-label={t('copyShareCode')} onClick={() => copyShareCode(v.shareCode)}>
-                                    <Copy className="w-4 h-4" />
-                                </Button>
-                            </TableCell>
-                        </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
+                <div className="overflow-x-auto">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                            <TableHead>{t('version')}</TableHead>
+                            <TableHead>{t('releaseDate')}</TableHead>
+                            <TableHead>{bT('steamCodeLabel')}</TableHead>
+                            <TableHead>{bT('garenaCodeLabel')}</TableHead>
+                            <TableHead>{bT('mobileCodeLabel')}</TableHead>
+                            <TableHead>{t('patchNotes')}</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {build.versions.map((v) => (
+                            <TableRow key={v.version}>
+                                <TableCell>
+                                    <Badge variant="outline" className="text-base font-bold border-2">{v.version}</Badge>
+                                </TableCell>
+                                <TableCell>{new Date(v.createdAt).toLocaleDateString(locale)}</TableCell>
+                                <TableCell>{renderImportCode(v.steamCode, 'Steam')}</TableCell>
+                                <TableCell>{renderImportCode(v.garenaCode, 'Garena')}</TableCell>
+                                <TableCell>{renderImportCode(v.mobileCode, 'Mobile')}</TableCell>
+                                <TableCell className="text-muted-foreground min-w-[200px]">{v.patchNotes}</TableCell>
+                            </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </div>
             </CardContent>
           </Card>
           
@@ -262,16 +278,31 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 font-headline">
                   <Share2 className="w-5 h-5" />
-                  {t('shareCode')} (v{latestVersion.version})
+                  {t('importCode')} (v{latestVersion.version})
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                 <div className="flex gap-2">
-                    <Input value={latestVersion.shareCode} readOnly className="text-muted-foreground" />
-                    <Button variant="outline" size="icon" aria-label={t('copyShareCode')} onClick={() => copyShareCode(latestVersion.shareCode)}>
-                        <Copy className="w-4 h-4"/>
-                    </Button>
-                 </div>
+              <CardContent className="space-y-4">
+                 {latestVersion.steamCode && (
+                    <div className='space-y-1'>
+                        <Label>{bT('steamCodeLabel')}</Label>
+                        {renderImportCode(latestVersion.steamCode, 'Steam')}
+                    </div>
+                 )}
+                 {latestVersion.garenaCode && (
+                    <div className='space-y-1'>
+                        <Label>{bT('garenaCodeLabel')}</Label>
+                        {renderImportCode(latestVersion.garenaCode, 'Garena')}
+                    </div>
+                 )}
+                 {latestVersion.mobileCode && (
+                    <div className='space-y-1'>
+                        <Label>{bT('mobileCodeLabel')}</Label>
+                        {renderImportCode(latestVersion.mobileCode, 'Mobile')}
+                    </div>
+                 )}
+                 {!latestCode && (
+                    <p className='text-sm text-muted-foreground text-center'>{t('noImportCode')}</p>
+                 )}
               </CardContent>
             </Card>
 

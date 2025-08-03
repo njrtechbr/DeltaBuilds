@@ -1,9 +1,9 @@
 'use server';
 
 /**
- * @fileOverview An AI agent to parse weapon build share codes.
+ * @fileOverview An AI agent to parse weapon build import codes.
  *
- * - parseShareCode - A function that parses a share code and extracts build details.
+ * - parseShareCode - A function that parses an import code and extracts build details.
  * - ParseShareCodeInput - The input type for the parseShareCode function.
  * - ParseShareCodeOutput - The return type for the parseShareCode function.
  */
@@ -12,7 +12,7 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const ParseShareCodeInputSchema = z.object({
-  shareCode: z.string().describe('The full share code string for a weapon build.'),
+  importCode: z.string().describe('The full import code string for a weapon build.'),
 });
 export type ParseShareCodeInput = z.infer<typeof ParseShareCodeInputSchema>;
 
@@ -30,12 +30,12 @@ const prompt = ai.definePrompt({
   name: 'parseShareCodePrompt',
   input: {schema: ParseShareCodeInputSchema},
   output: {schema: ParseShareCodeOutputSchema},
-  prompt: `You are an expert in Delta Force weapon builds. Your task is to parse a given share code and extract structured information from it. The game modes "Conquista" and "Warfare" must be ignored.
+  prompt: `You are an expert in Delta Force weapon builds. Your task is to parse a given import code and extract structured information from it. The game modes "Conquista" and "Warfare" must be ignored.
 
 The base weapon is just the weapon name.
 The tags should contain only the weapon type.
 
-There are two main formats for the share codes.
+There are two main formats for the import codes.
 
 **Format 1 (Portuguese):** "[Weapon Type] [Weapon Name]-[Game Mode]-[Alphanumeric Code]"
 - Input: "Fuzil de combate G3-Conquista-6H3LATG081MQDPAGJAK1I"
@@ -52,8 +52,8 @@ There are two main formats for the share codes.
   - Output: { baseWeapon: "SMG-45", tags: ["Submachine Gun"] }
 
 
-Now, parse the following share code:
-Share Code: {{{shareCode}}}
+Now, parse the following import code:
+Import Code: {{{importCode}}}
 `,
 });
 

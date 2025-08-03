@@ -12,7 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { getTagSuggestions, parseCode } from '@/app/actions';
-import { Wand2, X, Loader2, BrainCircuit, Upload, Youtube } from 'lucide-react';
+import { Wand2, X, Loader2, BrainCircuit, Upload, Youtube, Info } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useDebounce } from 'use-debounce';
 import type { Build } from '@/lib/types';
@@ -20,13 +20,18 @@ import { useRouter } from '@/navigation';
 
 const buildFormSchema = z.object({
   name: z.string().min(3, "Build name must be at least 3 characters."),
-  shareCode: z.string().min(10, "Share code seems too short."),
+  steamCode: z.string().optional(),
+  garenaCode: z.string().optional(),
+  mobileCode: z.string().optional(),
   baseWeapon: z.string().min(2, "Base weapon is required."),
   version: z.string().min(1, "Version is required."),
   description: z.string().min(20, "Description must be at least 20 characters.").max(1000, "Description is too long."),
   patchNotes: z.string().max(1000, "Patch notes are too long.").optional(),
   youtubeUrl: z.string().url("Please enter a valid YouTube URL.").optional().or(z.literal('')),
   tags: z.array(z.string()).min(1, "At least one playstyle tag is required."),
+}).refine(data => !!data.steamCode || !!data.garenaCode || !!data.mobileCode, {
+    message: "At least one import code is required.",
+    path: ["steamCode"], // This path will be used to display the error
 });
 
 type BuildFormValues = z.infer<typeof buildFormSchema>;
@@ -50,16 +55,20 @@ export function BuildForm({ buildToUpdate }: BuildFormProps) {
     resolver: zodResolver(buildFormSchema),
     defaultValues: isUpdateMode ? {
       name: buildToUpdate.name,
-      shareCode: buildToUpdate.versions[0].shareCode, // Use latest version's code as placeholder
+      steamCode: buildToUpdate.versions[0].steamCode || '',
+      garenaCode: buildToUpdate.versions[0].garenaCode || '',
+      mobileCode: buildToUpdate.versions[0].mobileCode || '',
       baseWeapon: buildToUpdate.baseWeapon,
-      version: '', // User needs to input new version
+      version: '',
       description: buildToUpdate.description,
-      patchNotes: '', // User needs to input new patch notes
+      patchNotes: '',
       youtubeUrl: buildToUpdate.youtubeUrl || '',
       tags: buildToUpdate.tags,
     } : {
       name: '',
-      shareCode: '',
+      steamCode: '',
+      garenaCode: '',
+      mobileCode: '',
       baseWeapon: '',
       version: '1.0',
       description: '',
@@ -72,14 +81,20 @@ export function BuildForm({ buildToUpdate }: BuildFormProps) {
   const { control, watch, setValue, getValues, reset } = form;
   const currentTags = watch('tags');
   const descriptionValue = watch('description');
-  const shareCodeValue = watch('shareCode');
-  const [debouncedShareCode] = useDebounce(shareCodeValue, 1000);
+  const steamCodeValue = watch('steamCode');
+  const garenaCodeValue = watch('garenaCode');
+  const mobileCodeValue = watch('mobileCode');
+  
+  const [debouncedSteamCode] = useDebounce(steamCodeValue, 1000);
+  const [debouncedGarenaCode] = useDebounce(garenaCodeValue, 1000);
+  const [debouncedMobileCode] = useDebounce(mobileCodeValue, 1000);
+
 
   const handleParseCode = useCallback(async (code: string) => {
     if (code.length < 10) return;
     setIsParsing(true);
     try {
-      const result = await parseCode({ shareCode: code });
+      const result = await parseCode({ importCode: code });
       if (result.error) {
         // Don't toast here, it's too aggressive
       } else if(result.baseWeapon && result.tags) {
@@ -98,10 +113,11 @@ export function BuildForm({ buildToUpdate }: BuildFormProps) {
   }, [setValue, getValues, isUpdateMode]);
   
   useEffect(() => {
-    if (debouncedShareCode && !isUpdateMode) {
-      handleParseCode(debouncedShareCode);
+    const firstCode = debouncedSteamCode || debouncedGarenaCode || debouncedMobileCode;
+    if (firstCode && !isUpdateMode) {
+      handleParseCode(firstCode);
     }
-  }, [debouncedShareCode, handleParseCode, isUpdateMode]);
+  }, [debouncedSteamCode, debouncedGarenaCode, debouncedMobileCode, handleParseCode, isUpdateMode]);
   
   useEffect(() => {
     if (isUpdateMode && buildToUpdate) {
@@ -110,11 +126,13 @@ export function BuildForm({ buildToUpdate }: BuildFormProps) {
       
       reset({
         name: buildToUpdate.name,
-        shareCode: '', // Clear for new version
+        steamCode: '',
+        garenaCode: '',
+        mobileCode: '',
         baseWeapon: buildToUpdate.baseWeapon,
         version: nextVersion,
         description: buildToUpdate.description,
-        patchNotes: '', // Clear for new version
+        patchNotes: '',
         youtubeUrl: buildToUpdate.youtubeUrl || '',
         tags: buildToUpdate.tags,
       })
@@ -200,61 +218,115 @@ export function BuildForm({ buildToUpdate }: BuildFormProps) {
               )}
             />
             
-            <FormField
-              control={control}
-              name="shareCode"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('shareCodeLabel')}</FormLabel>
-                   <FormControl>
-                    <div className="relative">
-                      <Input placeholder={t('shareCodePlaceholder')} {...field} />
-                       {!isUpdateMode && (
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
-                            {isParsing ? <Loader2 className="h-4 w-4 animate-spin" /> : <BrainCircuit className="h-4 w-4" />}
-                        </div>
-                       )}
-                    </div>
-                  </FormControl>
-                  {!isUpdateMode && <FormDescription>{t('shareCodeHint')}</FormDescription>}
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-               <FormField
-                  control={control}
-                  name="baseWeapon"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('baseWeaponLabel')}</FormLabel>
-                       <FormControl>
-                         <div className="relative">
-                           <Input placeholder={t('baseWeaponPlaceholder')} {...field} disabled />
-                           {!isUpdateMode && isParsing && (
+            <div className="space-y-2">
+                <h3 className="text-sm font-medium">{t('importCodesTitle')}</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                     <FormField
+                        control={control}
+                        name="baseWeapon"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>{t('baseWeaponLabel')}</FormLabel>
+                            <FormControl>
+                                <div className="relative">
+                                <Input placeholder={t('baseWeaponPlaceholder')} {...field} disabled />
+                                {!isUpdateMode && isParsing && (
+                                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                                            <Loader2 className="h-4 w-4 animate-spin" />
+                                        </div>
+                                    )}
+                                </div>
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                        />
+                    <FormField
+                        control={control}
+                        name="version"
+                        render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>{t('versionLabel')}</FormLabel>
+                            <FormControl><Input placeholder="e.g., 1.1" {...field} /></FormControl>
+                            <FormMessage />
+                        </FormItem>
+                        )}
+                    />
+                </div>
+            </div>
+
+            <Card className="bg-secondary/50">
+                <CardContent className="pt-6 space-y-4">
+                    <FormField
+                    control={control}
+                    name="steamCode"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>{t('steamCodeLabel')}</FormLabel>
+                        <FormControl>
+                            <div className="relative">
+                            <Input placeholder={t('importCodePlaceholder')} {...field} />
+                            {!isUpdateMode && isParsing && steamCodeValue && (
                                 <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
                                     <Loader2 className="h-4 w-4 animate-spin" />
                                 </div>
                             )}
-                         </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              <FormField
-                control={control}
-                name="version"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('versionLabel')}</FormLabel>
-                    <FormControl><Input placeholder="e.g., 1.1" {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+                            </div>
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                    <FormField
+                    control={control}
+                    name="garenaCode"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>{t('garenaCodeLabel')}</FormLabel>
+                        <FormControl>
+                            <div className="relative">
+                            <Input placeholder={t('importCodePlaceholder')} {...field} />
+                             {!isUpdateMode && isParsing && garenaCodeValue && !steamCodeValue && (
+                                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                </div>
+                            )}
+                            </div>
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                     <FormField
+                    control={control}
+                    name="mobileCode"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>{t('mobileCodeLabel')}</FormLabel>
+                        <FormControl>
+                            <div className="relative">
+                            <Input placeholder={t('importCodePlaceholder')} {...field} />
+                             {!isUpdateMode && isParsing && mobileCodeValue && !steamCodeValue && !garenaCodeValue &&(
+                                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                </div>
+                            )}
+                            </div>
+                        </FormControl>
+                        <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                    {form.formState.errors.steamCode && (
+                        <div className="flex items-center text-sm text-destructive">
+                           <Info className="w-4 h-4 mr-2" />
+                           {t('atLeastOneCode')}
+                        </div>
+                    )}
+                    {!isUpdateMode && <FormDescription>{t('importCodeHint')}</FormDescription>}
+                </CardContent>
+            </Card>
+
           </CardContent>
         </Card>
         

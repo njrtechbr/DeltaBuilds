@@ -14,7 +14,9 @@ export type Comment = {
 
 export type BuildVersion = {
   version: string;
-  shareCode: string;
+  steamCode?: string;
+  garenaCode?: string;
+  mobileCode?: string;
   patchNotes?: string;
   createdAt: string;
   isValid: boolean;

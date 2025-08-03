@@ -10,7 +10,7 @@ const suggestionSchema = z.object({
 });
 
 const parseCodeSchema = z.object({
-    shareCode: z.string().min(10, { message: 'Share code is too short.' }),
+    importCode: z.string().min(10, { message: 'Import code is too short.' }),
 });
 
 const translationSchema = z.object({
@@ -56,17 +56,17 @@ export async function getTagSuggestions(input: { description: string }): Promise
   }
 }
 
-export async function parseCode(input: { shareCode: string }): Promise<ParsedCodeState> {
+export async function parseCode(input: { importCode: string }): Promise<ParsedCodeState> {
     const validatedFields = parseCodeSchema.safeParse(input);
 
     if (!validatedFields.success) {
         return {
-            error: validatedFields.error.flatten().fieldErrors.shareCode?.join(', '),
+            error: validatedFields.error.flatten().fieldErrors.importCode?.join(', '),
         };
     }
 
     try {
-        const result = await parseShareCode({ shareCode: validatedFields.data.shareCode });
+        const result = await parseShareCode({ importCode: validatedFields.data.importCode });
         return {
             baseWeapon: result.baseWeapon,
             tags: result.tags,
@@ -74,7 +74,7 @@ export async function parseCode(input: { shareCode: string }): Promise<ParsedCod
     } catch (error) {
         console.error('AI Parse Error:', error);
         return {
-            error: 'Failed to parse share code. Please check the code and try again.',
+            error: 'Failed to parse import code. Please check the code and try again.',
         };
     }
 }
