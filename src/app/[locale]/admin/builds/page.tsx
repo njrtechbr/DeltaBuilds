@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge";
 import { builds as initialBuilds } from "@/lib/data";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Check, Edit, Trash, X } from "lucide-react";
 import {
   Tooltip,
@@ -34,7 +34,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/navigation";
 import { useToast } from "@/hooks/use-toast";
 
@@ -107,7 +106,12 @@ export default function AdminBuildsPage() {
                                 </Tooltip>
                                 
                                 <Link href={{ pathname: '/submit', query: { buildId: build.id } }} className={cn(buttonVariants({variant: 'ghost', size: 'icon'}))}>
-                                    <Edit className="w-4 h-4" />
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <Edit className="w-4 h-4" />
+                                        </TooltipTrigger>
+                                        <TooltipContent>{t('edit')}</TooltipContent>
+                                    </Tooltip>
                                 </Link>
                                
                                  <AlertDialog>
