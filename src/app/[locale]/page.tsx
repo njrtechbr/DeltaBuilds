@@ -41,7 +41,7 @@ export default function Home() {
     .sort((a, b) => {
       switch (sortOrder) {
         case 'popular':
-          return b.upvotes - b.downvotes - (a.upvotes - a.downvotes);
+          return (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes);
         case 'newest':
           return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
         case 'oldest':
