@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, getTranslations, unstable_setRequestLocale } from 'next-intl/server';
+import { getMessages, unstable_setRequestLocale } from 'next-intl/server';
 import '../globals.css';
 import { cn } from '@/lib/utils';
-import { Header } from '@/components/header';
 import { Toaster } from '@/components/ui/toaster';
 import { locales } from '@/navigation';
 
@@ -26,7 +25,6 @@ export default async function RootLayout({
 }>) {
   unstable_setRequestLocale(locale);
   const messages = await getMessages();
-  const t = await getTranslations('Footer');
 
   return (
     <html lang={locale} className="dark">
@@ -48,13 +46,7 @@ export default async function RootLayout({
         )}
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <Header />
-          <main className="flex-grow container mx-auto px-4 py-8">
-            {children}
-          </main>
-          <footer className="text-center p-4 text-muted-foreground text-sm border-t">
-            <p>&copy; {new Date().getFullYear()} {t('copyright')}</p>
-          </footer>
+          {children}
           <Toaster />
         </NextIntlClientProvider>
       </body>

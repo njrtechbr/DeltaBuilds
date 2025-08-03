@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { builds, users } from '@/lib/data';
 import { getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import { BuildDetailClient } from './build-detail-client';
+import PageLayout from '../../page-layout';
 
 export default async function BuildDetailPage({ params }: { params: { id: string, locale: string } }) {
   unstable_setRequestLocale(params.locale);
@@ -14,5 +15,9 @@ export default async function BuildDetailPage({ params }: { params: { id: string
 
   const currentUser = users[0]; // Faking current user
 
-  return <BuildDetailClient build={build} currentUser={currentUser} locale={params.locale} />;
+  return (
+    <PageLayout>
+      <BuildDetailClient build={build} currentUser={currentUser} locale={params.locale} />
+    </PageLayout>
+  );
 }

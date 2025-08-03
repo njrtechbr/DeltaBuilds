@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { BuildListItem } from '@/components/build-list-item';
 import { Star, Swords } from 'lucide-react';
 import {getTranslations, unstable_setRequestLocale} from 'next-intl/server';
+import PageLayout from '../../page-layout';
 
 export default async function ProfilePage({ params }: { params: { username: string, locale: string } }) {
   unstable_setRequestLocale(params.locale);
@@ -20,71 +21,73 @@ export default async function ProfilePage({ params }: { params: { username: stri
   const isCurrentUser = users[0].id === user.id; // Faking current user
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row items-center gap-6">
-        <Avatar className="w-24 h-24 border-4 border-primary">
-          <AvatarImage src={user.avatarUrl} alt={user.name} />
-          <AvatarFallback className="text-4xl">{user.name.charAt(0)}</AvatarFallback>
-        </Avatar>
-        <div>
-          <PageHeader title={user.name} />
-          <div className="flex items-center gap-6 text-muted-foreground">
-            <div className="flex items-center gap-2">
-                <Star className="w-5 h-5 text-accent"/>
-                <span className="font-bold text-lg">{user.reputation}</span> {t('reputation')}
-            </div>
-             <div className="flex items-center gap-2">
-                <Swords className="w-5 h-5 text-primary"/>
-                <span className="font-bold text-lg">{userBuilds.length}</span> {t('builds')}
+    <PageLayout>
+      <div className="space-y-8">
+        <div className="flex flex-col sm:flex-row items-center gap-6">
+          <Avatar className="w-24 h-24 border-4 border-primary">
+            <AvatarImage src={user.avatarUrl} alt={user.name} />
+            <AvatarFallback className="text-4xl">{user.name.charAt(0)}</AvatarFallback>
+          </Avatar>
+          <div>
+            <PageHeader title={user.name} />
+            <div className="flex items-center gap-6 text-muted-foreground">
+              <div className="flex items-center gap-2">
+                  <Star className="w-5 h-5 text-accent"/>
+                  <span className="font-bold text-lg">{user.reputation}</span> {t('reputation')}
+              </div>
+              <div className="flex items-center gap-2">
+                  <Swords className="w-5 h-5 text-primary"/>
+                  <span className="font-bold text-lg">{userBuilds.length}</span> {t('builds')}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      
-      <div className="space-y-8">
-        <div>
-            <h2 className="text-2xl font-headline font-bold mb-4">{t('submittedBuilds')}</h2>
-            {userBuilds.length > 0 ? (
-                <div className="border rounded-lg">
-                    {userBuilds.map((build, index) => (
-                        <BuildListItem 
-                            key={build.id} 
-                            build={build} 
-                            isLast={index === userBuilds.length - 1}
-                            locale={params.locale}
-                        />
-                    ))}
-                </div>
-            ) : (
-                <div className="text-center py-16 text-muted-foreground bg-card rounded-lg">
-                <h3 className="text-xl font-semibold">{t('noBuildsTitle')}</h3>
-                <p>{t('noBuildsDescription', {username: user.name})}</p>
-                </div>
-            )}
+        
+        <div className="space-y-8">
+          <div>
+              <h2 className="text-2xl font-headline font-bold mb-4">{t('submittedBuilds')}</h2>
+              {userBuilds.length > 0 ? (
+                  <div className="border rounded-lg">
+                      {userBuilds.map((build, index) => (
+                          <BuildListItem 
+                              key={build.id} 
+                              build={build} 
+                              isLast={index === userBuilds.length - 1}
+                              locale={params.locale}
+                          />
+                      ))}
+                  </div>
+              ) : (
+                  <div className="text-center py-16 text-muted-foreground bg-card rounded-lg">
+                  <h3 className="text-xl font-semibold">{t('noBuildsTitle')}</h3>
+                  <p>{t('noBuildsDescription', {username: user.name})}</p>
+                  </div>
+              )}
+          </div>
+
+          <div>
+              <h2 className="text-2xl font-headline font-bold mb-4">{t('favoriteBuilds')}</h2>
+              {favoriteBuilds.length > 0 ? (
+                  <div className="border rounded-lg">
+                      {favoriteBuilds.map((build, index) => (
+                          <BuildListItem 
+                              key={build.id} 
+                              build={build} 
+                              isLast={index === favoriteBuilds.length - 1}
+                              locale={params.locale}
+                          />
+                      ))}
+                  </div>
+              ) : (
+                  <div className="text-center py-16 text-muted-foreground bg-card rounded-lg">
+                  <h3 className="text-xl font-semibold">{t('noFavoritesTitle')}</h3>
+                  <p>{ isCurrentUser ? t('noFavoritesDescription') : t('noFavoritesDescriptionOther', {username: user.name})}</p>
+                  </div>
+              )}
+          </div>
         </div>
 
-        <div>
-            <h2 className="text-2xl font-headline font-bold mb-4">{t('favoriteBuilds')}</h2>
-            {favoriteBuilds.length > 0 ? (
-                <div className="border rounded-lg">
-                    {favoriteBuilds.map((build, index) => (
-                        <BuildListItem 
-                            key={build.id} 
-                            build={build} 
-                            isLast={index === favoriteBuilds.length - 1}
-                            locale={params.locale}
-                        />
-                    ))}
-                </div>
-            ) : (
-                <div className="text-center py-16 text-muted-foreground bg-card rounded-lg">
-                <h3 className="text-xl font-semibold">{t('noFavoritesTitle')}</h3>
-                <p>{ isCurrentUser ? t('noFavoritesDescription') : t('noFavoritesDescriptionOther', {username: user.name})}</p>
-                </div>
-            )}
-        </div>
       </div>
-
-    </div>
+    </PageLayout>
   );
 }
