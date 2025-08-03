@@ -79,4 +79,21 @@ export const builds: Build[] = [
     imageHint: 'ak47 rifle',
     version: '1.0'
   },
+  {
+    id: 'b5',
+    name: 'Conquistador G3',
+    shareCode: 'G3-Conquista-6H0K3IS0CSTQFGL27FFJ9',
+    baseWeapon: 'G3',
+    author: users[2],
+    tags: ['Long Range', 'High Damage', 'Tactical'],
+    description: 'A powerful G3 build designed for long-range engagements. High damage output makes it a threat in open areas, but it requires careful positioning due to its lower fire rate and higher recoil.',
+    upvotes: 75,
+    downvotes: 8,
+    comments: [],
+    isValid: true,
+    createdAt: '2024-05-22T18:00:00Z',
+    imageUrl: 'https://placehold.co/600x400',
+    imageHint: 'battle rifle',
+    version: '1.0'
+  }
 ];
