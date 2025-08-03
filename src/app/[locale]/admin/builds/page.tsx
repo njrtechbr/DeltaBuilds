@@ -2,7 +2,7 @@
 'use client';
 
 import { PageHeader } from "@/components/page-header";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import {
   Table,
   TableBody,
@@ -48,6 +48,7 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function AdminBuildsPage() {
   const t = useTranslations('Admin');
+  const locale = useLocale();
   const { toast } = useToast();
   const [builds, setBuilds] = useState<Build[]>(initialBuilds);
   
@@ -113,7 +114,7 @@ export default function AdminBuildsPage() {
                           <TableCell>
                             {getStatusBadge(latestVersion.status)}
                           </TableCell>
-                          <TableCell>{new Date(build.createdAt).toLocaleDateString()}</TableCell>
+                          <TableCell>{new Date(build.createdAt).toLocaleDateString(locale)}</TableCell>
                           <TableCell className="text-right">
                             <TooltipProvider>
                               <div className="flex items-center justify-end gap-2">
@@ -134,14 +135,14 @@ export default function AdminBuildsPage() {
                                       <TooltipContent>{t('disable')}</TooltipContent>
                                   </Tooltip>
                                   
-                                  <Tooltip>
-                                      <TooltipTrigger asChild>
-                                          <Link href={{ pathname: '/submit', query: { buildId: build.id } }} className={cn(buttonVariants({variant: 'ghost', size: 'icon'}))}>
-                                              <Edit className="w-4 h-4" />
-                                          </Link>
-                                      </TooltipTrigger>
-                                      <TooltipContent>{t('edit')}</TooltipContent>
-                                  </Tooltip>
+                                  <Link href={{ pathname: '/submit', query: { buildId: build.id } }} className={cn(buttonVariants({variant: 'ghost', size: 'icon'}))}>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <Edit className="w-4 h-4" />
+                                        </TooltipTrigger>
+                                        <TooltipContent>{t('edit')}</TooltipContent>
+                                    </Tooltip>
+                                  </Link>
                                 
                                   <AlertDialog>
                                       <Tooltip>
