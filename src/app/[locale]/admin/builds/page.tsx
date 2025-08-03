@@ -105,16 +105,11 @@ export default function AdminBuildsPage() {
                                     </TooltipTrigger>
                                     <TooltipContent>{latestVersion.isValid ? t('markInvalid') : t('approve')}</TooltipContent>
                                 </Tooltip>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Link href={{ pathname: '/submit', query: { buildId: build.id } }} passHref legacyBehavior>
-                                            <a className={cn(buttonVariants({variant: 'ghost', size: 'icon'}))}>
-                                                <Edit className="w-4 h-4" />
-                                            </a>
-                                        </Link>
-                                    </TooltipTrigger>
-                                    <TooltipContent>{t('edit')}</TooltipContent>
-                                </Tooltip>
+                                
+                                <Link href={{ pathname: '/submit', query: { buildId: build.id } }} className={cn(buttonVariants({variant: 'ghost', size: 'icon'}))}>
+                                    <Edit className="w-4 h-4" />
+                                </Link>
+                               
                                  <AlertDialog>
                                     <Tooltip>
                                         <TooltipTrigger asChild>
