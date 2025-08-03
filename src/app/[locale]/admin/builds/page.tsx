@@ -1,3 +1,4 @@
+
 'use client';
 
 import { PageHeader } from "@/components/page-header";
@@ -13,7 +14,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { builds as initialBuilds } from "@/lib/data";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Check, Edit, Trash, X, Ban } from "lucide-react";
+import { Check, Edit, Trash, Ban } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -31,6 +32,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { cn } from "@/lib/utils";
 import { Link } from "@/navigation";
