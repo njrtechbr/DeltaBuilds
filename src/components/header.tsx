@@ -2,11 +2,24 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, User, LogOut } from 'lucide-react';
 import { LanguageSwitcher } from './language-switcher';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export function Header() {
   const t = useTranslations('Header');
+  // TODO: Replace with real authentication state
+  const isAuthenticated = false; 
+  const username = "Ghost";
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
@@ -18,28 +31,68 @@ export function Header() {
           >
             {t('discover')}
           </Link>
-          <Link
-            href="/submit"
-            className="text-foreground/60 transition-colors hover:text-foreground/80"
-          >
-            {t('submitBuild')}
-          </Link>
+          {isAuthenticated && (
+            <Link
+              href="/submit"
+              className="text-foreground/60 transition-colors hover:text-foreground/80"
+            >
+              {t('submitBuild')}
+            </Link>
+          )}
         </nav>
         <div className="ml-auto flex items-center gap-4">
-           <Button asChild className="hidden sm:inline-flex">
-              <Link href="/submit">
-                <PlusCircle className="mr-2 h-4 w-4" />
-                {t('newBuild')}
-              </Link>
-            </Button>
-            <div className="flex items-center gap-2">
-                 <Button variant="ghost" asChild>
-                    <Link href="/login">{t('logIn')}</Link>
-                </Button>
-                <Button variant="outline" className="text-accent-foreground border-accent hover:bg-accent/90 hover:text-accent-foreground" asChild>
-                    <Link href="/signup">{t('signUp')}</Link>
-                </Button>
-            </div>
+           {isAuthenticated && (
+             <Button asChild className="hidden sm:inline-flex">
+                <Link href="/submit">
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  {t('newBuild')}
+                </Link>
+              </Button>
+            )}
+            
+            {isAuthenticated ? (
+               <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                    <Avatar className="h-8 w-8">
+                       <AvatarImage src="https://placehold.co/100x100" alt={`@${username}`} />
+                       <AvatarFallback>{username.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">{username}</p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {/* m@example.com */}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                     <Link href={`/profile/${username}`}>
+                      <User className="mr-2 h-4 w-4" />
+                      <span>Perfil</span>
+                     </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Sair</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+                <div className="flex items-center gap-2">
+                    <Button variant="ghost" asChild>
+                        <Link href="/login">{t('logIn')}</Link>
+                    </Button>
+                    <Button variant="outline" className="text-accent-foreground border-accent hover:bg-accent/90 hover:text-accent-foreground" asChild>
+                        <Link href="/signup">{t('signUp')}</Link>
+                    </Button>
+                </div>
+            )}
             <LanguageSwitcher />
         </div>
       </div>
