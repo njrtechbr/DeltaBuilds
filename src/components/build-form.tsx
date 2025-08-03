@@ -15,8 +15,6 @@ import { getTagSuggestions, parseCode } from '@/app/actions';
 import { Wand2, X, Loader2, BrainCircuit, Upload, Youtube } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useDebounce } from 'use-debounce';
-import { allBaseWeapons } from '@/lib/data';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
 const buildFormSchema = z.object({
   name: z.string().min(3, "Build name must be at least 3 characters."),
@@ -148,7 +146,7 @@ export function BuildForm() {
         <Card>
           <CardHeader><CardTitle className="font-headline">{t('buildDetailsTitle')}</CardTitle></CardHeader>
           <CardContent className="space-y-4">
-             <FormField
+            <FormField
               control={control}
               name="shareCode"
               render={({ field }) => (
@@ -183,31 +181,22 @@ export function BuildForm() {
             />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
+               <FormField
                   control={control}
                   name="baseWeapon"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>{t('baseWeaponLabel')}</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value}>
-                        <FormControl>
-                           <div className="relative">
-                            <SelectTrigger>
-                                <SelectValue placeholder={t('baseWeaponPlaceholder')} />
-                            </SelectTrigger>
-                            {isParsing && (
-                                <div className="absolute right-10 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                       <FormControl>
+                         <div className="relative">
+                           <Input placeholder={t('baseWeaponPlaceholder')} {...field} disabled />
+                           {isParsing && (
+                                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
                                     <Loader2 className="h-4 w-4 animate-spin" />
                                 </div>
                             )}
-                           </div>
-                        </FormControl>
-                        <SelectContent>
-                          {allBaseWeapons.map(weapon => (
-                            <SelectItem key={weapon} value={weapon}>{weapon}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                         </div>
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
