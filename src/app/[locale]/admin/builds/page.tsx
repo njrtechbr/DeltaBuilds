@@ -90,7 +90,7 @@ export default function AdminBuildsPage() {
                         <TableCell>{build.author.name}</TableCell>
                         <TableCell>
                             <Badge variant={latestVersion.isValid ? 'default' : 'destructive'} className={cn(latestVersion.isValid ? 'bg-green-600/20 text-green-400 border-green-600/30' : 'bg-red-600/20 text-red-400 border-red-600/30')}>
-                                {latestVersion.isValid ? t('valid') : t('invalid')}
+                                {latestVersion.isValid ? "Valid" : "Invalid"}
                             </Badge>
                         </TableCell>
                         <TableCell>{new Date(build.createdAt).toLocaleDateString()}</TableCell>
