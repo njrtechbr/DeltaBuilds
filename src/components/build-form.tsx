@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -11,13 +11,14 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { getTagSuggestions } from '@/app/actions';
-import { Wand2, X, Loader2 } from 'lucide-react';
+import { getTagSuggestions, parseCode } from '@/app/actions';
+import { Wand2, X, Loader2, Sparkles, BrainCircuit } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useDebounce } from 'use-debounce';
 
 const buildFormSchema = z.object({
   name: z.string().min(3, "Build name must be at least 3 characters."),
-  shareCode: z.string().min(6, "Share code seems too short.").regex(/^[A-Z0-9-]+$/, "Share code should only contain uppercase letters, numbers, and hyphens."),
+  shareCode: z.string().min(10, "Share code seems too short."),
   baseWeapon: z.string().min(2, "Base weapon is required."),
   version: z.string().min(1, "Version is required."),
   description: z.string().min(20, "Description must be at least 20 characters.").max(1000, "Description is too long."),
@@ -33,6 +34,7 @@ export function BuildForm() {
   const [tagInput, setTagInput] = useState('');
   const [suggestedTags, setSuggestedTags] = useState<string[]>([]);
   const [isSuggesting, setIsSuggesting] = useState(false);
+  const [isParsing, setIsParsing] = useState(false);
 
   const form = useForm<BuildFormValues>({
     resolver: zodResolver(buildFormSchema),
@@ -47,9 +49,39 @@ export function BuildForm() {
     },
   });
 
-  const { control, watch, setValue, getValues } = form;
+  const { control, watch, setValue, getValues, trigger } = form;
   const currentTags = watch('tags');
   const descriptionValue = watch('description');
+  const shareCodeValue = watch('shareCode');
+  const [debouncedShareCode] = useDebounce(shareCodeValue, 1000);
+
+  const handleParseCode = useCallback(async (code: string) => {
+    if (code.length < 10) return;
+    setIsParsing(true);
+    try {
+      const result = await parseCode({ shareCode: code });
+      if (result.error) {
+        // Don't toast here, it's too aggressive
+      } else if(result.name && result.baseWeapon && result.tags) {
+        setValue('name', result.name, { shouldValidate: true });
+        setValue('baseWeapon', result.baseWeapon, { shouldValidate: true });
+        // combine existing tags with new tags, avoiding duplicates
+        const existingTags = getValues('tags');
+        const newTags = Array.from(new Set([...existingTags, ...result.tags]));
+        setValue('tags', newTags, { shouldValidate: true });
+      }
+    } catch (e) {
+      // silent fail
+    } finally {
+      setIsParsing(false);
+    }
+  }, [setValue, getValues]);
+  
+  useEffect(() => {
+    if (debouncedShareCode) {
+      handleParseCode(debouncedShareCode);
+    }
+  }, [debouncedShareCode, handleParseCode]);
 
   const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && tagInput.trim() !== '') {
@@ -116,50 +148,72 @@ export function BuildForm() {
           <CardContent className="space-y-4">
             <FormField
               control={control}
-              name="name"
+              name="shareCode"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('buildNameLabel')}</FormLabel>
-                  <FormControl><Input placeholder={t('buildNamePlaceholder')} {...field} /></FormControl>
+                  <FormLabel>{t('shareCodeLabel')}</FormLabel>
+                   <FormControl>
+                    <div className="relative">
+                      <Input placeholder={t('shareCodePlaceholder')} {...field} />
+                       <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                        {isParsing ? <Loader2 className="h-4 w-4 animate-spin" /> : <BrainCircuit className="h-4 w-4" />}
+                       </div>
+                    </div>
+                  </FormControl>
+                  <FormDescription>{t('shareCodeHint')}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-               <FormField
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('buildNameLabel')}</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                         <Input placeholder={t('buildNamePlaceholder')} {...field} />
+                         <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                            {isParsing && <Loader2 className="h-4 w-4 animate-spin" />}
+                         </div>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
                 control={control}
                 name="baseWeapon"
                 render={({ field }) => (
-                  <FormItem className="md:col-span-1">
+                  <FormItem>
                     <FormLabel>{t('baseWeaponLabel')}</FormLabel>
-                    <FormControl><Input placeholder={t('baseWeaponPlaceholder')} {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-               <FormField
-                control={control}
-                name="shareCode"
-                render={({ field }) => (
-                  <FormItem className="md:col-span-1">
-                    <FormLabel>{t('shareCodeLabel')}</FormLabel>
-                    <FormControl><Input placeholder={t('shareCodePlaceholder')} {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-               <FormField
-                control={control}
-                name="version"
-                render={({ field }) => (
-                  <FormItem className="md:col-span-1">
-                    <FormLabel>{t('versionLabel')}</FormLabel>
-                    <FormControl><Input placeholder="e.g., 1.0" {...field} disabled /></FormControl>
+                    <FormControl>
+                        <div className="relative">
+                            <Input placeholder={t('baseWeaponPlaceholder')} {...field} />
+                            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                                {isParsing && <Loader2 className="h-4 w-4 animate-spin" />}
+                            </div>
+                        </div>
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
+             <FormField
+              control={control}
+              name="version"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('versionLabel')}</FormLabel>
+                  <FormControl><Input placeholder="e.g., 1.0" {...field} disabled /></FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </CardContent>
         </Card>
         
@@ -235,7 +289,8 @@ export function BuildForm() {
                 <FormItem>
                   <FormLabel>{t('playstyleTagsLabel')}</FormLabel>
                   <FormControl>
-                    <div className="p-2 border rounded-md min-h-[40px]">
+                  <div className="relative">
+                    <div className="p-2 border rounded-md min-h-[40px] pr-8">
                       <div className="flex flex-wrap gap-2">
                         {currentTags.map(tag => (
                           <Badge key={tag} variant="default">
@@ -255,6 +310,10 @@ export function BuildForm() {
                         />
                       </div>
                     </div>
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                        {isParsing && <Loader2 className="h-4 w-4 animate-spin" />}
+                    </div>
+                  </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
