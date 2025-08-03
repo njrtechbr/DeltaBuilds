@@ -11,6 +11,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge";
 import { builds as initialBuilds } from "@/lib/data";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -80,91 +87,96 @@ export default function AdminBuildsPage() {
 
   return (
     <div className="space-y-8">
-      <PageHeader title={t('buildsManagementTitle')} description={t('buildsManagementDescription')} />
-      <div className="border rounded-lg">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>{t('buildName')}</TableHead>
-              <TableHead>{t('author')}</TableHead>
-              <TableHead>{t('status')}</TableHead>
-              <TableHead>{t('createdAt')}</TableHead>
-              <TableHead className="text-right">{t('actions')}</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {builds.map((build) => {
-                const latestVersion = build.versions[0];
-                return (
-                    <TableRow key={build.id}>
-                        <TableCell className="font-medium">{build.name}</TableCell>
-                        <TableCell>{build.author.name}</TableCell>
-                        <TableCell>
-                           {getStatusBadge(latestVersion.status)}
-                        </TableCell>
-                        <TableCell>{new Date(build.createdAt).toLocaleDateString()}</TableCell>
-                        <TableCell className="text-right">
-                           <TooltipProvider>
-                            <div className="flex items-center justify-end gap-2">
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Button variant="ghost" size="icon" onClick={() => setBuildStatus(build.id, 'active')} disabled={latestVersion.status === 'active'}>
-                                            <Check className="w-4 h-4 text-green-500" />
-                                        </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent>{t('approve')}</TooltipContent>
-                                </Tooltip>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Button variant="ghost" size="icon" onClick={() => setBuildStatus(build.id, 'disabled')} disabled={latestVersion.status === 'disabled'}>
-                                            <Ban className="w-4 h-4 text-orange-500" />
-                                        </Button>
-                                    </TooltipTrigger>
-                                    <TooltipContent>{t('disable')}</TooltipContent>
-                                </Tooltip>
+      <Card>
+        <CardHeader>
+          <CardTitle>{t('buildsManagementTitle')}</CardTitle>
+          <CardDescription>{t('buildsManagementDescription')}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>{t('buildName')}</TableHead>
+                <TableHead>{t('author')}</TableHead>
+                <TableHead>{t('status')}</TableHead>
+                <TableHead>{t('createdAt')}</TableHead>
+                <TableHead className="text-right">{t('actions')}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {builds.map((build) => {
+                  const latestVersion = build.versions[0];
+                  return (
+                      <TableRow key={build.id}>
+                          <TableCell className="font-medium">{build.name}</TableCell>
+                          <TableCell>{build.author.name}</TableCell>
+                          <TableCell>
+                            {getStatusBadge(latestVersion.status)}
+                          </TableCell>
+                          <TableCell>{new Date(build.createdAt).toLocaleDateString()}</TableCell>
+                          <TableCell className="text-right">
+                            <TooltipProvider>
+                              <div className="flex items-center justify-end gap-2">
+                                  <Tooltip>
+                                      <TooltipTrigger asChild>
+                                          <Button variant="ghost" size="icon" onClick={() => setBuildStatus(build.id, 'active')} disabled={latestVersion.status === 'active'}>
+                                              <Check className="w-4 h-4 text-green-500" />
+                                          </Button>
+                                      </TooltipTrigger>
+                                      <TooltipContent>{t('approve')}</TooltipContent>
+                                  </Tooltip>
+                                  <Tooltip>
+                                      <TooltipTrigger asChild>
+                                          <Button variant="ghost" size="icon" onClick={() => setBuildStatus(build.id, 'disabled')} disabled={latestVersion.status === 'disabled'}>
+                                              <Ban className="w-4 h-4 text-orange-500" />
+                                          </Button>
+                                      </TooltipTrigger>
+                                      <TooltipContent>{t('disable')}</TooltipContent>
+                                  </Tooltip>
+                                  
+                                  <Tooltip>
+                                      <TooltipTrigger asChild>
+                                          <Link href={{ pathname: '/submit', query: { buildId: build.id } }} className={cn(buttonVariants({variant: 'ghost', size: 'icon'}))}>
+                                              <Edit className="w-4 h-4" />
+                                          </Link>
+                                      </TooltipTrigger>
+                                      <TooltipContent>{t('edit')}</TooltipContent>
+                                  </Tooltip>
                                 
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Link href={{ pathname: '/submit', query: { buildId: build.id } }} className={cn(buttonVariants({variant: 'ghost', size: 'icon'}))}>
-                                            <Edit className="w-4 h-4" />
-                                        </Link>
-                                    </TooltipTrigger>
-                                    <TooltipContent>{t('edit')}</TooltipContent>
-                                </Tooltip>
-                               
-                                 <AlertDialog>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <AlertDialogTrigger asChild>
-                                                <Button variant="ghost" size="icon"><Trash className="w-4 h-4 text-destructive" /></Button>
-                                            </AlertDialogTrigger>
-                                        </TooltipTrigger>
-                                        <TooltipContent>{t('delete')}</TooltipContent>
-                                    </Tooltip>
-                                    <AlertDialogContent>
-                                        <AlertDialogHeader>
-                                        <AlertDialogTitle>Delete {build.name}?</AlertDialogTitle>
-                                        <AlertDialogDescription>
-                                            Are you sure you want to delete this build? This action cannot be undone.
-                                        </AlertDialogDescription>
-                                        </AlertDialogHeader>
-                                        <AlertDialogFooter>
-                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                        <AlertDialogAction onClick={() => deleteBuild(build.id)} className={cn(buttonVariants({variant: 'destructive'}))}>
-                                            Yes, Delete
-                                        </AlertDialogAction>
-                                        </AlertDialogFooter>
-                                    </AlertDialogContent>
-                                </AlertDialog>
-                            </div>
-                           </TooltipProvider>
-                        </TableCell>
-                    </TableRow>
-                )
-            })}
-          </TableBody>
-        </Table>
-      </div>
+                                  <AlertDialog>
+                                      <Tooltip>
+                                          <TooltipTrigger asChild>
+                                              <AlertDialogTrigger asChild>
+                                                  <Button variant="ghost" size="icon"><Trash className="w-4 h-4 text-destructive" /></Button>
+                                              </AlertDialogTrigger>
+                                          </TooltipTrigger>
+                                          <TooltipContent>{t('delete')}</TooltipContent>
+                                      </Tooltip>
+                                      <AlertDialogContent>
+                                          <AlertDialogHeader>
+                                          <AlertDialogTitle>Delete {build.name}?</AlertDialogTitle>
+                                          <AlertDialogDescription>
+                                              Are you sure you want to delete this build? This action cannot be undone.
+                                          </AlertDialogDescription>
+                                          </AlertDialogHeader>
+                                          <AlertDialogFooter>
+                                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                          <AlertDialogAction onClick={() => deleteBuild(build.id)} className={cn(buttonVariants({variant: 'destructive'}))}>
+                                              Yes, Delete
+                                          </AlertDialogAction>
+                                          </AlertDialogFooter>
+                                      </AlertDialogContent>
+                                  </AlertDialog>
+                              </div>
+                            </TooltipProvider>
+                          </TableCell>
+                      </TableRow>
+                  )
+              })}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   );
 }
