@@ -15,6 +15,11 @@ import {
 import { BuildListItem } from '@/components/build-list-item';
 import { PageHeader } from '@/components/page-header';
 import { useLocale } from 'next-intl';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+type CodeType = 'steam' | 'garena' | 'mobile';
 
 export default function Home() {
   const t = useTranslations('Home');
@@ -22,8 +27,15 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
   const [weaponFilter, setWeaponFilter] = useState('all');
   const [sortOrder, setSortOrder] = useState('popular');
+  const [codeTypeFilter, setCodeTypeFilter] = useState<CodeType[]>([]);
 
   const weaponTypes = ['all', ...Array.from(new Set(allBuilds.map(b => b.baseWeapon)))];
+
+  const handleCodeTypeChange = (type: CodeType) => {
+    setCodeTypeFilter(prev => 
+      prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]
+    )
+  }
 
   const filteredAndSortedBuilds = allBuilds
     .filter((build: Build) => {
@@ -36,7 +48,17 @@ export default function Home() {
       const matchesWeapon =
         weaponFilter === 'all' || build.baseWeapon === weaponFilter;
 
-      return matchesSearch && matchesWeapon;
+      const latestVersion = build.versions.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+      const matchesCodeType =
+        codeTypeFilter.length === 0 ||
+        codeTypeFilter.some(type => {
+            if (type === 'steam') return !!latestVersion.steamCode;
+            if (type === 'garena') return !!latestVersion.garenaCode;
+            if (type === 'mobile') return !!latestVersion.mobileCode;
+            return false;
+        });
+
+      return matchesSearch && matchesWeapon && matchesCodeType;
     })
     .sort((a, b) => {
       switch (sortOrder) {
@@ -58,38 +80,60 @@ export default function Home() {
         description={t('description')}
       />
 
-      <div className="flex flex-col md:flex-row gap-4">
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-xl font-headline">{t('filtersTitle')}</CardTitle>
+      </CardHeader>
+      <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Input
           placeholder={t('searchPlaceholder')}
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
-          className="w-full md:max-w-xs"
+          className="lg:col-span-1"
         />
-        <div className="flex gap-4">
-          <Select value={weaponFilter} onValueChange={setWeaponFilter}>
-            <SelectTrigger className="w-full md:w-[180px]">
-              <SelectValue placeholder={t('filterByWeaponPlaceholder')} />
-            </SelectTrigger>
-            <SelectContent>
-              {weaponTypes.map(weapon => (
-                <SelectItem key={weapon} value={weapon}>
-                  {weapon === 'all' ? t('allWeapons') : weapon}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Select value={sortOrder} onValueChange={setSortOrder}>
-            <SelectTrigger className="w-full md:w-[180px]">
-              <SelectValue placeholder={t('sortByPlaceholder')} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="popular">{t('popular')}</SelectItem>
-              <SelectItem value="newest">{t('newest')}</SelectItem>
-              <SelectItem value="oldest">{t('oldest')}</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="grid grid-cols-2 gap-4">
+            <Select value={weaponFilter} onValueChange={setWeaponFilter}>
+                <SelectTrigger>
+                <SelectValue placeholder={t('filterByWeaponPlaceholder')} />
+                </SelectTrigger>
+                <SelectContent>
+                {weaponTypes.map(weapon => (
+                    <SelectItem key={weapon} value={weapon}>
+                    {weapon === 'all' ? t('allWeapons') : weapon}
+                    </SelectItem>
+                ))}
+                </SelectContent>
+            </Select>
+            <Select value={sortOrder} onValueChange={setSortOrder}>
+                <SelectTrigger>
+                <SelectValue placeholder={t('sortByPlaceholder')} />
+                </SelectTrigger>
+                <SelectContent>
+                <SelectItem value="popular">{t('popular')}</SelectItem>
+                <SelectItem value="newest">{t('newest')}</SelectItem>
+                <SelectItem value="oldest">{t('oldest')}</SelectItem>
+                </SelectContent>
+            </Select>
         </div>
-      </div>
+        <div className="flex flex-col gap-2">
+            <Label>{t('codeTypeTitle')}</Label>
+            <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                    <Checkbox id="steam" onCheckedChange={() => handleCodeTypeChange('steam')} checked={codeTypeFilter.includes('steam')} />
+                    <Label htmlFor="steam">Steam</Label>
+                </div>
+                <div className="flex items-center gap-2">
+                    <Checkbox id="garena" onCheckedChange={() => handleCodeTypeChange('garena')} checked={codeTypeFilter.includes('garena')}/>
+                    <Label htmlFor="garena">Garena</Label>
+                </div>
+                <div className="flex items-center gap-2">
+                    <Checkbox id="mobile" onCheckedChange={() => handleCodeTypeChange('mobile')} checked={codeTypeFilter.includes('mobile')}/>
+                    <Label htmlFor="mobile">Mobile</Label>
+                </div>
+            </div>
+        </div>
+      </CardContent>
+    </Card>
 
       {filteredAndSortedBuilds.length > 0 ? (
         <div className="border rounded-lg">

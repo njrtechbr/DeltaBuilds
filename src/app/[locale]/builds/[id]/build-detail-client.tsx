@@ -6,10 +6,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowUp, ArrowDown, MessageSquare, CheckCircle2, XCircle, Copy, History, GalleryVertical, Youtube, Languages, Loader2, Star, Share2 } from 'lucide-react';
+import { ArrowUp, ArrowDown, MessageSquare, CheckCircle2, XCircle, Copy, History, GalleryVertical, Youtube, Languages, Loader2, Star, Share2, AlertTriangle, Laptop, Gamepad2, Smartphone } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { useTranslations, useLocale } from 'next-intl';
 import {
@@ -19,6 +19,18 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
 import { getTranslation } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -84,6 +96,14 @@ export function BuildDetailClient({ build: initialBuild, currentUser, locale }: 
     }
   };
 
+  const handleReportCode = (code: string, platform: string) => {
+    console.log(`Reported code: ${code} for platform: ${platform}`);
+    toast({
+        title: t('reportToast.title'),
+        description: t('reportToast.description', { code }),
+    });
+  }
+
   const latestVersion = build.versions.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
   const voteScore = build.upvotes - build.downvotes;
   
@@ -103,8 +123,37 @@ export function BuildDetailClient({ build: initialBuild, currentUser, locale }: 
             <Button variant="ghost" size="icon" aria-label={t('copyImportCode')} onClick={() => copyImportCode(code)}>
                 <Copy className="w-4 h-4" />
             </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="ghost" size="icon" aria-label={t('reportCode')}>
+                    <AlertTriangle className="w-4 h-4 text-destructive/80" />
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>{t('reportDialog.title')}</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    {t('reportDialog.description', { code })}
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t('reportDialog.cancel')}</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => handleReportCode(code, platform)} className={cn(buttonVariants({variant: 'destructive'}))}>
+                    {t('reportDialog.confirm')}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
         </div>
     )
+  }
+
+  const getPlatformIcon = (platform: 'Steam' | 'Garena' | 'Mobile') => {
+    switch(platform) {
+        case 'Steam': return <Laptop className="w-4 h-4 mr-2" />;
+        case 'Garena': return <Gamepad2 className="w-4 h-4 mr-2" />;
+        case 'Mobile': return <Smartphone className="w-4 h-4 mr-2" />;
+    }
   }
 
   const latestCode = latestVersion.steamCode || latestVersion.garenaCode || latestVersion.mobileCode;
@@ -282,19 +331,19 @@ export function BuildDetailClient({ build: initialBuild, currentUser, locale }: 
               <CardContent className="space-y-4">
                  {latestVersion.steamCode && (
                     <div className='space-y-1'>
-                        <Label>{bT('steamCodeLabel')}</Label>
+                        <Label className='flex items-center'>{getPlatformIcon('Steam')} {bT('steamCodeLabel')}</Label>
                         {renderImportCode(latestVersion.steamCode, 'Steam')}
                     </div>
                  )}
                  {latestVersion.garenaCode && (
                     <div className='space-y-1'>
-                        <Label>{bT('garenaCodeLabel')}</Label>
+                        <Label className='flex items-center'>{getPlatformIcon('Garena')} {bT('garenaCodeLabel')}</Label>
                         {renderImportCode(latestVersion.garenaCode, 'Garena')}
                     </div>
                  )}
                  {latestVersion.mobileCode && (
                     <div className='space-y-1'>
-                        <Label>{bT('mobileCodeLabel')}</Label>
+                        <Label className='flex items-center'>{getPlatformIcon('Mobile')} {bT('mobileCodeLabel')}</Label>
                         {renderImportCode(latestVersion.mobileCode, 'Mobile')}
                     </div>
                  )}

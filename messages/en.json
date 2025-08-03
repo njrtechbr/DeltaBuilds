@@ -23,7 +23,9 @@
     "newest": "Newest",
     "oldest": "Oldest",
     "noBuildsFound": "No builds found",
-    "adjustFilters": "Try adjusting your search or filters."
+    "adjustFilters": "Try adjusting your search or filters.",
+    "filtersTitle": "Filters",
+    "codeTypeTitle": "Code Platforms"
   },
   "Footer": {
     "copyright": "DeltaBuilds. All rights reserved."
@@ -82,7 +84,19 @@
     "addToFavorites": "Add to Favorites",
     "removeFromFavorites": "Remove from Favorites",
     "copiedToast": "Copied!",
-    "copiedToastDescription": "Import code copied to clipboard."
+    "copiedToastDescription": "Import code copied to clipboard.",
+    "reportCode": "Report non-working code",
+    "reportDialog": {
+      "title": "Report Code?",
+      "description": "Are you sure you want to report the code \"{code}\"? This will flag it for review by moderators. Abusing this feature may result in penalties.",
+      "cancel": "Cancel",
+      "confirm": "Yes, Report"
+    },
+    "reportToast": {
+        "title": "Code Reported",
+        "description": "The code \"{code}\" has been reported. Thank you for your feedback."
+    },
+    "noImportCode": "No import code available for this version."
   },
   "Profile": {
     "reputation": "Reputation",

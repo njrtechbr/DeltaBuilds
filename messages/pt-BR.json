@@ -23,7 +23,9 @@
     "newest": "Mais Recentes",
     "oldest": "Mais Antigos",
     "noBuildsFound": "Nenhuma build encontrada",
-    "adjustFilters": "Tente ajustar sua busca ou filtros."
+    "adjustFilters": "Tente ajustar sua busca ou filtros.",
+    "filtersTitle": "Filtros",
+    "codeTypeTitle": "Plataformas de Código"
   },
   "Footer": {
     "copyright": "DeltaBuilds. Todos os direitos reservados."
@@ -82,7 +84,19 @@
     "addToFavorites": "Adicionar aos Favoritos",
     "removeFromFavorites": "Remover dos Favoritos",
     "copiedToast": "Copiado!",
-    "copiedToastDescription": "Código de importação copiado para a área de transferência."
+    "copiedToastDescription": "Código de importação copiado para a área de transferência.",
+    "reportCode": "Reportar código que não funciona",
+    "reportDialog": {
+      "title": "Reportar Código?",
+      "description": "Você tem certeza que deseja reportar o código \"{code}\"? Isso irá sinalizá-lo para revisão pelos moderadores. O abuso deste recurso pode resultar em penalidades.",
+      "cancel": "Cancelar",
+      "confirm": "Sim, Reportar"
+    },
+    "reportToast": {
+        "title": "Código Reportado",
+        "description": "O código \"{code}\" foi reportado. Obrigado pelo seu feedback."
+    },
+    "noImportCode": "Nenhum código de importação disponível para esta versão."
   },
   "Profile": {
     "reputation": "Reputação",

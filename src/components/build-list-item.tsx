@@ -1,10 +1,11 @@
 import Link from 'next/link';
 import type { Build } from '@/lib/types';
 import { Badge } from '@/components/ui/badge';
-import { ArrowUp, MessageSquare, CheckCircle2, XCircle, User, Calendar } from 'lucide-react';
+import { ArrowUp, MessageSquare, CheckCircle2, XCircle, User, Calendar, Smartphone, Laptop, Gamepad2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { useTranslations } from 'next-intl';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 
 export function BuildListItem({ build, isLast, locale }: { build: Build, isLast: boolean, locale: string }) {
   const t = useTranslations('BuildListItem');
@@ -17,7 +18,7 @@ export function BuildListItem({ build, isLast, locale }: { build: Build, isLast:
         !isLast && "border-b"
     )}>
       <div className="flex items-center p-4 gap-4">
-        <div className="flex-grow grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+        <div className="flex-grow grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
             <div className="md:col-span-1">
                 <h3 className="font-headline text-lg font-semibold group-hover:text-primary transition-colors">{build.name}</h3>
                 <p className="text-sm text-muted-foreground">
@@ -38,6 +39,32 @@ export function BuildListItem({ build, isLast, locale }: { build: Build, isLast:
                     <span>{new Date(build.createdAt).toLocaleDateString(locale)}</span>
                 </div>
             </div>
+
+            <div className="md:col-span-1 flex items-center gap-4 text-muted-foreground">
+                <TooltipProvider>
+                    <div className="flex items-center gap-2">
+                        {latestVersion.steamCode && (
+                            <Tooltip>
+                                <TooltipTrigger><Laptop className="w-5 h-5"/></TooltipTrigger>
+                                <TooltipContent>Steam</TooltipContent>
+                            </Tooltip>
+                        )}
+                        {latestVersion.garenaCode && (
+                            <Tooltip>
+                                <TooltipTrigger><Gamepad2 className="w-5 h-5"/></TooltipTrigger>
+                                <TooltipContent>Garena</TooltipContent>
+                            </Tooltip>
+                        )}
+                        {latestVersion.mobileCode && (
+                             <Tooltip>
+                                <TooltipTrigger><Smartphone className="w-5 h-5"/></TooltipTrigger>
+                                <TooltipContent>Mobile</TooltipContent>
+                            </Tooltip>
+                        )}
+                    </div>
+                </TooltipProvider>
+            </div>
+
 
             <div className="md:col-span-1 flex items-center justify-end gap-4">
                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
