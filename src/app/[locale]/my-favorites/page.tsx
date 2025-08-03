@@ -1,7 +1,7 @@
 import {getTranslations, unstable_setRequestLocale} from 'next-intl/server';
 import { PageHeader } from '@/components/page-header';
 import { builds, users } from '@/lib/data';
-import { BuildCard } from '@/components/build-card';
+import { BuildListItem } from '@/components/build-list-item';
 import { Button } from '@/components/ui/button';
 import { Link } from '@/navigation';
 
@@ -20,9 +20,14 @@ export default async function MyFavoritesPage({params: {locale}}: {params: {loca
       />
 
       {favoriteBuilds.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {favoriteBuilds.map(build => (
-            <BuildCard key={build.id} build={build} />
+        <div className="border rounded-lg">
+          {favoriteBuilds.map((build, index) => (
+            <BuildListItem 
+                key={build.id} 
+                build={build} 
+                isLast={index === favoriteBuilds.length - 1}
+                locale={locale}
+            />
           ))}
         </div>
       ) : (

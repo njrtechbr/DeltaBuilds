@@ -2,11 +2,9 @@ import { notFound } from 'next/navigation';
 import { users, builds } from '@/lib/data';
 import { PageHeader } from '@/components/page-header';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card, CardContent } from '@/components/ui/card';
-import { BuildCard } from '@/components/build-card';
+import { BuildListItem } from '@/components/build-list-item';
 import { Star, Swords } from 'lucide-react';
 import {getTranslations, unstable_setRequestLocale} from 'next-intl/server';
-import { Separator } from '@/components/ui/separator';
 
 export default async function ProfilePage({ params }: { params: { username: string, locale: string } }) {
   unstable_setRequestLocale(params.locale);
@@ -47,10 +45,15 @@ export default async function ProfilePage({ params }: { params: { username: stri
         <div>
             <h2 className="text-2xl font-headline font-bold mb-4">{t('submittedBuilds')}</h2>
             {userBuilds.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {userBuilds.map(build => (
-                    <BuildCard key={build.id} build={build} />
-                ))}
+                <div className="border rounded-lg">
+                    {userBuilds.map((build, index) => (
+                        <BuildListItem 
+                            key={build.id} 
+                            build={build} 
+                            isLast={index === userBuilds.length - 1}
+                            locale={params.locale}
+                        />
+                    ))}
                 </div>
             ) : (
                 <div className="text-center py-16 text-muted-foreground bg-card rounded-lg">
@@ -63,10 +66,15 @@ export default async function ProfilePage({ params }: { params: { username: stri
         <div>
             <h2 className="text-2xl font-headline font-bold mb-4">{t('favoriteBuilds')}</h2>
             {favoriteBuilds.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {favoriteBuilds.map(build => (
-                    <BuildCard key={build.id} build={build} />
-                ))}
+                <div className="border rounded-lg">
+                    {favoriteBuilds.map((build, index) => (
+                        <BuildListItem 
+                            key={build.id} 
+                            build={build} 
+                            isLast={index === favoriteBuilds.length - 1}
+                            locale={params.locale}
+                        />
+                    ))}
                 </div>
             ) : (
                 <div className="text-center py-16 text-muted-foreground bg-card rounded-lg">

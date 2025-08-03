@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import type { Build } from '@/lib/types';
 import { Badge } from '@/components/ui/badge';
 import { ArrowUp, MessageSquare, CheckCircle2, XCircle, User, Calendar } from 'lucide-react';
@@ -18,16 +17,6 @@ export function BuildListItem({ build, isLast, locale }: { build: Build, isLast:
         !isLast && "border-b"
     )}>
       <div className="flex items-center p-4 gap-4">
-        <div className="relative w-24 h-16 rounded-md overflow-hidden flex-shrink-0">
-            <Image
-              src={build.imageUrl}
-              alt={build.name}
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-              data-ai-hint={build.imageHint}
-            />
-        </div>
-        
         <div className="flex-grow grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
             <div className="md:col-span-1">
                 <h3 className="font-headline text-lg font-semibold group-hover:text-primary transition-colors">{build.name}</h3>

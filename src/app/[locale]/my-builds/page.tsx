@@ -1,9 +1,10 @@
 import {getTranslations, unstable_setRequestLocale} from 'next-intl/server';
 import { PageHeader } from '@/components/page-header';
 import { builds, users } from '@/lib/data';
-import { BuildCard } from '@/components/build-card';
 import { Button } from '@/components/ui/button';
 import { Link } from '@/navigation';
+import { BuildListItem } from '@/components/build-list-item';
+import { Separator } from '@/components/ui/separator';
 
 export default async function MyBuildsPage({params: {locale}}: {params: {locale: string}}) {
   unstable_setRequestLocale(locale);
@@ -20,15 +21,22 @@ export default async function MyBuildsPage({params: {locale}}: {params: {locale:
       />
 
       {userBuilds.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {userBuilds.map(build => (
-            <div key={build.id} className="flex flex-col gap-2">
-              <BuildCard build={build} />
-              <Button asChild>
-                <Link href={{ pathname: '/submit', query: { buildId: build.id } }}>
-                  {t('addNewVersion')}
-                </Link>
-              </Button>
+        <div className="border rounded-lg">
+          {userBuilds.map((build, index) => (
+            <div key={build.id} className="flex flex-col">
+                 <BuildListItem 
+                    build={build} 
+                    isLast={index === userBuilds.length - 1}
+                    locale={locale}
+                />
+                <div className='p-4 pt-0'>
+                    <Button asChild variant="secondary" className="w-full">
+                        <Link href={{ pathname: '/submit', query: { buildId: build.id } }}>
+                        {t('addNewVersion')}
+                        </Link>
+                    </Button>
+                </div>
+                {index < userBuilds.length - 1 && <Separator />}
             </div>
           ))}
         </div>
