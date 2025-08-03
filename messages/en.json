@@ -1,3 +1,4 @@
+
 {
   "Header": {
     "discover": "Discover",
@@ -5,9 +6,11 @@
     "newBuild": "New Build",
     "logIn": "Log In",
     "signUp": "Sign Up",
+    "signUpLink": "Sign Up",
     "profile": "Profile",
     "signOut": "Sign Out",
-    "myFavorites": "My Favorites"
+    "myFavorites": "My Favorites",
+    "myBuilds": "My Builds"
   },
   "Home": {
     "title": "Discover Builds",
@@ -75,7 +78,9 @@
     "version": "Version",
     "releaseDate": "Release Date",
     "addToFavorites": "Add to Favorites",
-    "removeFromFavorites": "Remove from Favorites"
+    "removeFromFavorites": "Remove from Favorites",
+    "copiedToast": "Copied!",
+    "copiedToastDescription": "Share code copied to clipboard."
   },
   "Profile": {
     "reputation": "Reputation",

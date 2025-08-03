@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
-import { PlusCircle, User, LogOut, Star } from 'lucide-react';
+import { PlusCircle, User, LogOut, Star, Swords, Heart } from 'lucide-react';
 import { LanguageSwitcher } from './language-switcher';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import {
@@ -31,12 +31,26 @@ export function Header() {
             {t('discover')}
           </Link>
           {isAuthenticated && (
-            <Link
-              href="/submit"
-              className="text-foreground/60 transition-colors hover:text-foreground/80"
-            >
-              {t('submitBuild')}
-            </Link>
+            <>
+              <Link
+                href="/submit"
+                className="text-foreground/60 transition-colors hover:text-foreground/80"
+              >
+                {t('submitBuild')}
+              </Link>
+              <Link
+                href={`/profile/${username}`}
+                className="text-foreground/60 transition-colors hover:text-foreground/80"
+              >
+                {t('myBuilds')}
+              </Link>
+              <Link
+                href={`/profile/${username}#favorites`}
+                className="text-foreground/60 transition-colors hover:text-foreground/80"
+              >
+                {t('myFavorites')}
+              </Link>
+            </>
           )}
         </nav>
         <div className="ml-auto flex items-center gap-4">
@@ -94,7 +108,7 @@ export function Header() {
                         <Link href="/login">{t('logIn')}</Link>
                     </Button>
                     <Button variant="outline" className="text-accent-foreground border-accent hover:bg-accent/90 hover:text-accent-foreground" asChild>
-                        <Link href="/signup">{t('signUp')}</Link>
+                        <Link href="/signup">{t('signUpLink')}</Link>
                     </Button>
                 </div>
             )}

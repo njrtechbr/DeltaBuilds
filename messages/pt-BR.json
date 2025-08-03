@@ -1,3 +1,4 @@
+
 {
   "Header": {
     "discover": "Descobrir",
@@ -5,9 +6,11 @@
     "newBuild": "Nova Build",
     "logIn": "Entrar",
     "signUp": "Cadastrar",
+    "signUpLink": "Cadastre-se",
     "profile": "Perfil",
     "signOut": "Sair",
-    "myFavorites": "Meus Favoritos"
+    "myFavorites": "Meus Favoritos",
+    "myBuilds": "Minhas Builds"
   },
   "Home": {
     "title": "Descubra Builds",
@@ -75,7 +78,9 @@
     "version": "Versão",
     "releaseDate": "Data de Lançamento",
     "addToFavorites": "Adicionar aos Favoritos",
-    "removeFromFavorites": "Remover dos Favoritos"
+    "removeFromFavorites": "Remover dos Favoritos",
+    "copiedToast": "Copiado!",
+    "copiedToastDescription": "Código de compartilhamento copiado para a área de transferência."
   },
   "Profile": {
     "reputation": "Reputação",
