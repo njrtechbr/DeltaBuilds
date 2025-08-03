@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowUp, ArrowDown, MessageSquare, CheckCircle2, XCircle, Copy, History, GalleryVertical, Youtube, Languages, Loader2, Star } from 'lucide-react';
+import { ArrowUp, ArrowDown, MessageSquare, CheckCircle2, XCircle, Copy, History, GalleryVertical, Youtube, Languages, Loader2, Star, Share2 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { useTranslations, useLocale } from 'next-intl';
 import {
@@ -31,6 +31,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Input } from '@/components/ui/input';
 
 export default function BuildDetailPage({ params }: { params: { id: string, locale: string } }) {
   const t = useTranslations('BuildDetail');
@@ -41,7 +42,6 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
   const [translatedDescription, setTranslatedDescription] = useState<string | null>(null);
   const [isTranslating, setIsTranslating] = useState(false);
   
-  // Mock current user
   const currentUser = users[0];
 
   const build = builds.find(b => b.id === params.id);
@@ -53,7 +53,6 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
   const [isFavorited, setIsFavorited] = useState(build.favoritedBy.includes(currentUser.id));
   
   const handleFavoriteToggle = () => {
-    // This is a mock implementation. In a real app, you'd call an API.
     if(isFavorited) {
         build.favoritedBy = build.favoritedBy.filter(id => id !== currentUser.id);
     } else {
@@ -89,6 +88,14 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
 
   const latestVersion = build.versions.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
   const voteScore = build.upvotes - build.downvotes;
+  
+  const copyShareCode = (code: string) => {
+    navigator.clipboard.writeText(code);
+    toast({
+        title: "Copied!",
+        description: "Share code copied to clipboard.",
+    })
+  }
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -144,6 +151,15 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
               </div>
             )}
           </div>
+          
+          <div className="space-y-2">
+            <h2 className="text-2xl font-semibold font-headline">{t('playstyleTags')}</h2>
+            <div className="flex flex-wrap gap-2">
+              {build.tags.map(tag => (
+                <Badge key={tag} variant="secondary" className="text-base px-3 py-1">{tag}</Badge>
+              ))}
+            </div>
+          </div>
 
           <Card>
             <CardHeader>
@@ -173,7 +189,7 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
                             <TableCell>{new Date(v.createdAt).toLocaleDateString(locale)}</TableCell>
                             <TableCell className="text-muted-foreground">{v.patchNotes}</TableCell>
                             <TableCell className="text-right">
-                                <Button variant="ghost" size="icon" aria-label={t('copyShareCode')} onClick={() => navigator.clipboard.writeText(v.shareCode)}>
+                                <Button variant="ghost" size="icon" aria-label={t('copyShareCode')} onClick={() => copyShareCode(v.shareCode)}>
                                     <Copy className="w-4 h-4" />
                                 </Button>
                             </TableCell>
@@ -207,15 +223,6 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
             </Card>
           )}
 
-          <div className="space-y-2">
-            <h2 className="text-2xl font-semibold font-headline">{t('playstyleTags')}</h2>
-            <div className="flex flex-wrap gap-2">
-              {build.tags.map(tag => (
-                <Badge key={tag} variant="secondary" className="text-base px-3 py-1">{tag}</Badge>
-              ))}
-            </div>
-          </div>
-
           {build.galleryImageUrls && build.galleryImageUrls.length > 0 && (
              <div className="space-y-4">
                 <h2 className="text-2xl font-semibold font-headline flex items-center gap-2">
@@ -244,7 +251,7 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
 
         </div>
 
-        <aside className="md:col-span-2 space-y-6">
+        <aside className="md:col-span-2 space-y-6 sticky top-24 h-min">
             <Card className="flex items-center justify-around p-4">
                  <div className="flex items-center gap-2">
                     <Button variant="outline" size="icon" aria-label={t('upvote')}>
@@ -259,6 +266,23 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
                     {latestVersion.isValid ? <CheckCircle2 className="w-4 h-4 mr-2" /> : <XCircle className="w-4 h-4 mr-2" />}
                     {latestVersion.isValid ? t('valid') : t('invalid')}
                 </Badge>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 font-headline">
+                  <Share2 className="w-5 h-5" />
+                  {t('shareCode')} (v{latestVersion.version})
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                 <div className="flex gap-2">
+                    <Input value={latestVersion.shareCode} readOnly className="text-muted-foreground" />
+                    <Button variant="outline" size="icon" aria-label={t('copyShareCode')} onClick={() => copyShareCode(latestVersion.shareCode)}>
+                        <Copy className="w-4 h-4"/>
+                    </Button>
+                 </div>
+              </CardContent>
             </Card>
 
             <Card>

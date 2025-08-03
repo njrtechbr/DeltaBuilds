@@ -16,10 +16,8 @@ import {
 
 export function Header() {
   const t = useTranslations('Header');
-  // TODO: Replace with real authentication state
   const isAuthenticated = true; 
   const username = "Ghost";
-  const user = { id: 'u1', name: 'Ghost' }; // Mock user
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
