@@ -9,6 +9,7 @@ import { useTranslations } from 'next-intl';
 export function BuildCard({ build }: { build: Build }) {
   const t = useTranslations('BuildCard');
   const voteScore = build.upvotes - build.downvotes;
+  const latestVersion = build.versions.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
 
   return (
     <Link href={`/builds/${build.id}`} className="group block">
@@ -25,7 +26,7 @@ export function BuildCard({ build }: { build: Build }) {
           </div>
           <div className="flex justify-between items-start">
             <CardTitle className="font-headline text-xl group-hover:text-primary transition-colors">{build.name}</CardTitle>
-            <Badge variant="outline">v{build.version}</Badge>
+            <Badge variant="outline">v{latestVersion.version}</Badge>
           </div>
           <CardDescription>
             {t('for')} {build.baseWeapon} {t('by')}{' '}
@@ -53,9 +54,9 @@ export function BuildCard({ build }: { build: Build }) {
               <span>{build.comments.length}</span>
             </div>
           </div>
-          <Badge variant={build.isValid ? 'default' : 'destructive'} className={build.isValid ? 'bg-green-600/20 text-green-400 border-green-600/30' : 'bg-red-600/20 text-red-400 border-red-600/30'}>
-            {build.isValid ? <CheckCircle2 className="w-3 h-3 mr-1" /> : <XCircle className="w-3 h-3 mr-1" />}
-            {build.isValid ? t('valid') : t('invalid')}
+          <Badge variant={latestVersion.isValid ? 'default' : 'destructive'} className={latestVersion.isValid ? 'bg-green-600/20 text-green-400 border-green-600/30' : 'bg-red-600/20 text-red-400 border-red-600/30'}>
+            {latestVersion.isValid ? <CheckCircle2 className="w-3 h-3 mr-1" /> : <XCircle className="w-3 h-3 mr-1" />}
+            {latestVersion.isValid ? t('valid') : t('invalid')}
           </Badge>
         </CardFooter>
       </Card>

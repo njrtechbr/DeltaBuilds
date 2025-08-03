@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
-import { PlusCircle, User, LogOut } from 'lucide-react';
+import { PlusCircle, User, LogOut, Star } from 'lucide-react';
 import { LanguageSwitcher } from './language-switcher';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import {
@@ -19,6 +19,7 @@ export function Header() {
   // TODO: Replace with real authentication state
   const isAuthenticated = true; 
   const username = "Ghost";
+  const user = { id: 'u1', name: 'Ghost' }; // Mock user
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -74,6 +75,12 @@ export function Header() {
                      <Link href={`/profile/${username}`}>
                       <User className="mr-2 h-4 w-4" />
                       <span>{t('profile')}</span>
+                     </Link>
+                  </DropdownMenuItem>
+                   <DropdownMenuItem asChild>
+                     <Link href={`/profile/${username}#favorites`}>
+                      <Star className="mr-2 h-4 w-4" />
+                      <span>{t('myFavorites')}</span>
                      </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />

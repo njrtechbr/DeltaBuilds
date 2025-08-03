@@ -1,16 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { notFound, usePathname } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { builds } from '@/lib/data';
+import { builds, users } from '@/lib/data';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowUp, ArrowDown, MessageSquare, CheckCircle2, XCircle, Copy, History, GalleryVertical, Youtube, Languages, Loader2 } from 'lucide-react';
+import { ArrowUp, ArrowDown, MessageSquare, CheckCircle2, XCircle, Copy, History, GalleryVertical, Youtube, Languages, Loader2, Star } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { useTranslations, useLocale } from 'next-intl';
 import {
@@ -22,6 +22,15 @@ import {
 } from "@/components/ui/carousel"
 import { getTranslation } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 
 export default function BuildDetailPage({ params }: { params: { id: string, locale: string } }) {
   const t = useTranslations('BuildDetail');
@@ -31,11 +40,26 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
 
   const [translatedDescription, setTranslatedDescription] = useState<string | null>(null);
   const [isTranslating, setIsTranslating] = useState(false);
+  
+  // Mock current user
+  const currentUser = users[0];
 
   const build = builds.find(b => b.id === params.id);
 
   if (!build) {
     notFound();
+  }
+  
+  const [isFavorited, setIsFavorited] = useState(build.favoritedBy.includes(currentUser.id));
+  
+  const handleFavoriteToggle = () => {
+    // This is a mock implementation. In a real app, you'd call an API.
+    if(isFavorited) {
+        build.favoritedBy = build.favoritedBy.filter(id => id !== currentUser.id);
+    } else {
+        build.favoritedBy.push(currentUser.id);
+    }
+    setIsFavorited(!isFavorited);
   }
 
   const handleTranslate = async () => {
@@ -63,6 +87,7 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
     }
   };
 
+  const latestVersion = build.versions.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
   const voteScore = build.upvotes - build.downvotes;
 
   return (
@@ -82,7 +107,9 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
           <div className="space-y-4">
             <div className='flex justify-between items-start'>
                 <h1 className="text-4xl font-bold font-headline text-primary">{build.name}</h1>
-                <Badge variant="outline" className="text-base font-bold border-2">v{build.version}</Badge>
+                 <Button variant="outline" size="icon" onClick={handleFavoriteToggle} aria-label={isFavorited ? t('removeFromFavorites') : t('addToFavorites')}>
+                    <Star className={cn("w-5 h-5", isFavorited ? "text-accent fill-accent" : "text-muted-foreground")} />
+                 </Button>
             </div>
             <div className="flex items-center gap-4 text-muted-foreground">
                <Link href={`/profile/${build.author.name}`} className="flex items-center gap-2 hover:text-primary transition-colors">
@@ -97,17 +124,63 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
             </div>
           </div>
           
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-semibold font-headline">{t('description')}</h2>
+                <Button variant="outline" size="sm" onClick={handleTranslate} disabled={isTranslating}>
+                    {isTranslating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Languages className="mr-2 h-4 w-4" />}
+                    {t('translateWithAI')}
+                </Button>
+            </div>
+            <p className="text-muted-foreground whitespace-pre-wrap">{build.description}</p>
+            {isTranslating && (
+                <div className="p-4 bg-secondary/50 rounded-md">
+                    <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                </div>
+            )}
+            {translatedDescription && (
+              <div className="p-4 border-l-4 border-accent bg-secondary/50 rounded-md">
+                <p className="text-muted-foreground whitespace-pre-wrap">{translatedDescription}</p>
+              </div>
+            )}
+          </div>
+
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg font-headline flex items-center gap-2"><Copy className="w-5 h-5" /> {t('shareCode')}</CardTitle>
+                <CardTitle className="text-lg font-headline flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <History className="w-5 h-5 text-primary"/>
+                        {t('versionHistory')}
+                    </div>
+                </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center gap-2 p-3 bg-secondary rounded-md">
-                <span className="font-mono text-lg text-accent-foreground flex-grow">{build.shareCode}</span>
-                <Button variant="ghost" size="icon" aria-label={t('copyShareCode')}>
-                  <Copy className="w-5 h-5" />
-                </Button>
-              </div>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                        <TableHead>{t('version')}</TableHead>
+                        <TableHead>{t('releaseDate')}</TableHead>
+                        <TableHead>{t('patchNotes')}</TableHead>
+                        <TableHead className="text-right">{t('shareCode')}</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {build.versions.map((v) => (
+                        <TableRow key={v.version}>
+                            <TableCell>
+                                <Badge variant="outline" className="text-base font-bold border-2">{v.version}</Badge>
+                            </TableCell>
+                            <TableCell>{new Date(v.createdAt).toLocaleDateString(locale)}</TableCell>
+                            <TableCell className="text-muted-foreground">{v.patchNotes}</TableCell>
+                            <TableCell className="text-right">
+                                <Button variant="ghost" size="icon" aria-label={t('copyShareCode')} onClick={() => navigator.clipboard.writeText(v.shareCode)}>
+                                    <Copy className="w-4 h-4" />
+                                </Button>
+                            </TableCell>
+                        </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
             </CardContent>
           </Card>
           
@@ -130,41 +203,6 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
                             allowFullScreen
                         ></iframe>
                     </div>
-                </CardContent>
-            </Card>
-          )}
-
-          <div className="space-y-2">
-            <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-semibold font-headline">{t('description')}</h2>
-                <Button variant="outline" size="sm" onClick={handleTranslate} disabled={isTranslating}>
-                    {isTranslating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Languages className="mr-2 h-4 w-4" />}
-                    {t('translateWithAI')}
-                </Button>
-            </div>
-            <p className="text-muted-foreground whitespace-pre-wrap">{build.description}</p>
-            {isTranslating && (
-                <div className="p-4 bg-secondary/50 rounded-md">
-                    <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-                </div>
-            )}
-            {translatedDescription && (
-              <div className="p-4 border-l-4 border-accent bg-secondary/50 rounded-md">
-                <p className="text-muted-foreground whitespace-pre-wrap">{translatedDescription}</p>
-              </div>
-            )}
-          </div>
-          
-          {build.patchNotes && (
-             <Card className="bg-secondary/50">
-                <CardHeader>
-                  <CardTitle className="text-lg font-headline flex items-center gap-2">
-                    <History className="w-5 h-5 text-primary"/>
-                    {t('patchNotes')}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground whitespace-pre-wrap">{build.patchNotes}</p>
                 </CardContent>
             </Card>
           )}
@@ -217,9 +255,9 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
                         <ArrowDown className="w-5 h-5 text-red-500"/>
                     </Button>
                 </div>
-                 <Badge variant={build.isValid ? 'default' : 'destructive'} className={`text-lg px-4 py-2 ${build.isValid ? 'bg-green-600/20 text-green-400 border-green-600/30' : 'bg-red-600/20 text-red-400 border-red-600/30'}`}>
-                    {build.isValid ? <CheckCircle2 className="w-4 h-4 mr-2" /> : <XCircle className="w-4 h-4 mr-2" />}
-                    {build.isValid ? t('valid') : t('invalid')}
+                 <Badge variant={latestVersion.isValid ? 'default' : 'destructive'} className={`text-lg px-4 py-2 ${latestVersion.isValid ? 'bg-green-600/20 text-green-400 border-green-600/30' : 'bg-red-600/20 text-red-400 border-red-600/30'}`}>
+                    {latestVersion.isValid ? <CheckCircle2 className="w-4 h-4 mr-2" /> : <XCircle className="w-4 h-4 mr-2" />}
+                    {latestVersion.isValid ? t('valid') : t('invalid')}
                 </Badge>
             </Card>
 

@@ -12,10 +12,17 @@ export type Comment = {
   createdAt: string;
 };
 
+export type BuildVersion = {
+  version: string;
+  shareCode: string;
+  patchNotes?: string;
+  createdAt: string;
+  isValid: boolean;
+};
+
 export type Build = {
   id:string;
   name: string;
-  shareCode: string;
   baseWeapon: string;
   author: User;
   tags: string[];
@@ -23,12 +30,11 @@ export type Build = {
   upvotes: number;
   downvotes: number;
   comments: Comment[];
-  isValid: boolean;
   createdAt: string;
   imageUrl: string;
   imageHint: string;
-  version: string;
-  patchNotes?: string;
   youtubeUrl?: string;
   galleryImageUrls?: string[];
+  versions: BuildVersion[];
+  favoritedBy: string[]; // Array of user IDs
 };

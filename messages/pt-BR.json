@@ -6,7 +6,8 @@
     "logIn": "Entrar",
     "signUp": "Cadastrar",
     "profile": "Perfil",
-    "signOut": "Sair"
+    "signOut": "Sair",
+    "myFavorites": "Meus Favoritos"
   },
   "Home": {
     "title": "Descubra Builds",
@@ -69,14 +70,22 @@
     "video": "Vídeo de Apresentação",
     "gallery": "Galeria",
     "translateWithAI": "Traduzir com IA",
-    "translationError": "Não foi possível traduzir a descrição. Por favor, tente novamente mais tarde."
+    "translationError": "Não foi possível traduzir a descrição. Por favor, tente novamente mais tarde.",
+    "versionHistory": "Histórico de Versões",
+    "version": "Versão",
+    "releaseDate": "Data de Lançamento",
+    "addToFavorites": "Adicionar aos Favoritos",
+    "removeFromFavorites": "Remover dos Favoritos"
   },
   "Profile": {
     "reputation": "Reputação",
     "builds": "Builds",
     "submittedBuilds": "Builds Enviadas",
+    "favoriteBuilds": "Builds Favoritas",
     "noBuildsTitle": "Nenhuma build ainda",
-    "noBuildsDescription": "{username} ainda não enviou nenhuma build."
+    "noBuildsDescription": "{username} ainda não enviou nenhuma build.",
+    "noFavoritesTitle": "Nenhum favorito ainda",
+    "noFavoritesDescription": "Você não favoritou nenhuma build."
   },
   "BuildCard": {
     "for": "Para",

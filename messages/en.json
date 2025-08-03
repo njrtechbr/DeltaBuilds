@@ -6,7 +6,8 @@
     "logIn": "Log In",
     "signUp": "Sign Up",
     "profile": "Profile",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+    "myFavorites": "My Favorites"
   },
   "Home": {
     "title": "Discover Builds",
@@ -69,14 +70,22 @@
     "video": "Video Showcase",
     "gallery": "Gallery",
     "translateWithAI": "Translate with AI",
-    "translationError": "Could not translate the description. Please try again later."
+    "translationError": "Could not translate the description. Please try again later.",
+    "versionHistory": "Version History",
+    "version": "Version",
+    "releaseDate": "Release Date",
+    "addToFavorites": "Add to Favorites",
+    "removeFromFavorites": "Remove from Favorites"
   },
   "Profile": {
     "reputation": "Reputation",
     "builds": "Builds",
     "submittedBuilds": "Submitted Builds",
+    "favoriteBuilds": "Favorite Builds",
     "noBuildsTitle": "No builds yet",
-    "noBuildsDescription": "{username} hasn't submitted any builds."
+    "noBuildsDescription": "{username} hasn't submitted any builds.",
+    "noFavoritesTitle": "No favorites yet",
+    "noFavoritesDescription": "You haven't favorited any builds."
   },
   "BuildCard": {
     "for": "For",

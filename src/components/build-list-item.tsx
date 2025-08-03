@@ -10,6 +10,7 @@ import { useTranslations } from 'next-intl';
 export function BuildListItem({ build, isLast, locale }: { build: Build, isLast: boolean, locale: string }) {
   const t = useTranslations('BuildListItem');
   const voteScore = build.upvotes - build.downvotes;
+  const latestVersion = build.versions.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
 
   return (
     <Link href={`/builds/${build.id}`} className={cn(
@@ -61,11 +62,11 @@ export function BuildListItem({ build, isLast, locale }: { build: Build, isLast:
                     </div>
                  </div>
                  <div className="flex flex-col items-end gap-1.5">
-                    <Badge variant={build.isValid ? 'default' : 'destructive'} className={cn('text-xs', build.isValid ? 'bg-green-600/20 text-green-400 border-green-600/30' : 'bg-red-600/20 text-red-400 border-red-600/30')}>
-                        {build.isValid ? <CheckCircle2 className="w-3 h-3 mr-1" /> : <XCircle className="w-3 h-3 mr-1" />}
-                        {build.isValid ? t('valid') : t('invalid')}
+                    <Badge variant={latestVersion.isValid ? 'default' : 'destructive'} className={cn('text-xs', latestVersion.isValid ? 'bg-green-600/20 text-green-400 border-green-600/30' : 'bg-red-600/20 text-red-400 border-red-600/30')}>
+                        {latestVersion.isValid ? <CheckCircle2 className="w-3 h-3 mr-1" /> : <XCircle className="w-3 h-3 mr-1" />}
+                        {latestVersion.isValid ? t('valid') : t('invalid')}
                     </Badge>
-                     <Badge variant="outline" className="text-xs">v{build.version}</Badge>
+                     <Badge variant="outline" className="text-xs">v{latestVersion.version}</Badge>
                  </div>
             </div>
         </div>
