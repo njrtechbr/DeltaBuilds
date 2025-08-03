@@ -1,26 +1,37 @@
+'use client';
+
 import { BuildForm } from "@/components/build-form";
 import { PageHeader } from "@/components/page-header";
-import {getTranslations, unstable_setRequestLocale} from 'next-intl/server';
-import { redirect } from "@/navigation";
+import { useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation'
+import { builds } from "@/lib/data";
 
-export default async function SubmitBuildPage({params: {locale}}: {params: {locale: string}}) {
-  unstable_setRequestLocale(locale);
-  const t = await getTranslations('Submit');
-
+export default function SubmitBuildPage() {
+  const t = useTranslations('Submit');
+  const searchParams = useSearchParams()
+  const buildId = searchParams.get('buildId');
+  
+  const buildToUpdate = buildId ? builds.find(b => b.id === buildId) : undefined;
+  const isUpdateMode = !!buildToUpdate;
+  
   // TODO: Replace with real authentication check
   const isAuthenticated = true;
 
   if (!isAuthenticated) {
-    redirect('/login');
+    // In a real app, this would use the router from next/navigation
+    if (typeof window !== 'undefined') {
+      window.location.href = '/login';
+    }
+    return null;
   }
 
   return (
     <div className="max-w-2xl mx-auto">
       <PageHeader 
-        title={t('title')}
-        description={t('description')}
+        title={isUpdateMode ? t('updateTitle') : t('title')}
+        description={isUpdateMode ? t('updateDescription') : t('description')}
       />
-      <BuildForm />
+      <BuildForm buildToUpdate={buildToUpdate} />
     </div>
   )
 }

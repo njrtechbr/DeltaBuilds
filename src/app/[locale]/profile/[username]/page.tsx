@@ -19,6 +19,7 @@ export default async function ProfilePage({ params }: { params: { username: stri
 
   const userBuilds = builds.filter(b => b.author.id === user.id);
   const favoriteBuilds = builds.filter(b => b.favoritedBy.includes(user.id));
+  const isCurrentUser = users[0].id === user.id; // Faking current user
 
   return (
     <div className="space-y-8">
@@ -43,43 +44,37 @@ export default async function ProfilePage({ params }: { params: { username: stri
       </div>
       
       <div className="space-y-8">
-        <Card>
-            <CardContent className="p-6">
-                <h2 className="text-2xl font-headline font-bold mb-4">{t('submittedBuilds')}</h2>
-                {userBuilds.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {userBuilds.map(build => (
-                        <BuildCard key={build.id} build={build} />
-                    ))}
-                    </div>
-                ) : (
-                    <div className="text-center py-16 text-muted-foreground">
-                    <h3 className="text-xl font-semibold">{t('noBuildsTitle')}</h3>
-                    <p>{t('noBuildsDescription', {username: user.name})}</p>
-                    </div>
-                )}
-            </CardContent>
-        </Card>
+        <div>
+            <h2 className="text-2xl font-headline font-bold mb-4">{t('submittedBuilds')}</h2>
+            {userBuilds.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {userBuilds.map(build => (
+                    <BuildCard key={build.id} build={build} />
+                ))}
+                </div>
+            ) : (
+                <div className="text-center py-16 text-muted-foreground bg-card rounded-lg">
+                <h3 className="text-xl font-semibold">{t('noBuildsTitle')}</h3>
+                <p>{t('noBuildsDescription', {username: user.name})}</p>
+                </div>
+            )}
+        </div>
 
-        <Separator />
-
-        <Card id="favorites">
-            <CardContent className="p-6">
-                <h2 className="text-2xl font-headline font-bold mb-4">{t('favoriteBuilds')}</h2>
-                {favoriteBuilds.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {favoriteBuilds.map(build => (
-                        <BuildCard key={build.id} build={build} />
-                    ))}
-                    </div>
-                ) : (
-                    <div className="text-center py-16 text-muted-foreground">
-                    <h3 className="text-xl font-semibold">{t('noFavoritesTitle')}</h3>
-                    <p>{t('noFavoritesDescription')}</p>
-                    </div>
-                )}
-            </CardContent>
-        </Card>
+        <div>
+            <h2 className="text-2xl font-headline font-bold mb-4">{t('favoriteBuilds')}</h2>
+            {favoriteBuilds.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {favoriteBuilds.map(build => (
+                    <BuildCard key={build.id} build={build} />
+                ))}
+                </div>
+            ) : (
+                <div className="text-center py-16 text-muted-foreground bg-card rounded-lg">
+                <h3 className="text-xl font-semibold">{t('noFavoritesTitle')}</h3>
+                <p>{ isCurrentUser ? t('noFavoritesDescription') : t('noFavoritesDescriptionOther', {username: user.name})}</p>
+                </div>
+            )}
+        </div>
       </div>
 
     </div>

@@ -39,13 +39,13 @@ export function Header() {
                 {t('submitBuild')}
               </Link>
               <Link
-                href={`/profile/${username}`}
+                href="/my-builds"
                 className="text-foreground/60 transition-colors hover:text-foreground/80"
               >
                 {t('myBuilds')}
               </Link>
               <Link
-                href={`/profile/${username}#favorites`}
+                href="/my-favorites"
                 className="text-foreground/60 transition-colors hover:text-foreground/80"
               >
                 {t('myFavorites')}
@@ -90,7 +90,7 @@ export function Header() {
                      </Link>
                   </DropdownMenuItem>
                    <DropdownMenuItem asChild>
-                     <Link href={`/profile/${username}#favorites`}>
+                     <Link href="/my-favorites">
                       <Star className="mr-2 h-4 w-4" />
                       <span>{t('myFavorites')}</span>
                      </Link>

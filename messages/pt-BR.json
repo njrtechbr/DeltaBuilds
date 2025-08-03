@@ -54,7 +54,9 @@
   },
   "Submit": {
     "title": "Enviar uma Nova Build",
-    "description": "Compartilhe sua obra-prima com a comunidade Delta Force. Preencha os detalhes abaixo."
+    "description": "Compartilhe sua obra-prima com a comunidade Delta Force. Preencha os detalhes abaixo.",
+    "updateTitle": "Atualizar Build",
+    "updateDescription": "Envie uma nova versão para sua build. Descreva o que mudou."
   },
   "BuildDetail": {
     "shareCode": "Código de Compartilhamento",
@@ -90,7 +92,23 @@
     "noBuildsTitle": "Nenhuma build ainda",
     "noBuildsDescription": "{username} ainda não enviou nenhuma build.",
     "noFavoritesTitle": "Nenhum favorito ainda",
-    "noFavoritesDescription": "Você não favoritou nenhuma build."
+    "noFavoritesDescription": "Você não favoritou nenhuma build.",
+    "noFavoritesDescriptionOther": "{username} não favoritou nenhuma build."
+  },
+  "MyBuilds": {
+    "title": "Minhas Builds",
+    "description": "Gerencie suas builds enviadas. Você pode adicionar novas versões para elas aqui.",
+    "addNewVersion": "Adicionar Nova Versão",
+    "noBuildsTitle": "Você ainda não enviou nenhuma build",
+    "noBuildsDescription": "Clique no botão abaixo para compartilhar sua primeira build com a comunidade.",
+    "submitFirstBuild": "Envie Sua Primeira Build"
+  },
+  "MyFavorites": {
+    "title": "Meus Favoritos",
+    "description": "Aqui estão todas as builds que você salvou. Encontre suas configurações preferidas rapidamente.",
+    "noFavoritesTitle": "Você ainda não favoritou nenhuma build",
+    "noFavoritesDescription": "Navegue pelas builds e clique no ícone da estrela para salvá-las aqui.",
+    "discoverBuilds": "Descobrir Builds"
   },
   "BuildCard": {
     "for": "Para",
@@ -129,6 +147,7 @@
     "playstyleTagsLabel": "Tags de Estilo de Jogo",
     "tagsPlaceholder": "Adicione tags e pressione Enter...",
     "submitButton": "Enviar Build",
+    "updateButton": "Atualizar Build",
     "mediaTitle": "Mídia",
     "youtubeUrlLabel": "URL do Vídeo no YouTube (Opcional)",
     "youtubeUrlPlaceholder": "https://www.youtube.com/watch?v=...",
@@ -143,7 +162,9 @@
       "errorTitle": "Erro",
       "errorDescription": "Ocorreu um erro inesperado.",
       "buildSubmittedTitle": "Build Enviada!",
-      "buildSubmittedDescription": "Sua build foi enviada para revisão com sucesso."
+      "buildSubmittedDescription": "Sua build foi enviada para revisão com sucesso.",
+      "buildUpdatedTitle": "Build Atualizada!",
+      "buildUpdatedDescription": "Sua build foi atualizada com uma nova versão com sucesso."
     }
   }
 }

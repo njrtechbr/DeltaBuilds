@@ -15,6 +15,8 @@ import { getTagSuggestions, parseCode } from '@/app/actions';
 import { Wand2, X, Loader2, BrainCircuit, Upload, Youtube } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useDebounce } from 'use-debounce';
+import type { Build } from '@/lib/types';
+import { useRouter } from '@/navigation';
 
 const buildFormSchema = z.object({
   name: z.string().min(3, "Build name must be at least 3 characters."),
@@ -29,17 +31,33 @@ const buildFormSchema = z.object({
 
 type BuildFormValues = z.infer<typeof buildFormSchema>;
 
-export function BuildForm() {
+interface BuildFormProps {
+  buildToUpdate?: Build;
+}
+
+export function BuildForm({ buildToUpdate }: BuildFormProps) {
   const t = useTranslations('BuildForm');
+  const router = useRouter();
   const { toast } = useToast();
   const [tagInput, setTagInput] = useState('');
   const [suggestedTags, setSuggestedTags] = useState<string[]>([]);
   const [isSuggesting, setIsSuggesting] = useState(false);
   const [isParsing, setIsParsing] = useState(false);
 
+  const isUpdateMode = !!buildToUpdate;
+
   const form = useForm<BuildFormValues>({
     resolver: zodResolver(buildFormSchema),
-    defaultValues: {
+    defaultValues: isUpdateMode ? {
+      name: buildToUpdate.name,
+      shareCode: buildToUpdate.versions[0].shareCode, // Use latest version's code as placeholder
+      baseWeapon: buildToUpdate.baseWeapon,
+      version: '', // User needs to input new version
+      description: buildToUpdate.description,
+      patchNotes: '', // User needs to input new patch notes
+      youtubeUrl: buildToUpdate.youtubeUrl || '',
+      tags: buildToUpdate.tags,
+    } : {
       name: '',
       shareCode: '',
       baseWeapon: '',
@@ -51,7 +69,7 @@ export function BuildForm() {
     },
   });
 
-  const { control, watch, setValue, getValues } = form;
+  const { control, watch, setValue, getValues, reset } = form;
   const currentTags = watch('tags');
   const descriptionValue = watch('description');
   const shareCodeValue = watch('shareCode');
@@ -65,23 +83,43 @@ export function BuildForm() {
       if (result.error) {
         // Don't toast here, it's too aggressive
       } else if(result.baseWeapon && result.tags) {
-        setValue('baseWeapon', result.baseWeapon, { shouldValidate: true });
-        const existingTags = getValues('tags');
-        const newTags = Array.from(new Set([...existingTags, ...result.tags]));
-        setValue('tags', newTags, { shouldValidate: true });
+        if (!isUpdateMode) {
+          setValue('baseWeapon', result.baseWeapon, { shouldValidate: true });
+          const existingTags = getValues('tags');
+          const newTags = Array.from(new Set([...existingTags, ...result.tags]));
+          setValue('tags', newTags, { shouldValidate: true });
+        }
       }
     } catch (e) {
       // silent fail
     } finally {
       setIsParsing(false);
     }
-  }, [setValue, getValues]);
+  }, [setValue, getValues, isUpdateMode]);
   
   useEffect(() => {
-    if (debouncedShareCode) {
+    if (debouncedShareCode && !isUpdateMode) {
       handleParseCode(debouncedShareCode);
     }
-  }, [debouncedShareCode, handleParseCode]);
+  }, [debouncedShareCode, handleParseCode, isUpdateMode]);
+  
+  useEffect(() => {
+    if (isUpdateMode && buildToUpdate) {
+      const latestVersion = buildToUpdate.versions.sort((a,b) => parseFloat(b.version) - parseFloat(a.version))[0];
+      const nextVersion = (parseFloat(latestVersion.version) + 0.1).toFixed(1);
+      
+      reset({
+        name: buildToUpdate.name,
+        shareCode: '', // Clear for new version
+        baseWeapon: buildToUpdate.baseWeapon,
+        version: nextVersion,
+        description: buildToUpdate.description,
+        patchNotes: '', // Clear for new version
+        youtubeUrl: buildToUpdate.youtubeUrl || '',
+        tags: buildToUpdate.tags,
+      })
+    }
+  }, [isUpdateMode, buildToUpdate, reset]);
 
   const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && tagInput.trim() !== '') {
@@ -134,10 +172,12 @@ export function BuildForm() {
   const onSubmit = (data: BuildFormValues) => {
     console.log(data);
     toast({
-      title: t('toast.buildSubmittedTitle'),
-      description: t('toast.buildSubmittedDescription'),
+      title: isUpdateMode ? t('toast.buildUpdatedTitle') : t('toast.buildSubmittedTitle'),
+      description: isUpdateMode ? t('toast.buildUpdatedDescription') : t('toast.buildSubmittedDescription'),
     });
+    // TODO: Actually save the data
     form.reset();
+    router.push(isUpdateMode ? `/builds/${buildToUpdate.id}` : '/my-builds');
   };
 
   return (
@@ -146,6 +186,20 @@ export function BuildForm() {
         <Card>
           <CardHeader><CardTitle className="font-headline">{t('buildDetailsTitle')}</CardTitle></CardHeader>
           <CardContent className="space-y-4">
+             <FormField
+              control={control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('buildNameLabel')}</FormLabel>
+                  <FormControl>
+                    <Input placeholder={t('buildNamePlaceholder')} {...field} disabled={isUpdateMode} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
             <FormField
               control={control}
               name="shareCode"
@@ -155,31 +209,19 @@ export function BuildForm() {
                    <FormControl>
                     <div className="relative">
                       <Input placeholder={t('shareCodePlaceholder')} {...field} />
-                       <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
-                        {isParsing ? <Loader2 className="h-4 w-4 animate-spin" /> : <BrainCircuit className="h-4 w-4" />}
-                       </div>
+                       {!isUpdateMode && (
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                            {isParsing ? <Loader2 className="h-4 w-4 animate-spin" /> : <BrainCircuit className="h-4 w-4" />}
+                        </div>
+                       )}
                     </div>
                   </FormControl>
-                  <FormDescription>{t('shareCodeHint')}</FormDescription>
+                  {!isUpdateMode && <FormDescription>{t('shareCodeHint')}</FormDescription>}
                   <FormMessage />
                 </FormItem>
               )}
             />
             
-            <FormField
-              control={control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('buildNameLabel')}</FormLabel>
-                  <FormControl>
-                    <Input placeholder={t('buildNamePlaceholder')} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                <FormField
                   control={control}
@@ -190,7 +232,7 @@ export function BuildForm() {
                        <FormControl>
                          <div className="relative">
                            <Input placeholder={t('baseWeaponPlaceholder')} {...field} disabled />
-                           {isParsing && (
+                           {!isUpdateMode && isParsing && (
                                 <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
                                     <Loader2 className="h-4 w-4 animate-spin" />
                                 </div>
@@ -207,7 +249,7 @@ export function BuildForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t('versionLabel')}</FormLabel>
-                    <FormControl><Input placeholder="e.g., 1.0" {...field} disabled /></FormControl>
+                    <FormControl><Input placeholder="e.g., 1.1" {...field} /></FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -263,9 +305,10 @@ export function BuildForm() {
                       placeholder={t('descriptionPlaceholder')}
                       className="min-h-[120px]"
                       {...field}
+                      disabled={isUpdateMode}
                     />
                   </FormControl>
-                  <FormDescription>{t('descriptionHint')}</FormDescription>
+                  {!isUpdateMode && <FormDescription>{t('descriptionHint')}</FormDescription>}
                   <FormMessage />
                 </FormItem>
               )}
@@ -295,7 +338,7 @@ export function BuildForm() {
           <CardHeader><CardTitle className="font-headline">{t('playstyleTagsTitle')}</CardTitle></CardHeader>
           <CardContent className="space-y-4">
              <div>
-                <Button type="button" variant="outline" onClick={handleSuggestTags} disabled={isSuggesting || descriptionValue.length < 20}>
+                <Button type="button" variant="outline" onClick={handleSuggestTags} disabled={isSuggesting || descriptionValue.length < 20 || isUpdateMode}>
                   {isSuggesting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wand2 className="mr-2 h-4 w-4" />}
                   {t('suggestTagsButton')}
                 </Button>
@@ -327,24 +370,28 @@ export function BuildForm() {
                         {currentTags.map(tag => (
                           <Badge key={tag} variant="default">
                             {tag}
-                            <button type="button" onClick={() => removeTag(tag)} className="ml-2 rounded-full hover:bg-primary-foreground/20">
+                            <button type="button" onClick={() => removeTag(tag)} className="ml-2 rounded-full hover:bg-primary-foreground/20" disabled={isUpdateMode}>
                               <X className="h-3 w-3" />
                             </button>
                           </Badge>
                         ))}
-                        <input
-                          type="text"
-                          value={tagInput}
-                          onChange={(e) => setTagInput(e.target.value)}
-                          onKeyDown={handleTagKeyDown}
-                          className="bg-transparent outline-none flex-1 text-sm"
-                          placeholder={currentTags.length === 0 ? t('tagsPlaceholder') : ""}
-                        />
+                         {!isUpdateMode && (
+                            <input
+                            type="text"
+                            value={tagInput}
+                            onChange={(e) => setTagInput(e.target.value)}
+                            onKeyDown={handleTagKeyDown}
+                            className="bg-transparent outline-none flex-1 text-sm"
+                            placeholder={currentTags.length === 0 ? t('tagsPlaceholder') : ""}
+                            />
+                         )}
                       </div>
                     </div>
-                    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
-                        {isParsing && <Loader2 className="h-4 w-4 animate-spin" />}
-                    </div>
+                     {!isUpdateMode && isParsing && (
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                        </div>
+                    )}
                   </div>
                   </FormControl>
                   <FormMessage />
@@ -355,7 +402,7 @@ export function BuildForm() {
         </Card>
 
         <Button type="submit" size="lg" className="w-full" disabled={form.formState.isSubmitting}>
-          {t('submitButton')}
+          {isUpdateMode ? t('updateButton') : t('submitButton')}
         </Button>
       </form>
     </Form>

@@ -54,7 +54,9 @@
   },
   "Submit": {
     "title": "Submit a New Build",
-    "description": "Share your masterpiece with the Delta Force community. Fill out the details below."
+    "description": "Share your masterpiece with the Delta Force community. Fill out the details below.",
+    "updateTitle": "Update Build",
+    "updateDescription": "Submit a new version for your build. Describe what changed."
   },
   "BuildDetail": {
     "shareCode": "Share Code",
@@ -90,7 +92,23 @@
     "noBuildsTitle": "No builds yet",
     "noBuildsDescription": "{username} hasn't submitted any builds.",
     "noFavoritesTitle": "No favorites yet",
-    "noFavoritesDescription": "You haven't favorited any builds."
+    "noFavoritesDescription": "You haven't favorited any builds.",
+    "noFavoritesDescriptionOther": "{username} hasn't favorited any builds."
+  },
+  "MyBuilds": {
+    "title": "My Builds",
+    "description": "Manage your submitted builds. You can add new versions to them here.",
+    "addNewVersion": "Add New Version",
+    "noBuildsTitle": "You haven't submitted any builds yet",
+    "noBuildsDescription": "Click the button below to share your first build with the community.",
+    "submitFirstBuild": "Submit Your First Build"
+  },
+  "MyFavorites": {
+    "title": "My Favorites",
+    "description": "Here are all the builds you've saved. Find your go-to setups quickly.",
+    "noFavoritesTitle": "You haven't favorited any builds yet",
+    "noFavoritesDescription": "Browse the builds and click the star icon to save them here.",
+    "discoverBuilds": "Discover Builds"
   },
   "BuildCard": {
     "for": "For",
@@ -129,6 +147,7 @@
     "playstyleTagsLabel": "Playstyle Tags",
     "tagsPlaceholder": "Add tags and press Enter...",
     "submitButton": "Submit Build",
+    "updateButton": "Update Build",
     "mediaTitle": "Media",
     "youtubeUrlLabel": "YouTube Video URL (Optional)",
     "youtubeUrlPlaceholder": "https://www.youtube.com/watch?v=...",
@@ -143,7 +162,9 @@
       "errorTitle": "Error",
       "errorDescription": "An unexpected error occurred.",
       "buildSubmittedTitle": "Build Submitted!",
-      "buildSubmittedDescription": "Your build has been successfully submitted for review."
+      "buildSubmittedDescription": "Your build has been successfully submitted for review.",
+      "buildUpdatedTitle": "Build Updated!",
+      "buildUpdatedDescription": "Your build has been successfully updated with a new version."
     }
   }
 }
