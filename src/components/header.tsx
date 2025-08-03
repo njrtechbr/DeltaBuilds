@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
-import { PlusCircle, User, LogOut, Star, Swords, Heart } from 'lucide-react';
+import { PlusCircle, User, LogOut, Star, Swords, Shield } from 'lucide-react';
 import { LanguageSwitcher } from './language-switcher';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import {
@@ -13,11 +13,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { users } from '@/lib/data';
 
 export function Header() {
   const t = useTranslations('Header');
   const isAuthenticated = true; 
-  const username = "Ghost";
+  const currentUser = users[0];
+  const username = currentUser.name;
+  const isAdmin = currentUser.role === 'admin';
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -78,11 +81,19 @@ export function Header() {
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-medium leading-none">{username}</p>
                       <p className="text-xs leading-none text-muted-foreground">
-                        {/* m@example.com */}
+                        {currentUser.role === 'admin' ? 'Administrator' : 'User'}
                       </p>
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
+                  {isAdmin && (
+                    <DropdownMenuItem asChild>
+                       <Link href={`/admin/dashboard`}>
+                        <Shield className="mr-2 h-4 w-4" />
+                        <span>{t('adminPanel')}</span>
+                       </Link>
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem asChild>
                      <Link href={`/profile/${username}`}>
                       <User className="mr-2 h-4 w-4" />

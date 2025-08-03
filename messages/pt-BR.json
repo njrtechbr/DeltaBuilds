@@ -10,7 +10,8 @@
     "profile": "Perfil",
     "signOut": "Sair",
     "myFavorites": "Meus Favoritos",
-    "myBuilds": "Minhas Builds"
+    "myBuilds": "Minhas Builds",
+    "adminPanel": "Painel Admin"
   },
   "Home": {
     "title": "Descubra Builds",
@@ -88,13 +89,13 @@
     "reportCode": "Reportar código que não funciona",
     "reportDialog": {
       "title": "Reportar Código?",
-      "description": "Você tem certeza que deseja reportar o código \"{code}\"? Isso irá sinalizá-lo para revisão pelos moderadores. O abuso deste recurso pode resultar em penalidades.",
+      "description": "Você tem certeza que deseja reportar o código \\"{code}\\"? Isso irá sinalizá-lo para revisão pelos moderadores. O abuso deste recurso pode resultar em penalidades.",
       "cancel": "Cancelar",
       "confirm": "Sim, Reportar"
     },
     "reportToast": {
         "title": "Código Reportado",
-        "description": "O código \"{code}\" foi reportado. Obrigado pelo seu feedback."
+        "description": "O código \\"{code}\\" foi reportado. Obrigado pelo seu feedback."
     },
     "noImportCode": "Nenhum código de importação disponível para esta versão."
   },
@@ -184,5 +185,30 @@
       "buildUpdatedTitle": "Build Atualizada!",
       "buildUpdatedDescription": "Sua build foi atualizada com uma nova versão com sucesso."
     }
+  },
+  "Admin": {
+    "dashboard": "Dashboard",
+    "builds": "Builds",
+    "reports": "Denúncias",
+    "dashboardTitle": "Painel do Administrador",
+    "dashboardDescription": "Bem-vindo ao painel de administração. Gerencie builds, usuários e denúncias aqui.",
+    "buildsManagementTitle": "Gerenciamento de Builds",
+    "buildsManagementDescription": "Veja, edite ou aprove as builds enviadas.",
+    "reportsManagementTitle": "Gerenciamento de Denúncias",
+    "reportsManagementDescription": "Revise e gerencie os códigos de importação denunciados.",
+    "buildName": "Nome da Build",
+    "author": "Autor",
+    "status": "Status",
+    "createdAt": "Data de Criação",
+    "actions": "Ações",
+    "approve": "Aprovar",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "reporter": "Denunciante",
+    "reportedCode": "Código Denunciado",
+    "platform": "Plataforma",
+    "reportedAt": "Data da Denúncia",
+    "markValid": "Marcar como Válido",
+    "markInvalid": "Marcar como Inválido"
   }
 }

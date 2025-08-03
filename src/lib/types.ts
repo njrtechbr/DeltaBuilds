@@ -3,6 +3,7 @@ export type User = {
   name: string;
   avatarUrl: string;
   reputation: number;
+  role?: 'admin' | 'user';
 };
 
 export type Comment = {

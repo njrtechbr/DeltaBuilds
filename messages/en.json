@@ -10,7 +10,8 @@
     "profile": "Profile",
     "signOut": "Sign Out",
     "myFavorites": "My Favorites",
-    "myBuilds": "My Builds"
+    "myBuilds": "My Builds",
+    "adminPanel": "Admin Panel"
   },
   "Home": {
     "title": "Discover Builds",
@@ -88,13 +89,13 @@
     "reportCode": "Report non-working code",
     "reportDialog": {
       "title": "Report Code?",
-      "description": "Are you sure you want to report the code \"{code}\"? This will flag it for review by moderators. Abusing this feature may result in penalties.",
+      "description": "Are you sure you want to report the code \\"{code}\\"? This will flag it for review by moderators. Abusing this feature may result in penalties.",
       "cancel": "Cancel",
       "confirm": "Yes, Report"
     },
     "reportToast": {
         "title": "Code Reported",
-        "description": "The code \"{code}\" has been reported. Thank you for your feedback."
+        "description": "The code \\"{code}\\" has been reported. Thank you for your feedback."
     },
     "noImportCode": "No import code available for this version."
   },
@@ -184,5 +185,30 @@
       "buildUpdatedTitle": "Build Updated!",
       "buildUpdatedDescription": "Your build has been successfully updated with a new version."
     }
+  },
+  "Admin": {
+    "dashboard": "Dashboard",
+    "builds": "Builds",
+    "reports": "Reports",
+    "dashboardTitle": "Admin Dashboard",
+    "dashboardDescription": "Welcome to the admin panel. Manage builds, users, and reports here.",
+    "buildsManagementTitle": "Builds Management",
+    "buildsManagementDescription": "View, edit, or approve submitted builds.",
+    "reportsManagementTitle": "Reports Management",
+    "reportsManagementDescription": "Review and manage reported import codes.",
+    "buildName": "Build Name",
+    "author": "Author",
+    "status": "Status",
+    "createdAt": "Created At",
+    "actions": "Actions",
+    "approve": "Approve",
+    "edit": "Edit",
+    "delete": "Delete",
+    "reporter": "Reporter",
+    "reportedCode": "Reported Code",
+    "platform": "Platform",
+    "reportedAt": "Reported At",
+    "markValid": "Mark as Valid",
+    "markInvalid": "Mark as Invalid"
   }
 }

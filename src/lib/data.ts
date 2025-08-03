@@ -1,9 +1,9 @@
 import type { User, Build } from './types';
 
 export const users: User[] = [
-  { id: 'u1', name: 'Ghost', avatarUrl: 'https://placehold.co/100x100', reputation: 1350 },
-  { id: 'u2', name: 'Viper', avatarUrl: 'https://placehold.co/100x100', reputation: 870 },
-  { id: 'u3', name: 'Rogue', avatarUrl: 'https://placehold.co/100x100', reputation: 420 },
+  { id: 'u1', name: 'Ghost', avatarUrl: 'https://placehold.co/100x100', reputation: 1350, role: 'admin' },
+  { id: 'u2', name: 'Viper', avatarUrl: 'https://placehold.co/100x100', reputation: 870, role: 'user' },
+  { id: 'u3', name: 'Rogue', avatarUrl: 'https://placehold.co/100x100', reputation: 420, role: 'user' },
 ];
 
 export const allBaseWeapons = [
@@ -104,4 +104,9 @@ export const builds: Build[] = [
         { version: '1.0', garenaCode: 'Fuzil de combate G3-Conquista-6H3LATG081MQDPAGJAK1I', patchNotes: 'Versão inicial focada no modo Conquista.', createdAt: '2024-05-23T10:00:00Z', isValid: true }
     ]
   }
+];
+
+export const reportedCodes = [
+    { buildId: 'b3', version: '1.5-invalid', code: 'J2K5L9-M3N1O8-STEAM', platform: 'Steam', reportedAt: '2024-05-24T10:00:00Z', reporter: users[1] },
+    { buildId: 'b1', version: '2.0', code: 'A7B3C9-X1Y2Z3-OLDGARENA', platform: 'Garena', reportedAt: '2024-05-23T15:00:00Z', reporter: users[2] },
 ];
