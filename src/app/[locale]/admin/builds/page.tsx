@@ -107,8 +107,10 @@ export default function AdminBuildsPage() {
                                 </Tooltip>
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <Link href={{ pathname: '/submit', query: { buildId: build.id } }} className={cn(buttonVariants({variant: 'ghost', size: 'icon'}))}>
-                                            <Edit className="w-4 h-4" />
+                                        <Link href={{ pathname: '/submit', query: { buildId: build.id } }} passHref legacyBehavior>
+                                            <a className={cn(buttonVariants({variant: 'ghost', size: 'icon'}))}>
+                                                <Edit className="w-4 h-4" />
+                                            </a>
                                         </Link>
                                     </TooltipTrigger>
                                     <TooltipContent>{t('edit')}</TooltipContent>
