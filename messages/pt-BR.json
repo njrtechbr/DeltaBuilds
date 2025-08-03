@@ -18,5 +18,105 @@
     "oldest": "Mais Antigos",
     "noBuildsFound": "Nenhuma build encontrada",
     "adjustFilters": "Tente ajustar sua busca ou filtros."
+  },
+  "Footer": {
+    "copyright": "DeltaBuilds. Todos os direitos reservados."
+  },
+  "Login": {
+    "title": "Entrar",
+    "cardTitle": "Bem-vindo de Volta",
+    "cardDescription": "Digite seu e-mail abaixo para fazer login em sua conta",
+    "emailLabel": "E-mail",
+    "passwordLabel": "Senha",
+    "forgotPassword": "Esqueceu sua senha?",
+    "loginButton": "Entrar",
+    "socialLoginButton": "Entrar com Redes Sociais",
+    "noAccount": "Não tem uma conta?",
+    "signUpLink": "Cadastre-se"
+  },
+  "SignUp": {
+    "title": "Cadastrar",
+    "cardTitle": "Criar uma Conta",
+    "cardDescription": "Insira suas informações para criar uma conta e começar a compartilhar builds.",
+    "usernameLabel": "Nome de Usuário",
+    "emailLabel": "E-mail",
+    "passwordLabel": "Senha",
+    "createAccountButton": "Criar uma conta",
+    "socialSignUpButton": "Cadastrar com Redes Sociais",
+    "hasAccount": "Já tem uma conta?",
+    "loginLink": "Entrar"
+  },
+  "Submit": {
+    "title": "Enviar uma Nova Build",
+    "description": "Compartilhe sua obra-prima com a comunidade Delta Force. Preencha os detalhes abaixo."
+  },
+  "BuildDetail": {
+    "shareCode": "Código de Compartilhamento",
+    "copyShareCode": "Copiar código de compartilhamento",
+    "description": "Descrição",
+    "patchNotes": "Notas do Patch",
+    "playstyleTags": "Tags de Estilo de Jogo",
+    "upvote": "Votar a favor",
+    "downvote": "Votar contra",
+    "valid": "Válida",
+    "invalid": "Inválida",
+    "comments": "Comentários",
+    "addCommentPlaceholder": "Adicionar um comentário... (login obrigatório)",
+    "submitComment": "Enviar Comentário",
+    "noComments": "Nenhum comentário ainda. Seja o primeiro a compartilhar suas opiniões!"
+  },
+  "Profile": {
+    "reputation": "Reputação",
+    "builds": "Builds",
+    "submittedBuilds": "Builds Enviadas",
+    "noBuildsTitle": "Nenhuma build ainda",
+    "noBuildsDescription": "{username} ainda não enviou nenhuma build."
+  },
+  "BuildCard": {
+    "for": "Para",
+    "by": "por",
+    "more": "mais",
+    "valid": "Válida",
+    "invalid": "Inválida"
+  },
+  "BuildListItem": {
+    "for": "Para",
+    "votes": "Votos",
+    "comments": "Comentários",
+    "valid": "Válida",
+    "invalid": "Inválida"
+  },
+  "BuildForm": {
+    "buildDetailsTitle": "Detalhes da Build",
+    "buildNameLabel": "Nome da Build",
+    "buildNamePlaceholder": "ex: Dominadora CQB",
+    "baseWeaponLabel": "Arma Base",
+    "baseWeaponPlaceholder": "ex: M4A1",
+    "shareCodeLabel": "Código de Compartilhamento",
+    "shareCodePlaceholder": "A1B2C3-X4Y5Z6",
+    "versionLabel": "Versão",
+    "descriptionAndPlaystyleTitle": "Descrição e Estilo de Jogo",
+    "descriptionLabel": "Descrição",
+    "descriptionPlaceholder": "Descreva os pontos fortes, fracos e o estilo de jogo ideal da build...",
+    "descriptionHint": "Isso será usado para gerar sugestões de tags.",
+    "patchNotesLabel": "Notas do Patch (Opcional)",
+    "patchNotesPlaceholder": "ex: Atualizado para a Temporada 3. Troquei a mira para melhor velocidade de ADS.",
+    "patchNotesHint": "Descreva o que mudou nesta versão.",
+    "playstyleTagsTitle": "Tags de Estilo de Jogo",
+    "suggestTagsButton": "Sugerir Tags com IA",
+    "aiSuggestions": "Sugestões da IA (clique para adicionar):",
+    "playstyleTagsLabel": "Tags de Estilo de Jogo",
+    "tagsPlaceholder": "Adicione tags e pressione Enter...",
+    "submitButton": "Enviar Build",
+    "toast": {
+      "descriptionTooShortTitle": "Descrição muito curta",
+      "descriptionTooShortDescription": "Forneça uma descrição mais detalhada para obter sugestões de tags.",
+      "suggestionFailedTitle": "Falha na Sugestão",
+      "suggestionFailedDescription": "Não foi possível gerar as tags. Por favor, tente novamente.",
+      "errorTitle": "Erro",
+      "errorDescription": "Ocorreu um erro inesperado.",
+      "buildSubmittedTitle": "Build Enviada!",
+      "buildSubmittedDescription": "Sua build foi enviada para revisão com sucesso."
+    }
   }
 }

@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { getTagSuggestions } from '@/app/actions';
 import { Wand2, X, Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 const buildFormSchema = z.object({
   name: z.string().min(3, "Build name must be at least 3 characters."),
@@ -27,6 +28,7 @@ const buildFormSchema = z.object({
 type BuildFormValues = z.infer<typeof buildFormSchema>;
 
 export function BuildForm() {
+  const t = useTranslations('BuildForm');
   const { toast } = useToast();
   const [tagInput, setTagInput] = useState('');
   const [suggestedTags, setSuggestedTags] = useState<string[]>([]);
@@ -77,8 +79,8 @@ export function BuildForm() {
     if(description.length < 20) {
       toast({
         variant: "destructive",
-        title: "Description too short",
-        description: "Please provide a more detailed description to get tag suggestions.",
+        title: t('toast.descriptionTooShortTitle'),
+        description: t('toast.descriptionTooShortDescription'),
       });
       setIsSuggesting(false);
       return;
@@ -89,10 +91,10 @@ export function BuildForm() {
       if (result.tags) {
         setSuggestedTags(result.tags);
       } else {
-         toast({ variant: "destructive", title: "Suggestion Failed", description: "Could not generate tags. Please try again." });
+         toast({ variant: "destructive", title: t('toast.suggestionFailedTitle'), description: t('toast.suggestionFailedDescription') });
       }
     } catch (error) {
-       toast({ variant: "destructive", title: "Error", description: "An unexpected error occurred." });
+       toast({ variant: "destructive", title: t('toast.errorTitle'), description: t('toast.errorDescription') });
     }
     setIsSuggesting(false);
   };
@@ -100,8 +102,8 @@ export function BuildForm() {
   const onSubmit = (data: BuildFormValues) => {
     console.log(data);
     toast({
-      title: "Build Submitted!",
-      description: "Your build has been successfully submitted for review.",
+      title: t('toast.buildSubmittedTitle'),
+      description: t('toast.buildSubmittedDescription'),
     });
     form.reset();
   };
@@ -110,15 +112,15 @@ export function BuildForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <Card>
-          <CardHeader><CardTitle className="font-headline">Build Details</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="font-headline">{t('buildDetailsTitle')}</CardTitle></CardHeader>
           <CardContent className="space-y-4">
             <FormField
               control={control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Build Name</FormLabel>
-                  <FormControl><Input placeholder="e.g., CQB Dominator" {...field} /></FormControl>
+                  <FormLabel>{t('buildNameLabel')}</FormLabel>
+                  <FormControl><Input placeholder={t('buildNamePlaceholder')} {...field} /></FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -129,8 +131,8 @@ export function BuildForm() {
                 name="baseWeapon"
                 render={({ field }) => (
                   <FormItem className="md:col-span-1">
-                    <FormLabel>Base Weapon</FormLabel>
-                    <FormControl><Input placeholder="e.g., M4A1" {...field} /></FormControl>
+                    <FormLabel>{t('baseWeaponLabel')}</FormLabel>
+                    <FormControl><Input placeholder={t('baseWeaponPlaceholder')} {...field} /></FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -140,8 +142,8 @@ export function BuildForm() {
                 name="shareCode"
                 render={({ field }) => (
                   <FormItem className="md:col-span-1">
-                    <FormLabel>Share Code</FormLabel>
-                    <FormControl><Input placeholder="A1B2C3-X4Y5Z6" {...field} /></FormControl>
+                    <FormLabel>{t('shareCodeLabel')}</FormLabel>
+                    <FormControl><Input placeholder={t('shareCodePlaceholder')} {...field} /></FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -151,7 +153,7 @@ export function BuildForm() {
                 name="version"
                 render={({ field }) => (
                   <FormItem className="md:col-span-1">
-                    <FormLabel>Version</FormLabel>
+                    <FormLabel>{t('versionLabel')}</FormLabel>
                     <FormControl><Input placeholder="e.g., 1.0" {...field} disabled /></FormControl>
                     <FormMessage />
                   </FormItem>
@@ -162,22 +164,22 @@ export function BuildForm() {
         </Card>
         
         <Card>
-          <CardHeader><CardTitle className="font-headline">Description & Playstyle</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="font-headline">{t('descriptionAndPlaystyleTitle')}</CardTitle></CardHeader>
           <CardContent className="space-y-4">
              <FormField
               control={control}
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>{t('descriptionLabel')}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Describe the build's strengths, weaknesses, and ideal playstyle..."
+                      placeholder={t('descriptionPlaceholder')}
                       className="min-h-[120px]"
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>This will be used to generate tag suggestions.</FormDescription>
+                  <FormDescription>{t('descriptionHint')}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -187,15 +189,15 @@ export function BuildForm() {
               name="patchNotes"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Patch Notes (Optional)</FormLabel>
+                  <FormLabel>{t('patchNotesLabel')}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="e.g., Updated for Season 3. Swapped optic for better ADS speed."
+                      placeholder={t('patchNotesPlaceholder')}
                       className="min-h-[80px]"
                       {...field}
                     />
                   </FormControl>
-                   <FormDescription>Describe what changed in this version.</FormDescription>
+                   <FormDescription>{t('patchNotesHint')}</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -204,18 +206,18 @@ export function BuildForm() {
         </Card>
 
         <Card>
-          <CardHeader><CardTitle className="font-headline">Playstyle Tags</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="font-headline">{t('playstyleTagsTitle')}</CardTitle></CardHeader>
           <CardContent className="space-y-4">
              <div>
                 <Button type="button" variant="outline" onClick={handleSuggestTags} disabled={isSuggesting || descriptionValue.length < 20}>
                   {isSuggesting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wand2 className="mr-2 h-4 w-4" />}
-                  Suggest Tags with AI
+                  {t('suggestTagsButton')}
                 </Button>
              </div>
             
             {suggestedTags.length > 0 && (
                 <div className="space-y-2 p-3 bg-secondary/50 rounded-md">
-                    <p className="text-sm font-medium">AI Suggestions (click to add):</p>
+                    <p className="text-sm font-medium">{t('aiSuggestions')}</p>
                     <div className="flex flex-wrap gap-2">
                         {suggestedTags.map(tag => (
                             <Badge key={tag} variant="outline" className="cursor-pointer bg-accent/20 border-accent/50 hover:bg-accent/40" onClick={() => addSuggestedTag(tag)}>
@@ -231,7 +233,7 @@ export function BuildForm() {
               name="tags"
               render={() => (
                 <FormItem>
-                  <FormLabel>Playstyle Tags</FormLabel>
+                  <FormLabel>{t('playstyleTagsLabel')}</FormLabel>
                   <FormControl>
                     <div className="p-2 border rounded-md min-h-[40px]">
                       <div className="flex flex-wrap gap-2">
@@ -249,7 +251,7 @@ export function BuildForm() {
                           onChange={(e) => setTagInput(e.target.value)}
                           onKeyDown={handleTagKeyDown}
                           className="bg-transparent outline-none flex-1 text-sm"
-                          placeholder={currentTags.length === 0 ? "Add tags and press Enter..." : ""}
+                          placeholder={currentTags.length === 0 ? t('tagsPlaceholder') : ""}
                         />
                       </div>
                     </div>
@@ -262,7 +264,7 @@ export function BuildForm() {
         </Card>
 
         <Button type="submit" size="lg" className="w-full" disabled={form.formState.isSubmitting}>
-          Submit Build
+          {t('submitButton')}
         </Button>
       </form>
     </Form>

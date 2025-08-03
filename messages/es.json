@@ -18,5 +18,105 @@
     "oldest": "Más Antiguos",
     "noBuildsFound": "No se encontraron builds",
     "adjustFilters": "Intenta ajustar tu búsqueda o filtros."
+  },
+  "Footer": {
+    "copyright": "DeltaBuilds. Todos los derechos reservados."
+  },
+  "Login": {
+    "title": "Iniciar Sesión",
+    "cardTitle": "Bienvenido de Nuevo",
+    "cardDescription": "Ingresa tu correo electrónico a continuación para iniciar sesión en tu cuenta",
+    "emailLabel": "Correo Electrónico",
+    "passwordLabel": "Contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "loginButton": "Iniciar Sesión",
+    "socialLoginButton": "Iniciar Sesión con Redes Sociales",
+    "noAccount": "¿No tienes una cuenta?",
+    "signUpLink": "Regístrate"
+  },
+  "SignUp": {
+    "title": "Registrarse",
+    "cardTitle": "Crear una Cuenta",
+    "cardDescription": "Ingresa tu información para crear una cuenta y comenzar a compartir builds.",
+    "usernameLabel": "Nombre de Usuario",
+    "emailLabel": "Correo Electrónico",
+    "passwordLabel": "Contraseña",
+    "createAccountButton": "Crear una cuenta",
+    "socialSignUpButton": "Registrarse con Redes Sociales",
+    "hasAccount": "¿Ya tienes una cuenta?",
+    "loginLink": "Iniciar Sesión"
+  },
+  "Submit": {
+    "title": "Enviar una Nueva Build",
+    "description": "Comparte tu obra maestra con la comunidad de Delta Force. Completa los detalles a continuación."
+  },
+  "BuildDetail": {
+    "shareCode": "Código para Compartir",
+    "copyShareCode": "Copiar código para compartir",
+    "description": "Descripción",
+    "patchNotes": "Notas del Parche",
+    "playstyleTags": "Etiquetas de Estilo de Juego",
+    "upvote": "Votar a favor",
+    "downvote": "Votar en contra",
+    "valid": "Válido",
+    "invalid": "Inválido",
+    "comments": "Comentarios",
+    "addCommentPlaceholder": "Añadir un comentario... (se requiere iniciar sesión)",
+    "submitComment": "Enviar Comentario",
+    "noComments": "Aún no hay comentarios. ¡Sé el primero en compartir tus pensamientos!"
+  },
+  "Profile": {
+    "reputation": "Reputación",
+    "builds": "Builds",
+    "submittedBuilds": "Builds Enviadas",
+    "noBuildsTitle": "Aún no hay builds",
+    "noBuildsDescription": "{username} no ha enviado ninguna build."
+  },
+  "BuildCard": {
+    "for": "Para",
+    "by": "por",
+    "more": "más",
+    "valid": "Válido",
+    "invalid": "Inválido"
+  },
+  "BuildListItem": {
+    "for": "Para",
+    "votes": "Votos",
+    "comments": "Comentarios",
+    "valid": "Válido",
+    "invalid": "Inválido"
+  },
+  "BuildForm": {
+    "buildDetailsTitle": "Detalles de la Build",
+    "buildNameLabel": "Nombre de la Build",
+    "buildNamePlaceholder": "ej., Dominador CQB",
+    "baseWeaponLabel": "Arma Base",
+    "baseWeaponPlaceholder": "ej., M4A1",
+    "shareCodeLabel": "Código para Compartir",
+    "shareCodePlaceholder": "A1B2C3-X4Y5Z6",
+    "versionLabel": "Versión",
+    "descriptionAndPlaystyleTitle": "Descripción y Estilo de Juego",
+    "descriptionLabel": "Descripción",
+    "descriptionPlaceholder": "Describe las fortalezas, debilidades y el estilo de juego ideal de la build...",
+    "descriptionHint": "Esto se usará para generar sugerencias de etiquetas.",
+    "patchNotesLabel": "Notas del Parche (Opcional)",
+    "patchNotesPlaceholder": "ej., Actualizado para la Temporada 3. Se cambió la mira para mayor velocidad de apuntado.",
+    "patchNotesHint": "Describe qué cambió en esta versión.",
+    "playstyleTagsTitle": "Etiquetas de Estilo de Juego",
+    "suggestTagsButton": "Sugerir Etiquetas con IA",
+    "aiSuggestions": "Sugerencias de IA (haz clic para agregar):",
+    "playstyleTagsLabel": "Etiquetas de Estilo de Juego",
+    "tagsPlaceholder": "Añade etiquetas y presiona Enter...",
+    "submitButton": "Enviar Build",
+    "toast": {
+      "descriptionTooShortTitle": "Descripción demasiado corta",
+      "descriptionTooShortDescription": "Proporciona una descripción más detallada para obtener sugerencias de etiquetas.",
+      "suggestionFailedTitle": "Falló la Sugerencia",
+      "suggestionFailedDescription": "No se pudieron generar etiquetas. Inténtalo de nuevo.",
+      "errorTitle": "Error",
+      "errorDescription": "Ocurrió un error inesperado.",
+      "buildSubmittedTitle": "¡Build Enviada!",
+      "buildSubmittedDescription": "Tu build ha sido enviada para revisión exitosamente."
+    }
   }
 }

@@ -4,8 +4,10 @@ import type { Build } from '@/lib/types';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowUp, MessageSquare, CheckCircle2, XCircle } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export function BuildCard({ build }: { build: Build }) {
+  const t = useTranslations('BuildCard');
   const voteScore = build.upvotes - build.downvotes;
 
   return (
@@ -26,7 +28,7 @@ export function BuildCard({ build }: { build: Build }) {
             <Badge variant="outline">v{build.version}</Badge>
           </div>
           <CardDescription>
-            For {build.baseWeapon} by{' '}
+            {t('for')} {build.baseWeapon} {t('by')}{' '}
             <span className="text-primary/80 font-medium">{build.author.name}</span>
           </CardDescription>
         </CardHeader>
@@ -36,7 +38,7 @@ export function BuildCard({ build }: { build: Build }) {
               <Badge key={tag} variant="secondary">{tag}</Badge>
             ))}
             {build.tags.length > 3 && (
-              <Badge variant="outline">+{build.tags.length - 3} more</Badge>
+              <Badge variant="outline">+{build.tags.length - 3} {t('more')}</Badge>
             )}
           </div>
         </CardContent>
@@ -53,7 +55,7 @@ export function BuildCard({ build }: { build: Build }) {
           </div>
           <Badge variant={build.isValid ? 'default' : 'destructive'} className={build.isValid ? 'bg-green-600/20 text-green-400 border-green-600/30' : 'bg-red-600/20 text-red-400 border-red-600/30'}>
             {build.isValid ? <CheckCircle2 className="w-3 h-3 mr-1" /> : <XCircle className="w-3 h-3 mr-1" />}
-            {build.isValid ? 'Valid' : 'Invalid'}
+            {build.isValid ? t('valid') : t('invalid')}
           </Badge>
         </CardFooter>
       </Card>

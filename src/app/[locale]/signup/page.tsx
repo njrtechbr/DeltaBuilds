@@ -10,28 +10,29 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { PageHeader } from "@/components/page-header"
 import Link from "next/link"
-import {unstable_setRequestLocale} from 'next-intl/server';
+import {getTranslations, unstable_setRequestLocale} from 'next-intl/server';
 
-export default function SignupPage({params: {locale}}: {params: {locale: string}}) {
+export default async function SignupPage({params: {locale}}: {params: {locale: string}}) {
   unstable_setRequestLocale(locale);
+  const t = await getTranslations('SignUp');
   return (
     <div className="max-w-md mx-auto">
-      <PageHeader title="Sign Up" />
+      <PageHeader title={t('title')} />
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl font-headline">Create an Account</CardTitle>
+          <CardTitle className="text-2xl font-headline">{t('cardTitle')}</CardTitle>
           <CardDescription>
-            Enter your information to create an account and start sharing builds.
+            {t('cardDescription')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="username">{t('usernameLabel')}</Label>
               <Input id="username" placeholder="DeltaOperator" required />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t('emailLabel')}</Label>
               <Input
                 id="email"
                 type="email"
@@ -40,20 +41,20 @@ export default function SignupPage({params: {locale}}: {params: {locale: string}
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t('passwordLabel')}</Label>
               <Input id="password" type="password" required />
             </div>
             <Button type="submit" className="w-full">
-              Create an account
+              {t('createAccountButton')}
             </Button>
             <Button variant="outline" className="w-full">
-              Sign up with Social Media
+              {t('socialSignUpButton')}
             </Button>
           </div>
           <div className="mt-4 text-center text-sm">
-            Already have an account?{" "}
+            {t('hasAccount')}{" "}
             <Link href="/login" className="underline text-primary">
-              Log in
+              {t('loginLink')}
             </Link>
           </div>
         </CardContent>

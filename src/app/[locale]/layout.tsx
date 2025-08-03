@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, unstable_setRequestLocale } from 'next-intl/server';
+import { getMessages, getTranslations, unstable_setRequestLocale } from 'next-intl/server';
 import '../globals.css';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/header';
@@ -26,6 +26,7 @@ export default async function RootLayout({
 }>) {
   unstable_setRequestLocale(locale);
   const messages = await getMessages();
+  const t = await getTranslations('Footer');
 
   return (
     <html lang={locale} className="dark">
@@ -52,7 +53,7 @@ export default async function RootLayout({
             {children}
           </main>
           <footer className="text-center p-4 text-muted-foreground text-sm border-t">
-            <p>&copy; {new Date().getFullYear()} DeltaBuilds. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} {t('copyright')}</p>
           </footer>
           <Toaster />
         </NextIntlClientProvider>

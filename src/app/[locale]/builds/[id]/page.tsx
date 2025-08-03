@@ -9,10 +9,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowUp, ArrowDown, MessageSquare, CheckCircle2, XCircle, Copy, GitCommitHorizontal, History } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
-import {unstable_setRequestLocale} from 'next-intl/server';
+import {getTranslations, unstable_setRequestLocale} from 'next-intl/server';
 
-export default function BuildDetailPage({ params }: { params: { id: string, locale: string } }) {
+export default async function BuildDetailPage({ params }: { params: { id: string, locale: string } }) {
   unstable_setRequestLocale(params.locale);
+  const t = await getTranslations('BuildDetail');
   const build = builds.find(b => b.id === params.id);
 
   if (!build) {
@@ -55,12 +56,12 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
           
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg font-headline flex items-center gap-2"><Copy className="w-5 h-5" /> Share Code</CardTitle>
+              <CardTitle className="text-lg font-headline flex items-center gap-2"><Copy className="w-5 h-5" /> {t('shareCode')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center gap-2 p-3 bg-secondary rounded-md">
                 <span className="font-mono text-lg text-accent-foreground flex-grow">{build.shareCode}</span>
-                <Button variant="ghost" size="icon" aria-label="Copy share code">
+                <Button variant="ghost" size="icon" aria-label={t('copyShareCode')}>
                   <Copy className="w-5 h-5" />
                 </Button>
               </div>
@@ -68,7 +69,7 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
           </Card>
 
           <div className="space-y-2">
-            <h2 className="text-2xl font-semibold font-headline">Description</h2>
+            <h2 className="text-2xl font-semibold font-headline">{t('description')}</h2>
             <p className="text-muted-foreground whitespace-pre-wrap">{build.description}</p>
           </div>
           
@@ -77,7 +78,7 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
                 <CardHeader>
                   <CardTitle className="text-lg font-headline flex items-center gap-2">
                     <History className="w-5 h-5 text-primary"/>
-                    Patch Notes
+                    {t('patchNotes')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -87,7 +88,7 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
           )}
 
           <div className="space-y-2">
-            <h2 className="text-2xl font-semibold font-headline">Playstyle Tags</h2>
+            <h2 className="text-2xl font-semibold font-headline">{t('playstyleTags')}</h2>
             <div className="flex flex-wrap gap-2">
               {build.tags.map(tag => (
                 <Badge key={tag} variant="secondary" className="text-base px-3 py-1">{tag}</Badge>
@@ -99,17 +100,17 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
         <aside className="md:col-span-2 space-y-6">
             <Card className="flex items-center justify-around p-4">
                  <div className="flex items-center gap-2">
-                    <Button variant="outline" size="icon" aria-label="Upvote">
+                    <Button variant="outline" size="icon" aria-label={t('upvote')}>
                         <ArrowUp className="w-5 h-5 text-green-500"/>
                     </Button>
                     <span className="text-xl font-bold">{voteScore}</span>
-                    <Button variant="outline" size="icon" aria-label="Downvote">
+                    <Button variant="outline" size="icon" aria-label={t('downvote')}>
                         <ArrowDown className="w-5 h-5 text-red-500"/>
                     </Button>
                 </div>
                  <Badge variant={build.isValid ? 'default' : 'destructive'} className={`text-lg px-4 py-2 ${build.isValid ? 'bg-green-600/20 text-green-400 border-green-600/30' : 'bg-red-600/20 text-red-400 border-red-600/30'}`}>
                     {build.isValid ? <CheckCircle2 className="w-4 h-4 mr-2" /> : <XCircle className="w-4 h-4 mr-2" />}
-                    {build.isValid ? 'Valid' : 'Invalid'}
+                    {build.isValid ? t('valid') : t('invalid')}
                 </Badge>
             </Card>
 
@@ -117,13 +118,13 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 font-headline">
                   <MessageSquare className="w-5 h-5" />
-                  Comments ({build.comments.length})
+                  {t('comments')} ({build.comments.length})
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                  <div className="space-y-2">
-                    <Textarea placeholder="Add a comment... (login required)" />
-                    <Button className="w-full" variant="secondary">Submit Comment</Button>
+                    <Textarea placeholder={t('addCommentPlaceholder')} />
+                    <Button className="w-full" variant="secondary">{t('submitComment')}</Button>
                  </div>
                  <Separator/>
                  <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
@@ -143,7 +144,7 @@ export default function BuildDetailPage({ params }: { params: { id: string, loca
                       </div>
                     ))}
                     {build.comments.length === 0 && (
-                        <p className="text-sm text-center text-muted-foreground py-4">No comments yet. Be the first to share your thoughts!</p>
+                        <p className="text-sm text-center text-muted-foreground py-4">{t('noComments')}</p>
                     )}
                  </div>
               </CardContent>

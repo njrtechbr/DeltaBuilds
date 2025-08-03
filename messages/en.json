@@ -18,5 +18,105 @@
     "oldest": "Oldest",
     "noBuildsFound": "No builds found",
     "adjustFilters": "Try adjusting your search or filters."
+  },
+  "Footer": {
+    "copyright": "DeltaBuilds. All rights reserved."
+  },
+  "Login": {
+    "title": "Log In",
+    "cardTitle": "Welcome Back",
+    "cardDescription": "Enter your email below to log in to your account",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "forgotPassword": "Forgot your password?",
+    "loginButton": "Log in",
+    "socialLoginButton": "Log in with Social Media",
+    "noAccount": "Don't have an account?",
+    "signUpLink": "Sign up"
+  },
+  "SignUp": {
+    "title": "Sign Up",
+    "cardTitle": "Create an Account",
+    "cardDescription": "Enter your information to create an account and start sharing builds.",
+    "usernameLabel": "Username",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "createAccountButton": "Create an account",
+    "socialSignUpButton": "Sign up with Social Media",
+    "hasAccount": "Already have an account?",
+    "loginLink": "Log in"
+  },
+  "Submit": {
+    "title": "Submit a New Build",
+    "description": "Share your masterpiece with the Delta Force community. Fill out the details below."
+  },
+  "BuildDetail": {
+    "shareCode": "Share Code",
+    "copyShareCode": "Copy share code",
+    "description": "Description",
+    "patchNotes": "Patch Notes",
+    "playstyleTags": "Playstyle Tags",
+    "upvote": "Upvote",
+    "downvote": "Downvote",
+    "valid": "Valid",
+    "invalid": "Invalid",
+    "comments": "Comments",
+    "addCommentPlaceholder": "Add a comment... (login required)",
+    "submitComment": "Submit Comment",
+    "noComments": "No comments yet. Be the first to share your thoughts!"
+  },
+  "Profile": {
+    "reputation": "Reputation",
+    "builds": "Builds",
+    "submittedBuilds": "Submitted Builds",
+    "noBuildsTitle": "No builds yet",
+    "noBuildsDescription": "{username} hasn't submitted any builds."
+  },
+  "BuildCard": {
+    "for": "For",
+    "by": "by",
+    "more": "more",
+    "valid": "Valid",
+    "invalid": "Invalid"
+  },
+  "BuildListItem": {
+    "for": "For",
+    "votes": "Votes",
+    "comments": "Comments",
+    "valid": "Valid",
+    "invalid": "Invalid"
+  },
+  "BuildForm": {
+    "buildDetailsTitle": "Build Details",
+    "buildNameLabel": "Build Name",
+    "buildNamePlaceholder": "e.g., CQB Dominator",
+    "baseWeaponLabel": "Base Weapon",
+    "baseWeaponPlaceholder": "e.g., M4A1",
+    "shareCodeLabel": "Share Code",
+    "shareCodePlaceholder": "A1B2C3-X4Y5Z6",
+    "versionLabel": "Version",
+    "descriptionAndPlaystyleTitle": "Description & Playstyle",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Describe the build's strengths, weaknesses, and ideal playstyle...",
+    "descriptionHint": "This will be used to generate tag suggestions.",
+    "patchNotesLabel": "Patch Notes (Optional)",
+    "patchNotesPlaceholder": "e.g., Updated for Season 3. Swapped optic for better ADS speed.",
+    "patchNotesHint": "Describe what changed in this version.",
+    "playstyleTagsTitle": "Playstyle Tags",
+    "suggestTagsButton": "Suggest Tags with AI",
+    "aiSuggestions": "AI Suggestions (click to add):",
+    "playstyleTagsLabel": "Playstyle Tags",
+    "tagsPlaceholder": "Add tags and press Enter...",
+    "submitButton": "Submit Build",
+    "toast": {
+      "descriptionTooShortTitle": "Description too short",
+      "descriptionTooShortDescription": "Please provide a more detailed description to get tag suggestions.",
+      "suggestionFailedTitle": "Suggestion Failed",
+      "suggestionFailedDescription": "Could not generate tags. Please try again.",
+      "errorTitle": "Error",
+      "errorDescription": "An unexpected error occurred.",
+      "buildSubmittedTitle": "Build Submitted!",
+      "buildSubmittedDescription": "Your build has been successfully submitted for review."
+    }
   }
 }

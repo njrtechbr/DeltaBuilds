@@ -5,10 +5,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent } from '@/components/ui/card';
 import { BuildCard } from '@/components/build-card';
 import { Star, Swords } from 'lucide-react';
-import {unstable_setRequestLocale} from 'next-intl/server';
+import {getTranslations, unstable_setRequestLocale} from 'next-intl/server';
 
-export default function ProfilePage({ params }: { params: { username: string, locale: string } }) {
+export default async function ProfilePage({ params }: { params: { username: string, locale: string } }) {
   unstable_setRequestLocale(params.locale);
+  const t = await getTranslations('Profile');
   const user = users.find(u => u.name.toLowerCase() === params.username.toLowerCase());
 
   if (!user) {
@@ -29,11 +30,11 @@ export default function ProfilePage({ params }: { params: { username: string, lo
           <div className="flex items-center gap-6 text-muted-foreground">
             <div className="flex items-center gap-2">
                 <Star className="w-5 h-5 text-accent"/>
-                <span className="font-bold text-lg">{user.reputation}</span> Reputation
+                <span className="font-bold text-lg">{user.reputation}</span> {t('reputation')}
             </div>
              <div className="flex items-center gap-2">
                 <Swords className="w-5 h-5 text-primary"/>
-                <span className="font-bold text-lg">{userBuilds.length}</span> Builds
+                <span className="font-bold text-lg">{userBuilds.length}</span> {t('builds')}
             </div>
           </div>
         </div>
@@ -41,7 +42,7 @@ export default function ProfilePage({ params }: { params: { username: string, lo
       
       <Card>
         <CardContent className="p-6">
-            <h2 className="text-2xl font-headline font-bold mb-4">Submitted Builds</h2>
+            <h2 className="text-2xl font-headline font-bold mb-4">{t('submittedBuilds')}</h2>
              {userBuilds.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {userBuilds.map(build => (
@@ -50,8 +51,8 @@ export default function ProfilePage({ params }: { params: { username: string, lo
                 </div>
             ) : (
                 <div className="text-center py-16 text-muted-foreground">
-                <h3 className="text-xl font-semibold">No builds yet</h3>
-                <p>{user.name} hasn't submitted any builds.</p>
+                <h3 className="text-xl font-semibold">{t('noBuildsTitle')}</h3>
+                <p>{t('noBuildsDescription', {username: user.name})}</p>
                 </div>
             )}
         </CardContent>

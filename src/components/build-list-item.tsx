@@ -5,8 +5,10 @@ import { Badge } from '@/components/ui/badge';
 import { ArrowUp, MessageSquare, CheckCircle2, XCircle, User, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { useTranslations } from 'next-intl';
 
 export function BuildListItem({ build, isLast, locale }: { build: Build, isLast: boolean, locale: string }) {
+  const t = useTranslations('BuildListItem');
   const voteScore = build.upvotes - build.downvotes;
 
   return (
@@ -29,7 +31,7 @@ export function BuildListItem({ build, isLast, locale }: { build: Build, isLast:
             <div className="md:col-span-1">
                 <h3 className="font-headline text-lg font-semibold group-hover:text-primary transition-colors">{build.name}</h3>
                 <p className="text-sm text-muted-foreground">
-                    For {build.baseWeapon}
+                    {t('for')} {build.baseWeapon}
                 </p>
             </div>
 
@@ -49,11 +51,11 @@ export function BuildListItem({ build, isLast, locale }: { build: Build, isLast:
 
             <div className="md:col-span-1 flex items-center justify-end gap-4">
                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-1.5" title="Votes">
+                    <div className="flex items-center gap-1.5" title={t('votes')}>
                         <ArrowUp className={`w-4 h-4 ${voteScore > 0 ? 'text-green-500' : ''}`} />
                         <span className="font-semibold text-base">{voteScore}</span>
                     </div>
-                    <div className="flex items-center gap-1.5" title="Comments">
+                    <div className="flex items-center gap-1.5" title={t('comments')}>
                         <MessageSquare className="w-4 h-4" />
                         <span className="font-semibold text-base">{build.comments.length}</span>
                     </div>
@@ -61,7 +63,7 @@ export function BuildListItem({ build, isLast, locale }: { build: Build, isLast:
                  <div className="flex flex-col items-end gap-1.5">
                     <Badge variant={build.isValid ? 'default' : 'destructive'} className={cn('text-xs', build.isValid ? 'bg-green-600/20 text-green-400 border-green-600/30' : 'bg-red-600/20 text-red-400 border-red-600/30')}>
                         {build.isValid ? <CheckCircle2 className="w-3 h-3 mr-1" /> : <XCircle className="w-3 h-3 mr-1" />}
-                        {build.isValid ? 'Valid' : 'Invalid'}
+                        {build.isValid ? t('valid') : t('invalid')}
                     </Badge>
                      <Badge variant="outline" className="text-xs">v{build.version}</Badge>
                  </div>
