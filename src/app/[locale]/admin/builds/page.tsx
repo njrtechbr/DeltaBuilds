@@ -89,7 +89,7 @@ export default function AdminBuildsPage() {
                         <TableCell className="font-medium">{build.name}</TableCell>
                         <TableCell>{build.author.name}</TableCell>
                         <TableCell>
-                            <Badge variant={latestVersion.isValid ? 'default' : 'destructive'} className={latestVersion.isValid ? 'bg-green-600/20 text-green-400 border-green-600/30' : 'bg-red-600/20 text-red-400 border-red-600/30'}>
+                            <Badge variant={latestVersion.isValid ? 'default' : 'destructive'} className={cn(latestVersion.isValid ? 'bg-green-600/20 text-green-400 border-green-600/30' : 'bg-red-600/20 text-red-400 border-red-600/30')}>
                                 {latestVersion.isValid ? t('valid') : t('invalid')}
                             </Badge>
                         </TableCell>
@@ -107,11 +107,9 @@ export default function AdminBuildsPage() {
                                 </Tooltip>
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <Button variant="ghost" size="icon" asChild>
-                                            <Link href={{ pathname: '/submit', query: { buildId: build.id } }}>
-                                                <Edit className="w-4 h-4" />
-                                            </Link>
-                                        </Button>
+                                        <Link href={{ pathname: '/submit', query: { buildId: build.id } }} className={cn(buttonVariants({variant: 'ghost', size: 'icon'}))}>
+                                            <Edit className="w-4 h-4" />
+                                        </Link>
                                     </TooltipTrigger>
                                     <TooltipContent>{t('edit')}</TooltipContent>
                                 </Tooltip>
