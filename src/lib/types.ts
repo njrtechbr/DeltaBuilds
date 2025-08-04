@@ -1,9 +1,11 @@
 export type User = {
   id: string;
   name: string;
+  email: string;
   avatarUrl: string;
   reputation: number;
-  role?: 'admin' | 'user';
+  role: 'admin' | 'user';
+  status: 'active' | 'banned';
 };
 
 export type Comment = {

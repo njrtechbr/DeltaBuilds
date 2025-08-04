@@ -54,6 +54,11 @@ const pathnames = {
     es: '/admin/reports',
     'pt-BR': '/admin/reports'
   },
+  '/admin/users': {
+    en: '/admin/users',
+    es: '/admin/usuarios',
+    'pt-BR': '/admin/usuarios'
+  }
 };
  
 export const {Link, redirect, usePathname, useRouter} =

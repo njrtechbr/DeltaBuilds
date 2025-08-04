@@ -1,9 +1,9 @@
 import type { User, Build } from './types';
 
 export const users: User[] = [
-  { id: 'u1', name: 'Ghost', avatarUrl: 'https://placehold.co/100x100', reputation: 1350, role: 'admin' },
-  { id: 'u2', name: 'Viper', avatarUrl: 'https://placehold.co/100x100', reputation: 870, role: 'user' },
-  { id: 'u3', name: 'Rogue', avatarUrl: 'https://placehold.co/100x100', reputation: 420, role: 'user' },
+  { id: 'u1', name: 'Ghost', email: 'ghost@example.com', avatarUrl: 'https://placehold.co/100x100', reputation: 1350, role: 'admin', status: 'active' },
+  { id: 'u2', name: 'Viper', email: 'viper@example.com', avatarUrl: 'https://placehold.co/100x100', reputation: 870, role: 'user', status: 'active' },
+  { id: 'u3', name: 'Rogue', email: 'rogue@example.com', avatarUrl: 'https://placehold.co/100x100', reputation: 420, role: 'user', status: 'banned' },
 ];
 
 export const allBaseWeapons = [

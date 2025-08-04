@@ -15,8 +15,8 @@ import { Logo } from '@/components/logo';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { usePathname } from '@/navigation';
 import { useTranslations } from 'next-intl';
-import { LayoutDashboard, ShieldAlert, Swords, Search, LogOut, User as UserIcon } from 'lucide-react';
-import { users } from '@/lib/data';
+import { LayoutDashboard, ShieldAlert, Swords, Search, LogOut, User as UserIcon, Users } from 'lucide-react';
+import { users as allUsers } from '@/lib/data';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -29,6 +29,7 @@ function AdminSidebar() {
     const menuItems = [
         { href: '/admin/dashboard', label: t('dashboard'), icon: LayoutDashboard },
         { href: '/admin/builds', label: t('builds'), icon: Swords },
+        { href: '/admin/users', label: t('users'), icon: Users },
         { href: '/admin/reports', label: t('reports'), icon: ShieldAlert },
     ];
     
@@ -59,7 +60,7 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const currentUser = users[0]; // Fake user
+  const currentUser = allUsers[0]; // Fake user
   if (currentUser.role !== 'admin') {
     return (
         <div className="flex h-screen w-full items-center justify-center">
