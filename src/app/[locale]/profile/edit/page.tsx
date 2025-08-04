@@ -22,7 +22,7 @@ import PageLayout from "../../page-layout";
 import { PageHeader } from "@/components/page-header";
 import { useTranslations } from "next-intl";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Facebook, Instagram, Twitch, Twitter, Youtube, Steam, Link as LinkIcon } from "lucide-react";
+import { Facebook, Instagram, Twitch, Twitter, Youtube, Link as LinkIcon } from "lucide-react";
 import { useRouter } from "@/navigation";
 
 const profileFormSchema = z.object({
@@ -221,7 +221,7 @@ export default function EditProfilePage() {
                       name="socials.steam"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="flex items-center gap-2"><Steam /> {t('socials.steam')}</FormLabel>
+                          <FormLabel className="flex items-center gap-2"><LinkIcon /> {t('socials.steam')}</FormLabel>
                           <FormControl>
                             <Input placeholder="https://steamcommunity.com/..." {...field} />
                           </FormControl>
