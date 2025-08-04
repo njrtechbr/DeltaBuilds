@@ -6,6 +6,14 @@ export type User = {
   reputation: number;
   role: 'admin' | 'user';
   status: 'active' | 'banned';
+  bio?: string;
+  socials?: {
+    youtube?: string;
+    twitch?: string;
+    instagram?: string;
+    facebook?: string;
+    x?: string;
+  }
 };
 
 export type Comment = {

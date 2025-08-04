@@ -1,31 +1,54 @@
 import type { User, Build } from './types';
 
-export const users: User[] = [
-  { id: 'u1', name: 'Ghost', email: 'ghost@example.com', avatarUrl: 'https://placehold.co/100x100', reputation: 2156, role: 'admin', status: 'active' },
-  { id: 'u2', name: 'Viper', email: 'viper@example.com', avatarUrl: 'https://placehold.co/100x100', reputation: 2091, role: 'user', status: 'active' },
-  { id: 'u3', name: 'Rogue', email: 'rogue@example.com', avatarUrl: 'https://placehold.co/100x100', reputation: 1555, role: 'user', status: 'banned' },
+// Calculate reputation based on builds and comments
+const calculateReputation = (userId: string, allBuilds: Build[]): number => {
+    let reputation = 0;
+    
+    // Filter builds by the user
+    const userBuilds = allBuilds.filter(b => b.author.id === userId);
+
+    // +25 points for each build submitted
+    reputation += userBuilds.length * 25;
+
+    // Calculate points from votes
+    userBuilds.forEach(build => {
+        reputation += build.upvotes * 10;
+        reputation += build.downvotes * -2;
+    });
+
+    // +1 point for each comment made
+    allBuilds.forEach(build => {
+        build.comments.forEach(comment => {
+            if (comment.author.id === userId) {
+                reputation += 1;
+            }
+        });
+    });
+    
+    return reputation;
+};
+
+
+let tempUsers: Omit<User, 'reputation'>[] = [
+  { id: 'u1', name: 'Ghost', email: 'ghost@example.com', avatarUrl: 'https://placehold.co/100x100', role: 'admin', status: 'active', bio: 'Master strategist and expert in silent takedowns. Sharing my top-tier builds with the community.', socials: { youtube: 'https://youtube.com', twitch: 'https://twitch.tv', x: 'https://x.com' } },
+  { id: 'u2', name: 'Viper', email: 'viper@example.com', avatarUrl: 'https://placehold.co/100x100', role: 'user', status: 'active', bio: 'Aggressive player who loves to be on the front lines. My builds are designed for maximum impact.' },
+  { id: 'u3', name: 'Rogue', email: 'rogue@example.com', avatarUrl: 'https://placehold.co/100x100', role: 'user', status: 'banned', bio: 'Lurking in the shadows.' },
 ];
 
-export const allBaseWeapons = [
-  'M4A1', 'Vector', 'AX-50', 'AK-47', 'G3',
-  'AK-12', 'K416', 'K437', 'SMG-45', 'MP5',
-  'QCQ-171', 'M7', 'PKM', 'AUG', 'SR-25', 'SG552',
-  'QBZ95-1', 'AKM', 'PTR-32'
-].sort();
 
 export const builds: Build[] = [
   {
     id: 'b1',
     name: 'CQB Dominator',
     baseWeapon: 'M4A1',
-    author: users[0],
+    author: { id: 'u1', name: 'Ghost', email: 'ghost@example.com', avatarUrl: 'https://placehold.co/100x100', reputation: 0, role: 'admin', status: 'active' }, // Placeholder reputation
     tags: ['Aggressive', 'Close Quarters', 'Run & Gun'],
     description: 'This M4A1 build is optimized for aggressive, close-quarters combat. High rate of fire and mobility make it perfect for clearing rooms and pushing objectives. The short barrel and laser sight ensure quick target acquisition.',
     upvotes: 125,
     downvotes: 10,
     comments: [
-      { id: 'c1', text: 'This build shreds! Thanks for sharing.', author: users[1], createdAt: '2024-05-20T10:30:00Z' },
-      { id: 'c2', text: 'A bit too much recoil for my taste, but effective up close.', author: users[2], createdAt: '2024-05-20T12:45:00Z' },
+      { id: 'c1', text: 'This build shreds! Thanks for sharing.', author: { id: 'u2', name: 'Viper', email: 'viper@example.com', avatarUrl: 'https://placehold.co/100x100', reputation: 0, role: 'user', status: 'active' }, createdAt: '2024-05-20T10:30:00Z' },
+      { id: 'c2', text: 'A bit too much recoil for my taste, but effective up close.', author: { id: 'u3', name: 'Rogue', email: 'rogue@example.com', avatarUrl: 'https://placehold.co/100x100', reputation: 0, role: 'user', status: 'banned' }, createdAt: '2024-05-20T12:45:00Z' },
     ],
     createdAt: '2024-05-18T09:00:00Z',
     youtubeUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
@@ -44,7 +67,7 @@ export const builds: Build[] = [
     id: 'b2',
     name: 'Silent Ghost',
     baseWeapon: 'Vector',
-    author: users[1],
+    author: { id: 'u2', name: 'Viper', email: 'viper@example.com', avatarUrl: 'https://placehold.co/100x100', reputation: 0, role: 'user', status: 'active' },
     tags: ['Stealth', 'Flanking', 'Suppressed'],
     description: 'A suppressed Vector build for silent operations. Perfect for flanking the enemy and taking them out without revealing your position. The integrated suppressor and subsonic rounds make you a ghost on the battlefield.',
     upvotes: 210,
@@ -60,7 +83,7 @@ export const builds: Build[] = [
     id: 'b3',
     name: 'Long Range Precision',
     baseWeapon: 'AX-50',
-    author: users[0],
+    author: { id: 'u1', name: 'Ghost', email: 'ghost@example.com', avatarUrl: 'https://placehold.co/100x100', reputation: 0, role: 'admin', status: 'active' },
     tags: ['Sniper', 'Long Range', 'Defensive'],
     description: 'The ultimate long-range sniper setup. This AX-50 build is designed for maximum accuracy and damage at extreme distances. Hold down sightlines and provide overwatch for your team. This build is not valid in the current patch.',
     upvotes: 88,
@@ -76,7 +99,7 @@ export const builds: Build[] = [
     id: 'b4',
     name: 'All-Rounder AK',
     baseWeapon: 'AK-47',
-    author: users[2],
+    author: { id: 'u3', name: 'Rogue', email: 'rogue@example.com', avatarUrl: 'https://placehold.co/100x100', reputation: 0, role: 'user', status: 'banned' },
     tags: ['Versatile', 'Mid Range', 'Reliable'],
     description: 'A balanced AK-47 build that performs well in most situations. Good for both medium-range engagements and can hold its own in close quarters. A reliable choice for any map.',
     upvotes: 150,
@@ -92,7 +115,7 @@ export const builds: Build[] = [
     id: 'b5',
     name: 'Fuzil de combate G3-Conquista',
     baseWeapon: 'G3',
-    author: users[2],
+    author: { id: 'u2', name: 'Viper', email: 'viper@example.com', avatarUrl: 'https://placehold.co/100x100', reputation: 0, role: 'user', status: 'active' },
     tags: ['Fuzil de combate', 'Tático'],
     description: 'Uma build para o fuzil de combate G3, focada em controle e precisão. Ideal para engajamentos táticos em média distância, dominando o campo de batalha com disparos potentes e calculados.',
     upvotes: 80,
@@ -106,7 +129,36 @@ export const builds: Build[] = [
   }
 ];
 
+// Now, map over the temporary users to create the final users array with calculated reputation
+export const users: User[] = tempUsers.map(user => ({
+    ...user,
+    reputation: calculateReputation(user.id, builds)
+}));
+
+
+// Replace author stubs in builds with full user objects
+builds.forEach(build => {
+    const author = users.find(u => u.id === build.author.id);
+    if (author) {
+        build.author = author;
+    }
+    build.comments.forEach(comment => {
+        const commentAuthor = users.find(u => u.id === comment.author.id);
+        if (commentAuthor) {
+            comment.author = commentAuthor;
+        }
+    })
+});
+
+
 export const reportedCodes = [
     { buildId: 'b3', version: '1.5-invalid', code: 'J2K5L9-M3N1O8-STEAM', platform: 'Steam', reportedAt: '2024-05-24T10:00:00Z', reporter: users[1] },
     { buildId: 'b1', version: '2.0', code: 'A7B3C9-X1Y2Z3-OLDGARENA', platform: 'Garena', reportedAt: '2024-05-23T15:00:00Z', reporter: users[2] },
 ];
+
+export const allBaseWeapons = [
+  'M4A1', 'Vector', 'AX-50', 'AK-47', 'G3',
+  'AK-12', 'K416', 'K437', 'SMG-45', 'MP5',
+  'QCQ-171', 'M7', 'PKM', 'AUG', 'SR-25', 'SG552',
+  'QBZ95-1', 'AKM', 'PTR-32'
+].sort();

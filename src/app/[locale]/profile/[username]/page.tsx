@@ -3,9 +3,17 @@ import { users, builds } from '@/lib/data';
 import { PageHeader } from '@/components/page-header';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { BuildListItem } from '@/components/build-list-item';
-import { Star, Swords } from 'lucide-react';
+import { Star, Swords, Globe, Twitch, Twitter, Youtube, Facebook, Instagram, Settings } from 'lucide-react';
 import {getTranslations, unstable_setRequestLocale} from 'next-intl/server';
 import PageLayout from '../../page-layout';
+import { Link } from '@/navigation';
+import { Button } from '@/components/ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 export default async function ProfilePage({ params }: { params: { username: string, locale: string } }) {
   unstable_setRequestLocale(params.locale);
@@ -20,6 +28,14 @@ export default async function ProfilePage({ params }: { params: { username: stri
   const favoriteBuilds = builds.filter(b => b.favoritedBy.includes(user.id));
   const isCurrentUser = users[0].id === user.id; // Faking current user
 
+  const socialIcons = {
+    youtube: Youtube,
+    twitch: Twitch,
+    instagram: Instagram,
+    facebook: Facebook,
+    x: Twitter,
+  }
+
   return (
     <PageLayout>
       <div className="space-y-8">
@@ -28,9 +44,16 @@ export default async function ProfilePage({ params }: { params: { username: stri
             <AvatarImage src={user.avatarUrl} alt={user.name} />
             <AvatarFallback className="text-4xl">{user.name.charAt(0)}</AvatarFallback>
           </Avatar>
-          <div>
-            <PageHeader title={user.name} />
-            <div className="flex items-center gap-6 text-muted-foreground">
+          <div className='flex-grow'>
+            <div className='flex justify-between items-start'>
+                <PageHeader title={user.name} />
+                {isCurrentUser && (
+                    <Button asChild variant="outline">
+                        <Link href="/profile/edit"><Settings className="mr-2 h-4 w-4" /> {t('editProfile')}</Link>
+                    </Button>
+                )}
+            </div>
+            <div className="flex items-center gap-6 text-muted-foreground mb-2">
               <div className="flex items-center gap-2">
                   <Star className="w-5 h-5 text-accent"/>
                   <span className="font-bold text-lg">{user.reputation}</span> {t('reputation')}
@@ -40,6 +63,33 @@ export default async function ProfilePage({ params }: { params: { username: stri
                   <span className="font-bold text-lg">{userBuilds.length}</span> {t('builds')}
               </div>
             </div>
+             {user.bio && <p className="text-muted-foreground max-w-prose">{user.bio}</p>}
+             {user.socials && (
+                <div className='flex items-center gap-2 mt-4'>
+                    <TooltipProvider>
+                    {Object.entries(user.socials).map(([key, value]) => {
+                        if (value) {
+                            const Icon = socialIcons[key as keyof typeof socialIcons];
+                            return (
+                                <Tooltip key={key}>
+                                    <TooltipTrigger asChild>
+                                        <a href={value} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="icon">
+                                                <Icon className="w-5 h-5 text-muted-foreground hover:text-primary transition-colors" />
+                                            </Button>
+                                        </a>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>{t(`socials.${key}` as any)}</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            )
+                        }
+                        return null;
+                     })}
+                    </TooltipProvider>
+                </div>
+             )}
           </div>
         </div>
         

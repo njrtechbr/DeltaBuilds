@@ -29,6 +29,11 @@ const pathnames = {
     es: '/registrarse',
     'pt-BR': '/cadastrar'
   },
+  '/profile/edit': {
+    en: '/profile/edit',
+    es: '/perfil/editar',
+    'pt-BR': '/perfil/editar'
+  },
   '/profile/[username]': {
     en: '/profile/[username]',
     es: '/perfil/[username]',

@@ -11,7 +11,8 @@
     "signOut": "Sign Out",
     "myFavorites": "My Favorites",
     "myBuilds": "My Builds",
-    "adminPanel": "Admin Panel"
+    "adminPanel": "Admin Panel",
+    "editProfile": "Edit Profile"
   },
   "Home": {
     "title": "Discover Builds",
@@ -109,7 +110,31 @@
     "noBuildsDescription": "{username} hasn't submitted any builds.",
     "noFavoritesTitle": "No favorites yet",
     "noFavoritesDescription": "You haven't favorited any builds.",
-    "noFavoritesDescriptionOther": "{username} hasn't favorited any builds."
+    "noFavoritesDescriptionOther": "{username} hasn't favorited any builds.",
+    "editProfile": "Edit Profile",
+    "editProfileDescription": "Update your public profile information.",
+    "publicProfile": "Public Profile",
+    "publicProfileDescription": "This information will be displayed publicly.",
+    "usernameLabel": "Username",
+    "usernamePlaceholder": "Your display name",
+    "usernameDescription": "This is your public display name. It can be your real name or a pseudonym.",
+    "bioLabel": "Bio",
+    "bioPlaceholder": "Tell us a little about yourself",
+    "bioDescription": "A brief description of yourself to be displayed on your profile.",
+    "socialsTitle": "Social Links",
+    "socialsDescription": "Add links to your social media profiles.",
+    "updateProfile": "Update Profile",
+    "toast": {
+      "profileUpdatedTitle": "Profile Updated",
+      "profileUpdatedDescription": "Your profile information has been successfully updated."
+    },
+    "socials": {
+        "youtube": "YouTube",
+        "twitch": "Twitch",
+        "instagram": "Instagram",
+        "facebook": "Facebook",
+        "x": "X (Twitter)"
+    }
   },
   "MyBuilds": {
     "title": "My Builds",

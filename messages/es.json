@@ -11,7 +11,8 @@
     "signOut": "Cerrar Sesión",
     "myFavorites": "Mis Favoritos",
     "myBuilds": "Mis Builds",
-    "adminPanel": "Panel de Admin"
+    "adminPanel": "Panel de Admin",
+    "editProfile": "Editar Perfil"
   },
   "Home": {
     "title": "Descubrir Builds",
@@ -109,7 +110,31 @@
     "noBuildsDescription": "{username} no ha enviado ninguna build.",
     "noFavoritesTitle": "Aún no hay favoritos",
     "noFavoritesDescription": "No has marcado ninguna build como favorita.",
-    "noFavoritesDescriptionOther": "{username} no ha marcado ninguna build como favorita."
+    "noFavoritesDescriptionOther": "{username} no ha marcado ninguna build como favorita.",
+    "editProfile": "Editar Perfil",
+    "editProfileDescription": "Actualiza la información de tu perfil público.",
+    "publicProfile": "Perfil Público",
+    "publicProfileDescription": "Esta información se mostrará públicamente.",
+    "usernameLabel": "Nombre de usuario",
+    "usernamePlaceholder": "Tu nombre de usuario",
+    "usernameDescription": "Este es tu nombre público. Puede ser tu nombre real o un seudónimo.",
+    "bioLabel": "Biografía",
+    "bioPlaceholder": "Cuéntanos un poco sobre ti",
+    "bioDescription": "Una breve descripción sobre ti para mostrar en tu perfil.",
+    "socialsTitle": "Redes Sociales",
+    "socialsDescription": "Añade enlaces a tus perfiles de redes sociales.",
+    "updateProfile": "Actualizar Perfil",
+    "toast": {
+      "profileUpdatedTitle": "Perfil Actualizado",
+      "profileUpdatedDescription": "La información de tu perfil ha sido actualizada correctamente."
+    },
+    "socials": {
+      "youtube": "YouTube",
+      "twitch": "Twitch",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "x": "X (Twitter)"
+    }
   },
   "MyBuilds": {
     "title": "Mis Builds",

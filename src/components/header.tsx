@@ -1,8 +1,8 @@
-import Link from 'next/link';
+import { Link } from '@/navigation';
 import { useTranslations } from 'next-intl';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
-import { PlusCircle, User, LogOut, Star, Swords, Shield } from 'lucide-react';
+import { PlusCircle, User, LogOut, Star, Swords, Shield, Settings } from 'lucide-react';
 import { LanguageSwitcher } from './language-switcher';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import {
@@ -71,7 +71,7 @@ export function Header() {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                     <Avatar className="h-8 w-8">
-                       <AvatarImage src="https://placehold.co/100x100" alt={`@${username}`} />
+                       <AvatarImage src={currentUser.avatarUrl} alt={`@${username}`} />
                        <AvatarFallback>{username.charAt(0)}</AvatarFallback>
                     </Avatar>
                   </Button>
@@ -105,6 +105,12 @@ export function Header() {
                       <Star className="mr-2 h-4 w-4" />
                       <span>{t('myFavorites')}</span>
                      </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/profile/edit">
+                      <Settings className="mr-2 h-4 w-4" />
+                      <span>{t('editProfile')}</span>
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
