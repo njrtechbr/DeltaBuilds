@@ -6,23 +6,21 @@ import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation'
 import { builds } from "@/lib/data";
 import PageLayout from "../page-layout";
+import { useAuth } from "@/context/auth-provider";
+import { useRouter } from "@/navigation";
 
 export default function SubmitBuildPage() {
   const t = useTranslations('Submit');
   const searchParams = useSearchParams()
   const buildId = searchParams.get('buildId');
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
   
   const buildToUpdate = buildId ? builds.find(b => b.id === buildId) : undefined;
   const isUpdateMode = !!buildToUpdate;
   
-  // TODO: Replace with real authentication check
-  const isAuthenticated = true;
-
-  if (!isAuthenticated) {
-    // In a real app, this would use the router from next/navigation
-    if (typeof window !== 'undefined') {
-      window.location.href = '/login';
-    }
+  if (typeof window !== 'undefined' && !isAuthenticated) {
+    router.push('/login');
     return null;
   }
 

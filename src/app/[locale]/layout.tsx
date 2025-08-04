@@ -5,6 +5,7 @@ import '../globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import { locales } from '@/navigation';
+import { AuthProvider } from '@/context/auth-provider';
 
 export const metadata: Metadata = {
   title: 'DeltaBuilds - Share and Discover Delta Force Builds',
@@ -46,8 +47,10 @@ export default async function RootLayout({
         )}
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
-          {children}
-          <Toaster />
+          <AuthProvider>
+            {children}
+            <Toaster />
+          </AuthProvider>
         </NextIntlClientProvider>
       </body>
     </html>

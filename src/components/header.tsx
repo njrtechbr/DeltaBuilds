@@ -13,14 +13,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { users } from '@/lib/data';
+import { useAuth } from '@/context/auth-provider';
 
 export function Header() {
   const t = useTranslations('Header');
-  const isAuthenticated = true; 
-  const currentUser = users[0];
-  const username = currentUser.name;
-  const isAdmin = currentUser.role === 'admin';
+  const { isAuthenticated, user, login, logout } = useAuth();
+  
+  const currentUser = user;
+  const username = currentUser?.name;
+  const isAdmin = currentUser?.role === 'admin';
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -66,13 +67,13 @@ export function Header() {
               </Button>
             )}
             
-            {isAuthenticated ? (
+            {isAuthenticated && currentUser ? (
                <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                     <Avatar className="h-8 w-8">
                        <AvatarImage src={currentUser.avatarUrl} alt={`@${username}`} />
-                       <AvatarFallback>{username.charAt(0)}</AvatarFallback>
+                       <AvatarFallback>{username?.charAt(0)}</AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
@@ -81,7 +82,7 @@ export function Header() {
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-medium leading-none">{username}</p>
                       <p className="text-xs leading-none text-muted-foreground">
-                        {currentUser.role === 'admin' ? 'Administrator' : 'User'}
+                        {isAdmin ? 'Administrator' : 'User'}
                       </p>
                     </div>
                   </DropdownMenuLabel>
@@ -113,7 +114,7 @@ export function Header() {
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={logout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>{t('signOut')}</span>
                   </DropdownMenuItem>
@@ -121,8 +122,8 @@ export function Header() {
               </DropdownMenu>
             ) : (
                 <div className="flex items-center gap-2">
-                    <Button variant="ghost" asChild>
-                        <Link href="/login">{t('logIn')}</Link>
+                    <Button variant="ghost" onClick={login}>
+                        {t('logIn')}
                     </Button>
                     <Button variant="outline" className="text-accent-foreground border-accent hover:bg-accent/90 hover:text-accent-foreground" asChild>
                         <Link href="/signup">{t('signUpLink')}</Link>
