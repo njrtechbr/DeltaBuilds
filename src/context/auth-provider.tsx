@@ -1,10 +1,10 @@
+
 "use client";
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import type { User as SupabaseUser, Session } from '@supabase/supabase-js';
+import type { Session } from '@supabase/supabase-js';
 import type { User as AppUser } from '@/lib/types';
 import { users as mockUsers } from '@/lib/data';
-import { createClient } from '@/lib/supabase/client';
 
 type AuthContextType = {
   user: AppUser | null;
@@ -17,16 +17,21 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  // In a real app, you'd fetch the user from Supabase.
-  // For now, we'll mock it but use a state to simulate login/logout.
   const [session, setSession] = useState<Session | null>(null);
   const [appUser, setAppUser] = useState<AppUser | null>(null);
-  const isAuthenticated = !!appUser;
   
+  // Use a separate state for loading to prevent hydration issues
+  const [loading, setLoading] = useState(true);
+
   // NOTE: This is a mock implementation for demonstration purposes.
   // In a real Supabase integration, you would use supabase.auth.onAuthStateChange
   // to listen for authentication events and update the user state accordingly.
   
+  useEffect(() => {
+    // Simulate checking auth state on mount, only on the client
+    setLoading(false); 
+  }, []);
+
   const login = () => {
     // This is a mock login function.
     // It sets the first user from the mock data as the logged-in user.
@@ -46,10 +51,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const value = {
     user: appUser,
     session,
-    isAuthenticated,
+    isAuthenticated: !!appUser,
     login,
     logout,
   };
+
+  // Render a loading state or null while checking auth to prevent mismatches
+  if (loading) {
+    return null;
+  }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
