@@ -3,7 +3,7 @@ import {createSharedPathnamesNavigation} from 'next-intl/navigation';
 export const locales = ['en', 'es', 'pt-BR'] as const;
 export const localePrefix = 'always'; // Default
 
-const pathnames = {
+export const pathnames = {
   '/my-builds': {
     en: '/my-builds',
     es: '/mis-builds',
