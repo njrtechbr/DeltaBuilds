@@ -1,91 +1,91 @@
-# DeltaBuilds - API Design
+# DeltaBuilds - Design da API
 
-This document describes the application's backend interface. Since this is a Next.js application, we don't have a traditional REST or GraphQL API. Instead, functionality is exposed through **Next.js Server Actions** and **Genkit AI Flows**.
+Este documento descreve a interface de backend da aplicação. Como esta é uma aplicação Next.js, não temos uma API REST ou GraphQL tradicional. Em vez disso, a funcionalidade é exposta através de **Next.js Server Actions** e **Fluxos de IA do Genkit**.
 
 ## 1. Server Actions (`src/app/actions.ts`)
 
-Server Actions are functions that run only on the server and can be called directly from Client Components. They are the primary way to handle data mutation and AI interactions.
+Server Actions são funções que rodam apenas no servidor e podem ser chamadas diretamente de Componentes de Cliente (Client Components). Elas são a principal forma de lidar com a mutação de dados e interações com a IA.
 
 ---
 
 ### `getTagSuggestions(input: { description: string }): Promise<SuggestionState>`
 
-- **Description:** Takes a build description and uses an AI flow to suggest relevant playstyle tags.
-- **Input:**
-  - `description`: A string containing the build's description (min 20 characters).
-- **Output (`SuggestionState`):**
-  - `tags?: string[]`: An array of suggested tags.
-  - `error?: string`: An error message if the operation fails.
-- **AI Flow Used:** `suggestPlaystyleTags`
+- **Descrição:** Recebe a descrição de uma build e usa um fluxo de IA para sugerir tags de estilo de jogo relevantes.
+- **Entrada:**
+  - `description`: Uma string contendo a descrição da build (mínimo de 20 caracteres).
+- **Saída (`SuggestionState`):**
+  - `tags?: string[]`: Um array de tags sugeridas.
+  - `error?: string`: Uma mensagem de erro se a operação falhar.
+- **Fluxo de IA Utilizado:** `suggestPlaystyleTags`
 
 ---
 
 ### `parseCode(input: { importCode: string }): Promise<ParsedCodeState>`
 
-- **Description:** Parses a game import code to automatically extract the base weapon and weapon type tags.
-- **Input:**
-  - `importCode`: The raw import code string from the game.
-- **Output (`ParsedCodeState`):**
-  - `baseWeapon?: string`: The extracted base weapon name.
-  - `tags?: string[]`: An array containing the extracted weapon type tag.
-  - `error?: string`: An error message if parsing fails.
-- **AI Flow Used:** `parseShareCode`
+- **Descrição:** Analisa um código de importação do jogo para extrair automaticamente a arma base e as tags de tipo de arma.
+- **Entrada:**
+  - `importCode`: A string bruta do código de importação do jogo.
+- **Saída (`ParsedCodeState`):**
+  - `baseWeapon?: string`: O nome da arma base extraído.
+  - `tags?: string[]`: Um array contendo a tag de tipo de arma extraída.
+  - `error?: string`: Uma mensagem de erro se a análise falhar.
+- **Fluxo de IA Utilizado:** `parseShareCode`
 
 ---
 
 ### `getTranslation(input: { text: string, targetLocale: string }): Promise<TranslationState>`
 
-- **Description:** Translates a given text into a target language.
-- **Input:**
-  - `text`: The string to translate.
-  - `targetLocale`: The target locale code (e.g., 'en', 'es').
-- **Output (`TranslationState`):**
-  - `translatedText?: string`: The translated text.
-  - `error?: string`: An error message if translation fails.
-- **AI Flow Used:** `translateText`
+- **Descrição:** Traduz um texto para um idioma de destino.
+- **Entrada:**
+  - `text`: A string a ser traduzida.
+  - `targetLocale`: O código do local de destino (ex: 'en', 'es').
+- **Saída (`TranslationState`):**
+  - `translatedText?: string`: O texto traduzido.
+  - `error?: string`: Uma mensagem de erro se a tradução falhar.
+- **Fluxo de IA Utilizado:** `translateText`
 
 ---
 
-### Future Server Actions (To Be Implemented)
+### Futuras Server Actions (A Serem Implementadas)
 
-- `submitBuild(formData)`: Handles the creation of a new build and its first version.
-- `updateBuild(formData)`: Handles the submission of a new version for an existing build.
-- `handleVote(buildId, voteType)`: Records a user's upvote or downvote on a build.
-- `postComment(buildId, text)`: Adds a new comment to a build.
-- `toggleFavorite(buildId)`: Adds or removes a build from a user's favorites.
-- `reportCode(versionId, reason)`: Submits a report for a non-working import code.
-- `updateProfile(formData)`: Updates a user's profile information.
-- `admin_updateBuildStatus(versionId, status)`: Admin action to change a build version's status.
-- `admin_updateUserRole(userId, role)`: Admin action to change a user's role.
-- `admin_updateUserStatus(userId, status)`: Admin action to ban/unban a user.
+- `submitBuild(formData)`: Lida com a criação de uma nova build e sua primeira versão.
+- `updateBuild(formData)`: Lida com o envio de uma nova versão para uma build existente.
+- `handleVote(buildId, voteType)`: Registra um voto positivo ou negativo de um usuário em uma build.
+- `postComment(buildId, text)`: Adiciona um novo comentário a uma build.
+- `toggleFavorite(buildId)`: Adiciona ou remove uma build dos favoritos de um usuário.
+- `reportCode(versionId, reason)`: Envia uma denúncia para um código de importação que não funciona.
+- `updateProfile(formData)`: Atualiza as informações de perfil de um usuário.
+- `admin_updateBuildStatus(versionId, status)`: Ação de admin para alterar o status da versão de uma build.
+- `admin_updateUserRole(userId, role)`: Ação de admin para alterar a função de um usuário.
+- `admin_updateUserStatus(userId, status)`: Ação de admin para banir/desbanir um usuário.
 
-## 2. Genkit AI Flows (`src/ai/flows/`)
+## 2. Fluxos de IA do Genkit (`src/ai/flows/`)
 
-These flows are the core of the AI functionality, managed by the Genkit framework. They are called by the Server Actions.
+Esses fluxos são o núcleo da funcionalidade de IA, gerenciados pelo framework Genkit. Eles são chamados pelas Server Actions.
 
 ---
 
 ### `suggestPlaystyleTagsFlow`
 
-- **File:** `suggest-playstyle-tags.ts`
-- **Description:** The underlying flow for generating tag suggestions from a description. It takes the text, formats a prompt for an LLM, and structures the output as an array of strings.
-- **Input Schema:** `{ description: z.string() }`
-- **Output Schema:** `{ tags: z.array(z.string()) }`
+- **Arquivo:** `suggest-playstyle-tags.ts`
+- **Descrição:** O fluxo subjacente para gerar sugestões de tags a partir de uma descrição. Ele recebe o texto, formata um prompt para um LLM e estrutura a saída como um array de strings.
+- **Esquema de Entrada:** `{ description: z.string() }`
+- **Esquema de Saída:** `{ tags: z.array(z.string()) }`
 
 ---
 
 ### `parseShareCodeFlow`
 
-- **File:** `parse-share-code.ts`
-- **Description:** The flow for parsing import codes. It uses few-shot prompting to instruct the LLM on how to extract the `baseWeapon` and weapon `tags` from different code formats.
-- **Input Schema:** `{ importCode: z.string() }`
-- **Output Schema:** `{ baseWeapon: z.string(), tags: z.array(z.string()) }`
+- **Arquivo:** `parse-share-code.ts`
+- **Descrição:** O fluxo para analisar códigos de importação. Ele usa "few-shot prompting" para instruir o LLM sobre como extrair a `baseWeapon` (arma base) e `tags` de tipo de arma de diferentes formatos de código.
+- **Esquema de Entrada:** `{ importCode: z.string() }`
+- **Esquema de Saída:** `{ baseWeapon: z.string(), tags: z.array(z.string()) }`
 
 ---
 
 ### `translateTextFlow`
 
-- **File:** `translate-text.ts`
-- **Description:** The flow for translating text. It takes the text and target locale and asks the LLM to perform the translation.
-- **Input Schema:** `{ text: z.string(), targetLocale: z.string() }`
-- **Output Schema:** `{ translatedText: z.string() }`
+- **Arquivo:** `translate-text.ts`
+- **Descrição:** O fluxo para traduzir texto. Ele recebe o texto e o local de destino e pede ao LLM para realizar a tradução.
+- **Esquema de Entrada:** `{ text: z.string(), targetLocale: z.string() }`
+- **Esquema de Saída:** `{ translatedText: z.string() }`
