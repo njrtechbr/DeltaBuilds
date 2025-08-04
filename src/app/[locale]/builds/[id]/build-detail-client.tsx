@@ -1,3 +1,4 @@
+
 'use client';
 
 import type { Build, User } from '@/lib/types';
@@ -151,7 +152,7 @@ export function BuildDetailClient({ build: initialBuild, currentUser, locale }: 
   const getPlatformIcon = (platform: 'Steam' | 'Garena' | 'Mobile') => {
     switch(platform) {
         case 'Steam': return <Laptop className="w-4 h-4 mr-2" />;
-        case 'Garena': return <Gamepad2 className="w-4 h-4 mr-2" />;
+        case 'Garena': return <Laptop className="w-4 h-4 mr-2" />;
         case 'Mobile': return <Smartphone className="w-4 h-4 mr-2" />;
     }
   }

@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import type { Build } from '@/lib/types';
 import { Badge } from '@/components/ui/badge';
@@ -68,7 +69,7 @@ export function BuildListItem({ build, isLast, locale }: { build: Build, isLast:
                         )}
                         {latestVersion.garenaCode && (
                             <Tooltip>
-                                <TooltipTrigger><Gamepad2 className="w-5 h-5"/></TooltipTrigger>
+                                <TooltipTrigger><Laptop className="w-5 h-5"/></TooltipTrigger>
                                 <TooltipContent>Garena</TooltipContent>
                             </Tooltip>
                         )}
