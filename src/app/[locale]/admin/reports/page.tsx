@@ -1,7 +1,8 @@
+
 'use client'
 
 import { PageHeader } from "@/components/page-header";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import {
   Table,
   TableBody,
@@ -29,7 +30,7 @@ import {
 
 export default function AdminReportsPage() {
   const t = useTranslations('Admin');
-  const locale = useTranslations.useLocale();
+  const locale = useLocale();
 
   return (
     <div className="space-y-8">
