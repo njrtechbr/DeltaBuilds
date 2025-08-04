@@ -133,7 +133,10 @@
         "twitch": "Twitch",
         "instagram": "Instagram",
         "facebook": "Facebook",
-        "x": "X (Twitter)"
+        "x": "X (Twitter)",
+        "discord": "Discord",
+        "steam": "Steam",
+        "tiktok": "TikTok"
     }
   },
   "MyBuilds": {

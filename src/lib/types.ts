@@ -13,6 +13,9 @@ export type User = {
     instagram?: string;
     facebook?: string;
     x?: string;
+    discord?: string;
+    steam?: string;
+    tiktok?: string;
   }
 };
 

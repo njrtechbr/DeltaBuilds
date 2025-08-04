@@ -3,7 +3,7 @@ import { users, builds } from '@/lib/data';
 import { PageHeader } from '@/components/page-header';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { BuildListItem } from '@/components/build-list-item';
-import { Star, Swords, Globe, Twitch, Twitter, Youtube, Facebook, Instagram, Settings } from 'lucide-react';
+import { Star, Swords, Globe, Twitch, Twitter, Youtube, Facebook, Instagram, Settings, Link as LinkIcon, Steam } from 'lucide-react';
 import {getTranslations, unstable_setRequestLocale} from 'next-intl/server';
 import PageLayout from '../../page-layout';
 import { Link } from '@/navigation';
@@ -34,6 +34,9 @@ export default async function ProfilePage({ params }: { params: { username: stri
     instagram: Instagram,
     facebook: Facebook,
     x: Twitter,
+    discord: LinkIcon, // Using a generic icon as lucide doesn't have a specific one
+    steam: Steam,
+    tiktok: LinkIcon, // Using a generic icon
   }
 
   return (

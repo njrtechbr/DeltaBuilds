@@ -22,7 +22,7 @@ import PageLayout from "../../page-layout";
 import { PageHeader } from "@/components/page-header";
 import { useTranslations } from "next-intl";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Facebook, Instagram, Twitch, Twitter, Youtube } from "lucide-react";
+import { Facebook, Instagram, Twitch, Twitter, Youtube, Steam, Link as LinkIcon } from "lucide-react";
 import { useRouter } from "@/navigation";
 
 const profileFormSchema = z.object({
@@ -36,6 +36,9 @@ const profileFormSchema = z.object({
       instagram: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal('')),
       facebook: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal('')),
       x: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal('')),
+      discord: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal('')),
+      steam: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal('')),
+      tiktok: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal('')),
   }).optional(),
 });
 
@@ -60,6 +63,9 @@ export default function EditProfilePage() {
         instagram: currentUser.socials?.instagram || "",
         facebook: currentUser.socials?.facebook || "",
         x: currentUser.socials?.x || "",
+        discord: currentUser.socials?.discord || "",
+        steam: currentUser.socials?.steam || "",
+        tiktok: currentUser.socials?.tiktok || "",
       }
     },
     mode: "onChange",
@@ -137,7 +143,7 @@ export default function EditProfilePage() {
                       name="socials.youtube"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="flex items-center gap-2"><Youtube /> YouTube</FormLabel>
+                          <FormLabel className="flex items-center gap-2"><Youtube /> {t('socials.youtube')}</FormLabel>
                           <FormControl>
                             <Input placeholder="https://youtube.com/..." {...field} />
                           </FormControl>
@@ -150,7 +156,7 @@ export default function EditProfilePage() {
                       name="socials.twitch"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="flex items-center gap-2"><Twitch /> Twitch</FormLabel>
+                          <FormLabel className="flex items-center gap-2"><Twitch /> {t('socials.twitch')}</FormLabel>
                           <FormControl>
                             <Input placeholder="https://twitch.tv/..." {...field} />
                           </FormControl>
@@ -163,7 +169,7 @@ export default function EditProfilePage() {
                       name="socials.x"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="flex items-center gap-2"><Twitter /> X (Twitter)</FormLabel>
+                          <FormLabel className="flex items-center gap-2"><Twitter /> {t('socials.x')}</FormLabel>
                           <FormControl>
                             <Input placeholder="https://x.com/..." {...field} />
                           </FormControl>
@@ -176,7 +182,7 @@ export default function EditProfilePage() {
                       name="socials.instagram"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="flex items-center gap-2"><Instagram /> Instagram</FormLabel>
+                          <FormLabel className="flex items-center gap-2"><Instagram /> {t('socials.instagram')}</FormLabel>
                           <FormControl>
                             <Input placeholder="https://instagram.com/..." {...field} />
                           </FormControl>
@@ -189,9 +195,48 @@ export default function EditProfilePage() {
                       name="socials.facebook"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="flex items-center gap-2"><Facebook /> Facebook</FormLabel>
+                          <FormLabel className="flex items-center gap-2"><Facebook /> {t('socials.facebook')}</FormLabel>
                           <FormControl>
                             <Input placeholder="https://facebook.com/..." {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                     <FormField
+                      control={form.control}
+                      name="socials.discord"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="flex items-center gap-2"><LinkIcon /> {t('socials.discord')}</FormLabel>
+                          <FormControl>
+                            <Input placeholder="https://discord.gg/..." {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                     <FormField
+                      control={form.control}
+                      name="socials.steam"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="flex items-center gap-2"><Steam /> {t('socials.steam')}</FormLabel>
+                          <FormControl>
+                            <Input placeholder="https://steamcommunity.com/..." {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                     <FormField
+                      control={form.control}
+                      name="socials.tiktok"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="flex items-center gap-2"><LinkIcon /> {t('socials.tiktok')}</FormLabel>
+                          <FormControl>
+                            <Input placeholder="https://tiktok.com/..." {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

@@ -30,7 +30,7 @@ const calculateReputation = (userId: string, allBuilds: Build[]): number => {
 
 
 let tempUsers: Omit<User, 'reputation'>[] = [
-  { id: 'u1', name: 'Ghost', email: 'ghost@example.com', avatarUrl: 'https://placehold.co/100x100', role: 'admin', status: 'active', bio: 'Master strategist and expert in silent takedowns. Sharing my top-tier builds with the community.', socials: { youtube: 'https://youtube.com', twitch: 'https://twitch.tv', x: 'https://x.com' } },
+  { id: 'u1', name: 'Ghost', email: 'ghost@example.com', avatarUrl: 'https://placehold.co/100x100', role: 'admin', status: 'active', bio: 'Master strategist and expert in silent takedowns. Sharing my top-tier builds with the community.', socials: { youtube: 'https://youtube.com', twitch: 'https://twitch.tv', x: 'https://x.com', steam: 'https://steamcommunity.com/id/ghost', discord: 'https://discord.gg/ghost' } },
   { id: 'u2', name: 'Viper', email: 'viper@example.com', avatarUrl: 'https://placehold.co/100x100', role: 'user', status: 'active', bio: 'Aggressive player who loves to be on the front lines. My builds are designed for maximum impact.' },
   { id: 'u3', name: 'Rogue', email: 'rogue@example.com', avatarUrl: 'https://placehold.co/100x100', role: 'user', status: 'banned', bio: 'Lurking in the shadows.' },
 ];
